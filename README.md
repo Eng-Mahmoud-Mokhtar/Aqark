@@ -1,6 +1,7 @@
 # bk
 
-A new Flutter project.
+is your all-in-one real estate hub — buy, sell, or rent with trusted brokers, explore top compounds, connect with contractors, interior designers, engineers, and workers. Access essential construction materials and all government real estate services — smart, seamless, and at your fingertips.
+
 
 ## Getting Started
 
