@@ -10,133 +10,70 @@ class WorkersScreen extends StatefulWidget {
   const WorkersScreen({Key? key}) : super(key: key);
 
   @override
-  _WorkersScreenState createState() =>
-      _WorkersScreenState();
+  _WorkersScreenState createState() => _WorkersScreenState();
 }
 
 class _WorkersScreenState extends State<WorkersScreen> {
   String searchQuery = '';
-  String selectedWorkers = 'All';
+  String? selectedWorkers;
   double minRating = 3.0;
 
-  final List<String> Allworkers = [
-    'All',
-    'Construction',
-    'Plumbing',
-    'Carpentry',
-    'Electrical',
-    'Painting',
-    'AC Repair',
+  String getTranslatedProfession(BuildContext context, String professionId) {
+    switch (professionId) {
+      case 'mason':
+        return S.of(context).Mason;
+      case 'plumber':
+        return S.of(context).Plumber;
+      case 'carpenter':
+        return S.of(context).Carpenter;
+      case 'electrician':
+        return S.of(context).Electrician;
+      case 'painter':
+        return S.of(context).Painter;
+      case 'ac_technician':
+        return S.of(context).ACTechnician;
+      default:
+        return professionId;
+    }
+  }
+
+  List<Map<String, String>> getAllworkers(BuildContext context) => [
+    {'id': 'all', 'name': S.of(context).all},
+    {'id': 'construction', 'name': S.of(context).Construction},
+    {'id': 'plumbing', 'name': S.of(context).Plumbing},
+    {'id': 'carpentry', 'name': S.of(context).Carpentry},
+    {'id': 'electrical', 'name': S.of(context).Electrical},
+    {'id': 'painting', 'name': S.of(context).Painting},
+    {'id': 'ac_repair', 'name': S.of(context).ACRepair},
   ];
 
-  // Workers list
-  final List<Worker> workers = [
-    Worker(
-      name: 'Ahmed Mohamed',
-      profession: 'Mason',
-      experience: '8 years experience',
-      address: 'Nasr City, Cairo',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 4.8,
-      reviewCount: 56,
-      category: 'Construction',
-      isFeatured: true,
-    ),
-    Worker(
-      name: 'Mahmoud Ali',
-      profession: 'Plumber',
-      experience: '6 years experience',
-      address: 'Maadi, Cairo',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 4.7,
-      reviewCount: 42,
-      category: 'Plumbing',
-      isFeatured: true,
-    ),
-    Worker(
-      name: 'Ibrahim Samy',
-      profession: 'Carpenter',
-      experience: '7 years experience',
-      address: 'Heliopolis, Cairo',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 4.5,
-      reviewCount: 38,
-      category: 'Carpentry',
-      isFeatured: true,
-    ),
-    Worker(
-      name: 'Khaled Hussein',
-      profession: 'Electrician',
-      experience: '5 years experience',
-      address: 'Zamalek, Cairo',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 4.3,
-      reviewCount: 31,
-      category: 'Electrical',
-      isFeatured: false,
-    ),
-    Worker(
-      name: 'Mostafa Ahmed',
-      profession: 'Painter',
-      experience: '4 years experience',
-      address: 'Dokki, Giza',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 4.2,
-      reviewCount: 24,
-      category: 'Painting',
-      isFeatured: false,
-    ),
-    Worker(
-      name: 'Yasser Abdullah',
-      profession: 'AC Technician',
-      experience: '9 years experience',
-      address: 'Sheikh Zayed, Giza',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 3.9,
-      reviewCount: 68,
-      category: 'AC Repair',
-      isFeatured: true,
-    ),
-    Worker(
-      name: 'Emad El-Sayed',
-      profession: 'Mason',
-      experience: '10 years experience',
-      address: 'Mokattam, Cairo',
-      image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-      rating: 2.6,
-      reviewCount: 26,
-      category: 'Construction',
-      isFeatured: false,
-    ),
-  ];
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    selectedWorkers ??= 'all';
+  }
 
-  // Filter workers based on search, category and rating
   List<Worker> get filteredWorkers {
     return workers.where((worker) {
-      final matchesSearch = worker.name
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase()) ||
-          worker.profession.toLowerCase().contains(searchQuery.toLowerCase()) ||
+      final matchesSearch = worker.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          getTranslatedProfession(context, worker.profession)
+              .toLowerCase()
+              .contains(searchQuery.toLowerCase()) ||
           worker.address.toLowerCase().contains(searchQuery.toLowerCase());
-      final matchesCategory =
-          selectedWorkers == 'All' || worker.category == selectedWorkers;
+      final matchesCategory = selectedWorkers == 'all' || worker.category == selectedWorkers;
       final matchesRating = worker.rating >= minRating;
 
       return matchesSearch && matchesCategory && matchesRating;
     }).toList();
   }
 
-  // Get featured workers
   List<Worker> get featuredWorkers {
     return workers.where((worker) => worker.isFeatured).toList();
   }
 
-  // Get workers by selected category
   List<Worker> get workersByCategory {
-    if (selectedWorkers == 'All') return filteredWorkers;
-    return filteredWorkers
-        .where((worker) => worker.category == selectedWorkers)
-        .toList();
+    if (selectedWorkers == 'all') return filteredWorkers;
+    return filteredWorkers.where((worker) => worker.category == selectedWorkers).toList();
   }
 
   @override
@@ -146,13 +83,14 @@ class _WorkersScreenState extends State<WorkersScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Workers',
+        title: S.of(context).Workers,
         onBack: () {
           Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(builder: (context) => Home()),
                 (route) => false,
-          );        },
+          );
+        },
         showSearch: false,
       ),
       body: SingleChildScrollView(
@@ -175,7 +113,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  // Search bar
   Widget _buildSearchBar() {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
@@ -183,42 +120,45 @@ class _WorkersScreenState extends State<WorkersScreen> {
       child: Row(
         children: [
           Expanded(
-              flex: 5,
-              child: Container(
-                  height: screenWidth * 0.12,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffFAFAFA),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xffE9E9E9)),
+            flex: 5,
+            child: Container(
+              height: screenWidth * 0.12,
+              decoration: BoxDecoration(
+                color: const Color(0xffFAFAFA),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
+              child: TextField(
+                onChanged: (value) => setState(() => searchQuery = value),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  hintText: S.of(context).SearchForWorkers,
+                  hintStyle: TextStyle(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
                   ),
-                  child: TextField(
-                      onChanged: (value) => setState(() => searchQuery = value),
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Search for workers',
-                        hintStyle: TextStyle(
-                          fontSize: screenWidth * 0.03,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.035,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
-                          child: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey,
-                            size: screenWidth * 0.05,
-                          ),
-                        ),
-                      )))),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.035,
+                    horizontal: screenWidth * 0.02,
+                  ),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                    child: Icon(
+                      Icons.search_outlined,
+                      color: Colors.grey,
+                      size: screenWidth * 0.05,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           SizedBox(width: screenWidth * 0.02),
           Expanded(
             flex: 1,
@@ -246,21 +186,20 @@ class _WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  // Categories row
   Widget _buildCategoriesRow() {
     final screenWidth = MediaQuery.of(context).size.width;
-
     return SizedBox(
       height: screenWidth * 0.1,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
-        itemCount: Allworkers.length,
+        itemCount: getAllworkers(context).length,
         itemBuilder: (context, index) {
-          final isSelected = selectedWorkers == Allworkers[index];
+          final category = getAllworkers(context)[index];
+          final isSelected = selectedWorkers == category['id'];
           return GestureDetector(
             onTap: () {
               setState(() {
-                selectedWorkers = Allworkers[index];
+                selectedWorkers = category['id'];
               });
             },
             child: Container(
@@ -273,12 +212,12 @@ class _WorkersScreenState extends State<WorkersScreen> {
                 vertical: screenWidth * 0.02,
               ),
               decoration: BoxDecoration(
-                color: isSelected ? KprimaryColor
-                    : KprimaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),),
+                color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Center(
                 child: Text(
-                  Allworkers[index],
+                  category['name']!,
                   style: TextStyle(
                     fontSize: screenWidth * 0.03,
                     fontWeight: FontWeight.bold,
@@ -293,10 +232,9 @@ class _WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  // Featured workers section
   Widget _buildFeaturedSection() {
     final screenWidth = MediaQuery.of(context).size.width;
-    if (selectedWorkers != 'All') return const SizedBox.shrink();
+    if (selectedWorkers != 'all') return const SizedBox.shrink();
     final featured = featuredWorkers;
     if (featured.isEmpty) return const SizedBox.shrink();
 
@@ -304,16 +242,16 @@ class _WorkersScreenState extends State<WorkersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Featured Workers',
+          S.of(context).FeaturedWorkers,
           style: TextStyle(
-            fontSize: screenWidth*0.035,
+            fontSize: screenWidth * 0.035,
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.45,
+          height: MediaQuery.of(context).size.width * 0.55,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -326,7 +264,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  // Featured worker container
   Widget _buildFeaturedWorkerContainer(Worker worker) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -376,7 +313,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
               ),
               SizedBox(height: screenHeight * 0.001),
               Text(
-                worker.profession,
+                getTranslatedProfession(context, worker.profession),
                 style: TextStyle(
                   color: KprimaryColor,
                   fontSize: screenWidth * 0.03,
@@ -388,8 +325,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.location_on_outlined,
-                      size: screenWidth * 0.04, color: SecondaryColor),
+                  Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
                   SizedBox(width: screenWidth * 0.01),
                   Flexible(
                     child: Text(
@@ -430,7 +366,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
       ),
     );
   }
-
   Widget _buildAllWorkersSection() {
     final screenWidth = MediaQuery.of(context).size.width;
     final workersList = workersByCategory;
@@ -445,9 +380,9 @@ class _WorkersScreenState extends State<WorkersScreen> {
         ),
         child: Center(
           child: Text(
-            'No workers available',
+            S.of(context).NoWorkersAvailable,
             style: TextStyle(
-              fontSize: screenWidth*0.035,
+              fontSize: screenWidth * 0.035,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
@@ -455,14 +390,13 @@ class _WorkersScreenState extends State<WorkersScreen> {
         ),
       );
     }
-
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'All Workers',
+          S.of(context).Workers,
           style: TextStyle(
-            fontSize: screenWidth*0.035,
+            fontSize: screenWidth * 0.035,
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -480,7 +414,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
     );
   }
 
-  // Worker container
   Widget _buildWorkerContainer(Worker worker) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -521,20 +454,20 @@ class _WorkersScreenState extends State<WorkersScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.001),
                 Text(
-                  worker.profession,
+                  getTranslatedProfession(context, worker.profession),
                   style: TextStyle(
                     color: KprimaryColor,
                     fontWeight: FontWeight.bold,
+                    fontSize: screenWidth * 0.03,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.001),
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined,
-                        size: screenWidth * 0.04, color: SecondaryColor),
+                    Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
                     SizedBox(width: screenWidth * 0.001),
                     Text(
-                      worker.address ,
+                      worker.address,
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
                         color: SubText,
@@ -547,9 +480,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
           ),
           Column(
             children: [
-              Icon(Icons.star,
-                  size: screenWidth * 0.05,
-                  color: SecondaryColor),
+              Icon(Icons.star, size: screenWidth * 0.05, color: SecondaryColor),
               SizedBox(height: screenWidth * 0.01),
               Text(
                 '${worker.rating.toStringAsFixed(1)}',
@@ -564,46 +495,17 @@ class _WorkersScreenState extends State<WorkersScreen> {
       ),
     );
   }
-
-  void _showWorkerDetails(Worker) {
+  void _showWorkerDetails(Worker worker) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => WorkerDetailsScreen(worker: Worker),
+        builder: (context) => WorkerDetailsScreen(worker: worker),
       ),
     );
   }
   final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "Highest Rating", "value": "rating"},
+    {"title": "HighestRating", "value": "rating"},
   ];
-  final Map<String, List<String>> governoratesWithCities = {
-    "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
-    "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
-    "Alexandria": ["Smouha", "Sidi Gaber", "Asafra", "Mandara", "Montaza", "Gleem", "Stanley", "Miami", "San Stefano"],
-    "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
-    "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
-    "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
-    "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
-    "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
-    "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
-    "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
-    "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
-    "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
-    "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
-    "Port Said": ["Port Said City", "Port Fouad"],
-    "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
-    "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
-    "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
-    "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
-    "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
-    "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
-    "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
-    "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
-    "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
-    "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
-    "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
-    "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
-  };
   String? _selectedGovernorate;
   String? _selectedCity;
   String _selectedFilter = "none";
@@ -616,7 +518,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
       isScrollControlled: true,
       builder: (context) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (context, setModalState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
               height: screenHeight * 0.7,
@@ -634,7 +536,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
-                        'Search Options',
+                        S.of(context).SearchOptions,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -658,13 +560,11 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     color: Colors.grey.withOpacity(0.3),
                     thickness: 1,
                   ),
-
-                  // Location Section (بدون تغيير)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Location',
+                        S.of(context).Location,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -678,7 +578,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                             context: context,
                             governoratesWithCities: governoratesWithCities,
                             onLocationSelected: (governorate, city) {
-                              setState(() {
+                              setModalState(() {
                                 _selectedGovernorate = governorate;
                                 _selectedCity = city;
                               });
@@ -703,10 +603,11 @@ class _WorkersScreenState extends State<WorkersScreen> {
                           ),
                           child: (_selectedGovernorate != null && _selectedCity != null)
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
-                                Icon(Icons.location_on_outlined, color: KprimaryColor, size: screenWidth * 0.045),
+                                Icon(Icons.location_on_outlined,
+                                    color: KprimaryColor, size: screenWidth * 0.045),
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
@@ -728,7 +629,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Location',
+                                  S.of(context).ChooseLocation,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -743,13 +644,11 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.02),
-
-                  // Category Section (المعدل بنفس التصميم مع تغيير البيانات)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Workers',
+                        S.of(context).Workers,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -761,11 +660,12 @@ class _WorkersScreenState extends State<WorkersScreen> {
                         onTap: () {
                           _showAddWorkers(
                             context: context,
-                            categories: Allworkers,
-                            onCategorySelected: (category) {
-                              setState(() {
-                                selectedWorkers = category;
+                            categories: getAllworkers(context),
+                            onCategorySelected: (categoryId) {
+                              setModalState(() {
+                                selectedWorkers = categoryId;
                               });
+                              setState(() {});
                             },
                           );
                         },
@@ -774,27 +674,27 @@ class _WorkersScreenState extends State<WorkersScreen> {
                           margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
                           padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
                           decoration: BoxDecoration(
-                            color: (selectedWorkers != 'All')
+                            color: (selectedWorkers != 'all')
                                 ? KprimaryColor.withOpacity(0.1)
                                 : KprimaryColor.withOpacity(0.05),
                             borderRadius: BorderRadius.circular(8),
                             border: Border.all(
-                              color: (selectedWorkers != 'All')
-                                  ? KprimaryColor
-                                  : KprimaryColor.withOpacity(0.3),
+                              color: (selectedWorkers != 'all') ? KprimaryColor : KprimaryColor.withOpacity(0.3),
                               width: 1.0,
                             ),
                           ),
-                          child: (selectedWorkers != 'All')
+                          child: (selectedWorkers != 'all')
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
-                                Icon(Icons.shopping_bag_outlined, color: KprimaryColor, size: screenWidth * 0.045),
+                                Icon(Icons.shopping_bag_outlined,
+                                    color: KprimaryColor, size: screenWidth * 0.045),
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
-                                    selectedWorkers,
+                                    getAllworkers(context)
+                                        .firstWhere((cat) => cat['id'] == selectedWorkers)['name']!,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenWidth * 0.03,
@@ -812,7 +712,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Worker Role',
+                                  S.of(context).ChooseWorkerRole,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -827,9 +727,8 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.02),
-
                   Text(
-                    'Rating',
+                    S.of(context).Rating,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -841,28 +740,26 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     bool isSelected = _selectedFilter == option['value'];
                     return GestureDetector(
                       onTap: () {
-                        setState(() {
+                        setModalState(() {
                           _selectedFilter = option['value'];
                         });
                       },
                       child: Container(
                         width: double.infinity,
                         margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
+                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
                         decoration: BoxDecoration(
-                          color: isSelected ? KprimaryColor.withOpacity(0.1)
-                              : KprimaryColor.withOpacity(0.05),
+                          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected ? KprimaryColor
-                                : KprimaryColor.withOpacity(0.3),
+                            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
                             width: 1.0,
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenWidth * 0.02),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                           child: Text(
-                            option['title'],
+                            S.of(context).HighestRating,
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
@@ -891,10 +788,11 @@ class _WorkersScreenState extends State<WorkersScreen> {
                             ),
                           ),
                           onPressed: () {
+                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
-                            '${S.of(context).Show} 52 ${S.of(context).Results}',
+                            '${S.of(context).Show} ${filteredWorkers.length} ${S.of(context).Results}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -906,47 +804,31 @@ class _WorkersScreenState extends State<WorkersScreen> {
                       SizedBox(width: screenWidth * 0.02),
                       Expanded(
                         child: ElevatedButton(
-                          style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all(
-                              Size(double.infinity, screenWidth * 0.12),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, screenWidth * 0.12),
+                            backgroundColor: Colors.white,
+                            foregroundColor: KprimaryColor,
+                            side: BorderSide(
+                              color: KprimaryColor,
+                              width: 1,
                             ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return Colors.white;
-                              }
-                              return Colors.white;
-                            }),
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return KprimaryColor.withOpacity(0.3);
-                              }
-                              return KprimaryColor;
-                            }),
-                            side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                              return BorderSide(
-                                color: (states.contains(MaterialState.disabled))
-                                    ? KprimaryColor.withOpacity(0.3)
-                                    : KprimaryColor,
-                                width: 1,
-                              );
-                            }),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
                           onPressed: (_selectedGovernorate == null &&
                               _selectedCity == null &&
-                              _selectedFilter == "none")
+                              _selectedFilter == "none" &&
+                              selectedWorkers == 'all')
                               ? null
                               : () {
-                            setState(() {
+                            setModalState(() {
                               _selectedFilter = "none";
                               _selectedCity = null;
                               _selectedGovernorate = null;
-                              selectedWorkers = 'All';
+                              selectedWorkers = 'all';
                             });
+                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
@@ -968,6 +850,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
       },
     );
   }
+
   void _showAddLocationSheet({
     required BuildContext context,
     required Map<String, List<String>> governoratesWithCities,
@@ -984,15 +867,15 @@ class _WorkersScreenState extends State<WorkersScreen> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
       builder: (context) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (context, setModalState) {
             return Container(
               height: screenHeight * 0.7,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
               ),
@@ -1015,7 +898,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select Location',
+                        S.of(context).SelectLocation,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -1024,14 +907,14 @@ class _WorkersScreenState extends State<WorkersScreen> {
                       ),
                       IconButton(
                         icon: Icon(
-                          Icons.arrow_forward_ios,
+                          Icons.close,
                           size: screenWidth * 0.045,
                         ),
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+                        constraints: const BoxConstraints(),
                         onPressed: () {
                           if (selectedGovernorate.isNotEmpty) {
-                            setState(() {
+                            setModalState(() {
                               selectedGovernorate = "";
                               selectedCity = "";
                               searchText = "";
@@ -1070,17 +953,17 @@ class _WorkersScreenState extends State<WorkersScreen> {
                           horizontal: screenWidth * 0.02,
                         ),
                         prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                           child: Icon(
                             Icons.search_outlined,
                             color: Colors.grey,
                             size: screenWidth * 0.05,
                           ),
                         ),
-                        hintText: 'Search for governorate or city',
+                        hintText: S.of(context).SearchForGovernorateOrCity,
                       ),
                       onChanged: (value) {
-                        setState(() {
+                        setModalState(() {
                           searchText = value;
                         });
                       },
@@ -1094,14 +977,12 @@ class _WorkersScreenState extends State<WorkersScreen> {
                           if (selectedGovernorate.isEmpty)
                             ...governoratesWithCities.keys
                                 .where((gov) =>
-                            searchText.isEmpty ||
-                                gov.toLowerCase().contains(searchText.toLowerCase()))
+                            searchText.isEmpty || gov.toLowerCase().contains(searchText.toLowerCase()))
                                 .map((governorate) => Column(
                               children: [
                                 ListTile(
                                   dense: true,
-                                  contentPadding:
-                                  EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                                   title: Text(
                                     governorate,
                                     style: TextStyle(
@@ -1111,7 +992,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() {
+                                    setModalState(() {
                                       selectedGovernorate = governorate;
                                       searchText = "";
                                     });
@@ -1131,14 +1012,12 @@ class _WorkersScreenState extends State<WorkersScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: governoratesWithCities[selectedGovernorate]!
                                   .where((city) =>
-                              searchText.isEmpty ||
-                                  city.toLowerCase().contains(searchText.toLowerCase()))
+                              searchText.isEmpty || city.toLowerCase().contains(searchText.toLowerCase()))
                                   .map((city) => Column(
                                 children: [
                                   ListTile(
                                     dense: true,
-                                    contentPadding:
-                                    EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                                     title: Text(
                                       city,
                                       style: TextStyle(
@@ -1147,11 +1026,20 @@ class _WorkersScreenState extends State<WorkersScreen> {
                                         fontSize: screenWidth * 0.03,
                                       ),
                                     ),
-                                    trailing: selectedCity == city
-                                        ? Icon(Icons.check,
-                                        color: KprimaryColor, size: screenWidth * 0.05)
+                                    trailing: _selectedCity == city
+                                        ? Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: KprimaryColor,
+                                        size: screenWidth * 0.05,
+                                      ),
+                                    )
                                         : null,
                                     onTap: () {
+                                      setModalState(() {
+                                        selectedCity = city;
+                                      });
                                       onLocationSelected(selectedGovernorate, city);
                                       Navigator.pop(context);
                                     },
@@ -1181,7 +1069,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
 
   void _showAddWorkers({
     required BuildContext context,
-    required List<String> categories,
+    required List<Map<String, String>> categories,
     required Function(String) onCategorySelected,
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -1194,7 +1082,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
       builder: (context) {
         return Container(
           height: screenHeight * 0.7,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
           ),
@@ -1214,7 +1102,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Select Role',
+                    S.of(context).SelectRole,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -1222,7 +1110,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                   ),
                   IconButton(
                     icon: Icon(
-                      Icons.arrow_forward_ios,
+                      Icons.close,
                       size: screenWidth * 0.045,
                     ),
                     onPressed: () => Navigator.pop(context),
@@ -1238,13 +1126,27 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(category, style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.03,
-                          ),),
+                          contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                          title: Text(
+                            category['name']!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.03,
+                            ),
+                          ),
+                          trailing: selectedWorkers == category['id']
+                              ? Padding(
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                            child: Icon(
+                              Icons.check,
+                              color: KprimaryColor,
+                              size: screenWidth * 0.05,
+                            ),
+                          )
+                              : null,
                           onTap: () {
-                            onCategorySelected(category);
+                            onCategorySelected(category['id']!);
                             Navigator.pop(context);
                           },
                         ),
@@ -1267,6 +1169,113 @@ class _WorkersScreenState extends State<WorkersScreen> {
   }
 }
 
+final List<Worker> workers = [
+  Worker(
+    name: 'Ahmed Mohamed',
+    profession: 'mason',
+    experience: '8',
+    address: 'Nasr City, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 4.8,
+    reviewCount: 56,
+    category: 'construction',
+    isFeatured: true,
+  ),
+  Worker(
+    name: 'Mahmoud Ali',
+    profession: 'plumber',
+    experience: '6',
+    address: 'Maadi, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 4.7,
+    reviewCount: 42,
+    category: 'plumbing',
+    isFeatured: true,
+  ),
+  Worker(
+    name: 'Ibrahim Samy',
+    profession: 'carpenter',
+    experience: '7',
+    address: 'Heliopolis, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 4.5,
+    reviewCount: 38,
+    category: 'carpentry',
+    isFeatured: true,
+  ),
+  Worker(
+    name: 'Khaled Hussein',
+    profession: 'electrician',
+    experience: '5',
+    address: 'Zamalek, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 4.3,
+    reviewCount: 31,
+    category: 'electrical',
+    isFeatured: false,
+  ),
+  Worker(
+    name: 'Mostafa Ahmed',
+    profession: 'painter',
+    experience: '4',
+    address: 'Dokki, Giza',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 4.2,
+    reviewCount: 24,
+    category: 'painting',
+    isFeatured: false,
+  ),
+  Worker(
+    name: 'Yasser Abdullah',
+    profession: 'ac_technician',
+    experience: '9',
+    address: 'Sheikh Zayed, Giza',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 3.9,
+    reviewCount: 68,
+    category: 'ac_repair',
+    isFeatured: true,
+  ),
+  Worker(
+    name: 'Emad El-Sayed',
+    profession: 'mason',
+    experience: '10',
+    address: 'Mokattam, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    rating: 2.6,
+    reviewCount: 26,
+    category: 'construction',
+    isFeatured: false,
+  ),
+];
+final Map<String, List<String>> governoratesWithCities = {
+  "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
+  "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
+  "Alexandria": ["Smouha", "Sidi Gaber", "Asafra", "Mandara", "Montaza", "Gleem", "Stanley", "Miami", "San Stefano"],
+  "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
+  "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
+  "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
+  "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
+  "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
+  "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
+  "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
+  "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
+  "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
+  "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
+  "Port Said": ["Port Said City", "Port Fouad"],
+  "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
+  "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
+  "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
+  "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
+  "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
+  "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
+  "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
+  "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
+  "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
+  "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
+  "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
+  "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
+};
 class Worker {
   final String name;
   final String profession;
@@ -1290,5 +1299,3 @@ class Worker {
     required this.isFeatured,
   });
 }
-
-

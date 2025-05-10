@@ -3,7 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../Home/presentation/view_model/views/BottomHome.dart';
 
 class EngineersScreen extends StatefulWidget {
   const EngineersScreen({Key? key}) : super(key: key);
@@ -26,12 +25,29 @@ class _EngineersScreenState extends State<EngineersScreen> {
     'Architect',
   ];
 
+  String getEngineerTypeDisplayName(BuildContext context, String type) {
+    switch (type) {
+      case 'Decoration Engineer':
+        return S.of(context).DecorationEngineer;
+      case 'Finishing Engineer':
+        return S.of(context).FinishingEngineer;
+      case 'Construction Engineer':
+        return S.of(context).ConstructionEngineer;
+      case 'Interior Designer':
+        return S.of(context).InteriorDesigner;
+      case 'Architect':
+        return S.of(context).Architect;
+      default:
+        return S.of(context).all;
+    }
+  }
+
   // Engineers list
   final List<Engineer> engineers = [
     Engineer(
       name: 'Ahmed Mohamed',
       specialization: 'Decoration Engineer',
-      experience: '8 years experience',
+      experience: '8',
       address: 'Nasr City, Cairo',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 4.8,
@@ -42,7 +58,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Mahmoud Ali',
       specialization: 'Finishing Engineer',
-      experience: '6 years experience',
+      experience: '6',
       address: 'Maadi, Cairo',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 4.7,
@@ -53,7 +69,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Ibrahim Samy',
       specialization: 'Construction Engineer',
-      experience: '7 years experience',
+      experience: '7',
       address: 'Heliopolis, Cairo',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 4.5,
@@ -64,7 +80,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Khaled Hussein',
       specialization: 'Interior Designer',
-      experience: '5 years experience',
+      experience: '5',
       address: 'Zamalek, Cairo',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 4.3,
@@ -75,7 +91,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Mostafa Ahmed',
       specialization: 'Architect',
-      experience: '4 years experience',
+      experience: '4',
       address: 'Dokki, Giza',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 4.2,
@@ -86,7 +102,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Yasser Abdullah',
       specialization: 'Construction Engineer',
-      experience: '9 years experience',
+      experience: '9',
       address: 'Sheikh Zayed, Giza',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 3.9,
@@ -97,7 +113,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
     Engineer(
       name: 'Emad El-Sayed',
       specialization: 'Finishing Engineer',
-      experience: '10 years experience',
+      experience: '10',
       address: 'Mokattam, Cairo',
       image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
       rating: 2.6,
@@ -107,49 +123,41 @@ class _EngineersScreenState extends State<EngineersScreen> {
     ),
   ];
 
-  // Filter engineers based on search, category and rating
+  // Filter engineers based on search, category, rating, and location
   List<Engineer> get filteredEngineers {
-    return engineers.where((engineer) {
-      final matchesSearch = engineer.name
-          .toLowerCase()
-          .contains(searchQuery.toLowerCase()) ||
+    var filtered = engineers.where((engineer) {
+      final matchesSearch = engineer.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
           engineer.specialization.toLowerCase().contains(searchQuery.toLowerCase()) ||
           engineer.address.toLowerCase().contains(searchQuery.toLowerCase());
-      final matchesType =
-          selectedEngineerType == 'All' || engineer.type == selectedEngineerType;
+      final matchesType = selectedEngineerType == 'All' || engineer.type == selectedEngineerType;
       final matchesRating = engineer.rating >= minRating;
-
-      return matchesSearch && matchesType && matchesRating;
+      final matchesLocation = _selectedGovernorate == null || _selectedCity == null ||
+          engineer.address.toLowerCase().contains(_selectedCity!.toLowerCase()) ||
+          engineer.address.toLowerCase().contains(_selectedGovernorate!.toLowerCase());
+      return matchesSearch && matchesType && matchesRating && matchesLocation;
     }).toList();
+    if (_selectedFilter == 'rating') {
+      filtered.sort((a, b) => b.rating.compareTo(a.rating));
+    }
+    return filtered;
   }
-
-  // Get featured engineers
   List<Engineer> get featuredEngineers {
     return engineers.where((engineer) => engineer.isFeatured).toList();
   }
-
-  // Get engineers by selected type
   List<Engineer> get engineersByType {
     if (selectedEngineerType == 'All') return filteredEngineers;
-    return filteredEngineers
-        .where((engineer) => engineer.type == selectedEngineerType)
-        .toList();
+    return filteredEngineers.where((engineer) => engineer.type == selectedEngineerType).toList();
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Engineers',
+        title: S.of(context).Engineers,
         onBack: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-                (route) => false,
-          );
+          Navigator.pop(context);
         },
         showSearch: false,
       ),
@@ -181,41 +189,45 @@ class _EngineersScreenState extends State<EngineersScreen> {
       child: Row(
         children: [
           Expanded(
-              flex: 5,
-              child: Container(
-                  height: screenWidth * 0.12,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffFAFAFA),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xffE9E9E9)),),
-                  child: TextField(
-                      onChanged: (value) => setState(() => searchQuery = value),
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Search for engineers',
-                        hintStyle: TextStyle(
-                          fontSize: screenWidth * 0.03,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.035,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
-                          child: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey,
-                            size: screenWidth * 0.05,
-                          ),
-                        ),
-                      )))),
+            flex: 5,
+            child: Container(
+              height: screenWidth * 0.12,
+              decoration: BoxDecoration(
+                color: const Color(0xffFAFAFA),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
+              child: TextField(
+                onChanged: (value) => setState(() => searchQuery = value),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  hintText: S.of(context).SearchForEngineers,
+                  hintStyle: TextStyle(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.035,
+                    horizontal: screenWidth * 0.02,
+                  ),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.only(left: screenWidth * 0.01),
+                    child: Icon(
+                      Icons.search_outlined,
+                      color: Colors.grey,
+                      size: screenWidth * 0.05,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           SizedBox(width: screenWidth * 0.02),
           Expanded(
             flex: 1,
@@ -224,7 +236,8 @@ class _EngineersScreenState extends State<EngineersScreen> {
               decoration: BoxDecoration(
                 color: const Color(0xffFAFAFA),
                 borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xffE9E9E9)),),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
               child: IconButton(
                 icon: Image.asset(
                   'Assets/icons8-filter-48.png',
@@ -269,12 +282,12 @@ class _EngineersScreenState extends State<EngineersScreen> {
                 vertical: screenWidth * 0.02,
               ),
               decoration: BoxDecoration(
-                color: isSelected ? KprimaryColor
-                    : KprimaryColor.withOpacity(0.1),
-                borderRadius: BorderRadius.circular(8),),
+                color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(8),
+              ),
               child: Center(
                 child: Text(
-                  engineerTypes[index],
+                  getEngineerTypeDisplayName(context, engineerTypes[index]),
                   style: TextStyle(
                     fontSize: screenWidth * 0.03,
                     fontWeight: FontWeight.bold,
@@ -300,16 +313,16 @@ class _EngineersScreenState extends State<EngineersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Featured Engineers',
+          S.of(context).FeaturedEngineers,
           style: TextStyle(
-            fontSize: screenWidth*0.035,
+            fontSize: screenWidth * 0.035,
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.45,
+          height: MediaQuery.of(context).size.width * 0.55,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -372,20 +385,21 @@ class _EngineersScreenState extends State<EngineersScreen> {
               ),
               SizedBox(height: screenHeight * 0.001),
               Text(
-                engineer.specialization,
+                getEngineerTypeDisplayName(context, engineer.specialization),
                 style: TextStyle(
                   color: KprimaryColor,
                   fontSize: screenWidth * 0.03,
                   fontWeight: FontWeight.bold,
                 ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: screenHeight * 0.001),
               Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  Icon(Icons.location_on_outlined,
-                      size: screenWidth * 0.04, color: SecondaryColor),
+                  Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
                   SizedBox(width: screenWidth * 0.01),
                   Flexible(
                     child: Text(
@@ -413,7 +427,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
               ),
               SizedBox(height: screenHeight * 0.001),
               Text(
-                '${engineer.rating.toStringAsFixed(1)} (${engineer.reviewCount} reviews)',
+                '${engineer.rating.toStringAsFixed(1)}',
                 style: TextStyle(
                   fontSize: screenWidth * 0.03,
                   color: SubText,
@@ -441,9 +455,9 @@ class _EngineersScreenState extends State<EngineersScreen> {
         ),
         child: Center(
           child: Text(
-            'No engineers available',
+            S.of(context).NoEngineers,
             style: TextStyle(
-              fontSize: screenWidth*0.035,
+              fontSize: screenWidth * 0.035,
               color: Colors.black,
               fontWeight: FontWeight.bold,
             ),
@@ -456,9 +470,9 @@ class _EngineersScreenState extends State<EngineersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'All Engineers',
+          S.of(context).Engineers,
           style: TextStyle(
-            fontSize: screenWidth*0.035,
+            fontSize: screenWidth * 0.035,
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -517,25 +531,17 @@ class _EngineersScreenState extends State<EngineersScreen> {
                 ),
                 SizedBox(height: screenHeight * 0.001),
                 Text(
-                  engineer.specialization,
-                  style: TextStyle(
-                    color: KprimaryColor,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: screenHeight * 0.001),
-                Text(
-                  engineer.experience,
+                  getEngineerTypeDisplayName(context, engineer.specialization),
                   style: TextStyle(
                     fontSize: screenWidth * 0.03,
-                    color: SubText,
+                    fontWeight: FontWeight.bold,
+                    color: KprimaryColor,
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.001),
                 Row(
                   children: [
-                    Icon(Icons.location_on_outlined,
-                        size: screenWidth * 0.04, color: SecondaryColor),
+                    Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
                     SizedBox(width: screenWidth * 0.001),
                     Text(
                       engineer.address,
@@ -551,9 +557,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
           ),
           Column(
             children: [
-              Icon(Icons.star,
-                  size: screenWidth * 0.05,
-                  color: SecondaryColor),
+              Icon(Icons.star, size: screenWidth * 0.05, color: SecondaryColor),
               SizedBox(height: screenWidth * 0.01),
               Text(
                 '${engineer.rating.toStringAsFixed(1)}',
@@ -578,10 +582,11 @@ class _EngineersScreenState extends State<EngineersScreen> {
     );
   }
 
-  final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "Highest Rating", "value": "rating"},
-  ];
-
+  List<Map<String, dynamic>> _getFilterOptions(BuildContext context) {
+    return [
+      {"title": S.of(context).HighestRating, "value": "rating"},
+    ];
+  }
   final Map<String, List<String>> governoratesWithCities = {
     "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
     "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
@@ -642,7 +647,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
-                        'Search Options',
+                        S.of(context).SearchOptions,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -672,7 +677,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Location',
+                        S.of(context).Location,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -711,7 +716,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                           ),
                           child: (_selectedGovernorate != null && _selectedCity != null)
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
                                 Icon(Icons.location_on_outlined, color: KprimaryColor, size: screenWidth * 0.045),
@@ -736,7 +741,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Location',
+                                  S.of(context).ChooseLocation,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -757,7 +762,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Engineer Type',
+                        S.of(context).Specialties,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -802,7 +807,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
-                                    selectedEngineerType,
+                                    getEngineerTypeDisplayName(context, selectedEngineerType),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenWidth * 0.03,
@@ -820,7 +825,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Engineer Type',
+                                  S.of(context).EngineerSpecialty,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -837,7 +842,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                   SizedBox(height: screenHeight * 0.02),
 
                   Text(
-                    'Rating',
+                    S.of(context).Rating,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -845,7 +850,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.008),
-                  ..._filterOptions.map((option) {
+                  ..._getFilterOptions(context).map((option) {
                     bool isSelected = _selectedFilter == option['value'];
                     return GestureDetector(
                       onTap: () {
@@ -858,12 +863,10 @@ class _EngineersScreenState extends State<EngineersScreen> {
                         margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
                         padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
-                          color: isSelected ? KprimaryColor.withOpacity(0.1)
-                              : KprimaryColor.withOpacity(0.05),
+                          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected ? KprimaryColor
-                                : KprimaryColor.withOpacity(0.3),
+                            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
                             width: 1.0,
                           ),
                         ),
@@ -902,7 +905,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            '${S.of(context).Show} ${filteredEngineers.length} ${S.of(context).Results}',
+                            '${S.of(context).Show} (${filteredEngineers.length})',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -1024,7 +1027,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select Location',
+                        S.of(context).SelectLocation,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -1059,7 +1062,8 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     decoration: BoxDecoration(
                       color: const Color(0xffFAFAFA),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xffE9E9E9)),),
+                      border: Border.all(color: const Color(0xffE9E9E9)),
+                    ),
                     child: TextField(
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
@@ -1085,7 +1089,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                             size: screenWidth * 0.05,
                           ),
                         ),
-                        hintText: 'Search for governorate or city',
+                        hintText: S.of(context).SearchForGovernorateOrCity,
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -1108,8 +1112,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                               children: [
                                 ListTile(
                                   dense: true,
-                                  contentPadding:
-                                  EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                                   title: Text(
                                     governorate,
                                     style: TextStyle(
@@ -1145,8 +1148,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                                 children: [
                                   ListTile(
                                     dense: true,
-                                    contentPadding:
-                                    EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                    contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                                     title: Text(
                                       city,
                                       style: TextStyle(
@@ -1156,8 +1158,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                                       ),
                                     ),
                                     trailing: selectedCity == city
-                                        ? Icon(Icons.check,
-                                        color: KprimaryColor, size: screenWidth * 0.05)
+                                        ? Icon(Icons.check, color: KprimaryColor, size: screenWidth * 0.05)
                                         : null,
                                     onTap: () {
                                       onLocationSelected(selectedGovernorate, city);
@@ -1222,7 +1223,7 @@ class _EngineersScreenState extends State<EngineersScreen> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Select Engineer Type',
+                    S.of(context).EngineerSpecialty,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -1246,11 +1247,14 @@ class _EngineersScreenState extends State<EngineersScreen> {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(type, style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.03,
-                          ),),
+                          title: Text(
+                            getEngineerTypeDisplayName(context, type),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.03,
+                            ),
+                          ),
                           onTap: () {
                             onTypeSelected(type);
                             Navigator.pop(context);
@@ -1329,59 +1333,44 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
     },
   ];
 
-  final List<Map<String, dynamic>> _posts = List.generate(6, (index) {
-    final data = [
-      {
-        "image": "Assets/side-view-man-working-as-plumber.jpg",
-        "title": "Outdoor Tiling",
-        "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
-        "likes": 1,
-        "liked": false,
-        "date": "March 2025",
-      },
-      {
-        "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
-        "title": "Kitchen Plumbing",
-        "caption": "Installed a full water system for a modern kitchen in Riyadh.",
-        "likes": 5,
-        "liked": false,
-        "date": "April 2025",
-      },
-      {
-        "image": "Assets/carpenter-works-with-tree.jpg",
-        "title": "Bathroom Leak Fix",
-        "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
-        "likes": 10,
-        "liked": false,
-        "date": "February 2025",
-      },
-      {
-        "image": "Assets/side-view-man-working-as-plumber.jpg",
-        "title": "Outdoor Tiling",
-        "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
-        "likes": 1,
-        "liked": false,
-        "date": "March 2025",
-      },
-      {
-        "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
-        "title": "Kitchen Plumbing",
-        "caption": "Installed a full water system for a modern kitchen in Riyadh.",
-        "likes": 5,
-        "liked": false,
-        "date": "April 2025",
-      },
-      {
-        "image": "Assets/carpenter-works-with-tree.jpg",
-        "title": "Bathroom Leak Fix",
-        "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
-        "likes": 10,
-        "liked": false,
-        "date": "February 2025",
-      },
-    ];
-    return data[index];
-  });
+  final List<Map<String, dynamic>> _posts = [
+    {
+      "image": "Assets/side-view-man-working-as-plumber.jpg",
+      "title": "Outdoor Tiling",
+      "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
+      "date": "March 2025",
+    },
+    {
+      "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
+      "title": "Kitchen Plumbing",
+      "caption": "Installed a full water system for a modern kitchen in Riyadh.",
+      "date": "April 2025",
+    },
+    {
+      "image": "Assets/carpenter-works-with-tree.jpg",
+      "title": "Bathroom Leak Fix",
+      "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
+      "date": "February 2025",
+    },
+    {
+      "image": "Assets/side-view-man-working-as-plumber.jpg",
+      "title": "Patio Tiling",
+      "caption": "Tiled a large patio area for a residence in Dammam.",
+      "date": "January 2025",
+    },
+    {
+      "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
+      "title": "Electrical Rewiring",
+      "caption": "Rewired an office building in Jeddah for improved safety.",
+      "date": "December 2024",
+    },
+    {
+      "image": "Assets/carpenter-works-with-tree.jpg",
+      "title": "Custom Furniture",
+      "caption": "Crafted custom wooden furniture for a home in Riyadh.",
+      "date": "November 2024",
+    },
+  ];
 
   bool _isReviewComplete = false;
 
@@ -1545,51 +1534,12 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.01),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            post["date"],
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.025,
-                              color:SubText,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                post["liked"] = !(post["liked"] ?? false);
-                                if (post["liked"]) {
-                                  post["likes"] += 1;
-                                } else {
-                                  post["likes"] -= 1;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  (post["liked"] ?? false)
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: (post["liked"] ?? false) ? Colors.red : SubText,
-                                  size: screenWidth * 0.05,
-                                ),
-                                SizedBox(width: 4),
-                                if (post["likes"] > 0)
-                                  Text(
-                                    post["likes"].toString(),
-                                    style: TextStyle(
-                                      color: SubText,
-                                      fontSize: screenWidth * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-
-                        ],
+                      Text(
+                        post["date"],
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.025,
+                          color: SubText,
+                        ),
                       ),
                     ],
                   ),
@@ -1619,7 +1569,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
           child: Column(
             children: [
               Text(
-                "Add Your Review",
+                S.of(context).AddYourReview,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.04,
@@ -1646,7 +1596,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                         ),
                         controller: _reviewController,
                         decoration: InputDecoration(
-                          hintText: "Write your review",
+                          hintText: S.of(context).WriteYourReview,
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             fontSize: screenWidth * 0.03,
@@ -1662,8 +1612,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                     ),
                     IconButton(
                       icon: Icon(Icons.send,
-                          color: _isReviewComplete ? KprimaryColor : SubText,
-                          size: screenWidth * 0.06),
+                          color: _isReviewComplete ? KprimaryColor : SubText, size: screenWidth * 0.06),
                       onPressed: _isReviewComplete ? _submitReview : null,
                     ),
                   ],
@@ -1747,11 +1696,26 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
+    String getEngineerTypeDisplayName(BuildContext context, String type) {
+      switch (type) {
+        case 'Decoration Engineer':
+          return S.of(context).DecorationEngineer;
+        case 'Finishing Engineer':
+          return S.of(context).FinishingEngineer;
+        case 'Construction Engineer':
+          return S.of(context).ConstructionEngineer;
+        case 'Interior Designer':
+          return S.of(context).InteriorDesigner;
+        case 'Architect':
+          return S.of(context).Architect;
+        default:
+          return S.of(context).all;
+      }
+    }
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Engineer Profile',
+        title: S.of(context).EngineerProfile,
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
@@ -1778,7 +1742,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                     ),
                     SizedBox(height: screenHeight * 0.005),
                     Text(
-                      widget.engineer.specialization,
+                      getEngineerTypeDisplayName(context, widget.engineer.specialization),
                       style: TextStyle(
                         fontSize: screenWidth * 0.04,
                         color: KprimaryColor,
@@ -1802,7 +1766,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Details",
+                        S.of(context).Details,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           color: Colors.black,
@@ -1815,7 +1779,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                           Icon(Icons.work_outline, size: screenWidth * 0.04),
                           SizedBox(width: screenWidth * 0.02),
                           Text(
-                            widget.engineer.experience,
+                            '${widget.engineer.experience} ${S.of(context).yearsExperience}',
                             style: TextStyle(
                               fontSize: screenWidth * 0.03,
                               color: Colors.black,
@@ -1845,7 +1809,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                           Icon(Icons.star_outline, size: screenWidth * 0.04),
                           SizedBox(width: screenWidth * 0.02),
                           Text(
-                            'Rating: (${widget.engineer.rating})',
+                            '${S.of(context).Rating} (${widget.engineer.rating})',
                             style: TextStyle(
                               fontSize: screenWidth * 0.03,
                               color: Colors.black,
@@ -1868,8 +1832,6 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-
-                // Tabs
                 Container(
                   height: screenWidth * 0.12,
                   margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
@@ -1888,20 +1850,16 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _currentTabIndex == 0
-                                  ? KprimaryColor
-                                  : Colors.transparent,
+                              color: _currentTabIndex == 0 ? KprimaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(screenWidth * 0.02),
                             ),
                             child: Center(
                               child: Text(
-                                "Posts (${_posts.length})",
+                                "${S.of(context).Posts} (${_posts.length})",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 0
-                                      ? Colors.white
-                                      : KprimaryColor,
+                                  color: _currentTabIndex == 0 ? Colors.white : KprimaryColor,
                                 ),
                               ),
                             ),
@@ -1917,20 +1875,16 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                           },
                           child: Container(
                             decoration: BoxDecoration(
-                              color: _currentTabIndex == 1
-                                  ? KprimaryColor
-                                  : Colors.transparent,
+                              color: _currentTabIndex == 1 ? KprimaryColor : Colors.transparent,
                               borderRadius: BorderRadius.circular(screenWidth * 0.02),
                             ),
                             child: Center(
                               child: Text(
-                                "Reviews (${_reviews.length})",
+                                "${S.of(context).Reviews} (${_reviews.length})",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 1
-                                      ? Colors.white
-                                      : KprimaryColor,
+                                  color: _currentTabIndex == 1 ? Colors.white : KprimaryColor,
                                 ),
                               ),
                             ),
@@ -1958,7 +1912,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         height: screenWidth * 0.12,
                         decoration: BoxDecoration(
@@ -1980,7 +1934,7 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                               ),
                               SizedBox(width: screenWidth * 0.02),
                               Text(
-                                'Call Us',
+                                S.of(context).CallUs,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: KprimaryColor,
@@ -1996,11 +1950,11 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                   SizedBox(width: screenWidth * 0.02),
                   Expanded(
                     child: InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         height: screenWidth * 0.12,
                         decoration: BoxDecoration(
-                          color: Color(0xff06cd46e),
+                          color: Color(0xff25D366),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -2011,10 +1965,9 @@ class _EngineerDetailsScreenState extends State<EngineerDetailsScreen> {
                                 'Assets/logos_whatsapp-icon.png',
                                 height: screenWidth * 0.12,
                                 width: screenWidth * 0.12,
-
                               ),
                               Text(
-                                'WhatsApp',
+                                S.of(context).WhatsApp,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: Colors.white,
@@ -2056,9 +2009,8 @@ class FullScreenImage extends StatelessWidget {
         titleSpacing: 0,
         automaticallyImplyLeading: false,
         leading: IconButton(
-          icon: Icon(Icons.close,
-              color: Colors.white, size: screenHeight * 0.025),
-          onPressed: (){
+          icon: Icon(Icons.close, color: Colors.white, size: screenHeight * 0.025),
+          onPressed: () {
             Navigator.pop(context);
           },
         ),

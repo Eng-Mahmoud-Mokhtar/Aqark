@@ -1185,6 +1185,56 @@ class S {
     return Intl.message('Baths', name: 'Baths', desc: '', args: []);
   }
 
+  /// `Price`
+  String get price {
+    return Intl.message('Price', name: 'price', desc: '', args: []);
+  }
+
+  /// `Services`
+  String get Services {
+    return Intl.message('Services', name: 'Services', desc: '', args: []);
+  }
+
+  /// `All`
+  String get all {
+    return Intl.message('All', name: 'all', desc: '', args: []);
+  }
+
+  /// `Rent`
+  String get rent {
+    return Intl.message('Rent', name: 'rent', desc: '', args: []);
+  }
+
+  /// `Sale`
+  String get sale {
+    return Intl.message('Sale', name: 'sale', desc: '', args: []);
+  }
+
+  /// `No results to display`
+  String get no_results {
+    return Intl.message(
+      'No results to display',
+      name: 'no_results',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `For Rent`
+  String get for_rent {
+    return Intl.message('For Rent', name: 'for_rent', desc: '', args: []);
+  }
+
+  /// `For Sale`
+  String get for_sale {
+    return Intl.message('For Sale', name: 'for_sale', desc: '', args: []);
+  }
+
+  /// `Villas`
+  String get villas {
+    return Intl.message('Villas', name: 'villas', desc: '', args: []);
+  }
+
   /// `Finishing`
   String get finishingType {
     return Intl.message('Finishing', name: 'finishingType', desc: '', args: []);
@@ -1238,111 +1288,6 @@ class S {
       desc: '',
       args: [],
     );
-  }
-
-  /// `Price`
-  String get price {
-    return Intl.message('Price', name: 'price', desc: '', args: []);
-  }
-
-  /// `Fully Finished`
-  String get FullyFinished {
-    return Intl.message(
-      'Fully Finished',
-      name: 'FullyFinished',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Semi-Finished`
-  String get SemiFinished {
-    return Intl.message(
-      'Semi-Finished',
-      name: 'SemiFinished',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Not Finished`
-  String get NotFinished {
-    return Intl.message(
-      'Not Finished',
-      name: 'NotFinished',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Payment Details`
-  String get PaymentDetails {
-    return Intl.message(
-      'Payment Details',
-      name: 'PaymentDetails',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Fully Paid`
-  String get FullyPaid {
-    return Intl.message('Fully Paid', name: 'FullyPaid', desc: '', args: []);
-  }
-
-  /// `Installments`
-  String get Installments {
-    return Intl.message(
-      'Installments',
-      name: 'Installments',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `Services`
-  String get Services {
-    return Intl.message('Services', name: 'Services', desc: '', args: []);
-  }
-
-  /// `All`
-  String get all {
-    return Intl.message('All', name: 'all', desc: '', args: []);
-  }
-
-  /// `Rent`
-  String get rent {
-    return Intl.message('Rent', name: 'rent', desc: '', args: []);
-  }
-
-  /// `Sale`
-  String get sale {
-    return Intl.message('Sale', name: 'sale', desc: '', args: []);
-  }
-
-  /// `No results to display`
-  String get no_results {
-    return Intl.message(
-      'No results to display',
-      name: 'no_results',
-      desc: '',
-      args: [],
-    );
-  }
-
-  /// `For Rent`
-  String get for_rent {
-    return Intl.message('For Rent', name: 'for_rent', desc: '', args: []);
-  }
-
-  /// `For Sale`
-  String get for_sale {
-    return Intl.message('For Sale', name: 'for_sale', desc: '', args: []);
-  }
-
-  /// `Villas`
-  String get villas {
-    return Intl.message('Villas', name: 'villas', desc: '', args: []);
   }
 
   /// `Apartments`
@@ -1525,6 +1470,16 @@ class S {
     );
   }
 
+  /// `Search For Brokers`
+  String get SearchForBrokers {
+    return Intl.message(
+      'Search For Brokers',
+      name: 'SearchForBrokers',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `Featured Workers`
   String get FeaturedWorkers {
     return Intl.message(
@@ -1535,11 +1490,31 @@ class S {
     );
   }
 
-  /// `No workers available`
+  /// `Featured Brokers`
+  String get FeaturedBrokers {
+    return Intl.message(
+      'Featured Brokers',
+      name: 'FeaturedBrokers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Workers`
   String get NoWorkersAvailable {
     return Intl.message(
-      'No workers available',
+      'No Workers',
       name: 'NoWorkersAvailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Brokers`
+  String get NoBrokersAvailable {
+    return Intl.message(
+      'No Brokers',
+      name: 'NoBrokersAvailable',
       desc: '',
       args: [],
     );
@@ -1613,6 +1588,1171 @@ class S {
   /// `Select Role`
   String get SelectRole {
     return Intl.message('Select Role', name: 'SelectRole', desc: '', args: []);
+  }
+
+  /// `Construction`
+  String get Construction {
+    return Intl.message(
+      'Construction',
+      name: 'Construction',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Plumbing`
+  String get Plumbing {
+    return Intl.message('Plumbing', name: 'Plumbing', desc: '', args: []);
+  }
+
+  /// `Carpentry`
+  String get Carpentry {
+    return Intl.message('Carpentry', name: 'Carpentry', desc: '', args: []);
+  }
+
+  /// `Electrical`
+  String get Electrical {
+    return Intl.message('Electrical', name: 'Electrical', desc: '', args: []);
+  }
+
+  /// `Painting`
+  String get Painting {
+    return Intl.message('Painting', name: 'Painting', desc: '', args: []);
+  }
+
+  /// `AC Repair`
+  String get ACRepair {
+    return Intl.message('AC Repair', name: 'ACRepair', desc: '', args: []);
+  }
+
+  /// `Mason`
+  String get Mason {
+    return Intl.message('Mason', name: 'Mason', desc: '', args: []);
+  }
+
+  /// `Plumber`
+  String get Plumber {
+    return Intl.message('Plumber', name: 'Plumber', desc: '', args: []);
+  }
+
+  /// `Carpenter`
+  String get Carpenter {
+    return Intl.message('Carpenter', name: 'Carpenter', desc: '', args: []);
+  }
+
+  /// `Electrician`
+  String get Electrician {
+    return Intl.message('Electrician', name: 'Electrician', desc: '', args: []);
+  }
+
+  /// `Painter`
+  String get Painter {
+    return Intl.message('Painter', name: 'Painter', desc: '', args: []);
+  }
+
+  /// `AC Technician`
+  String get ACTechnician {
+    return Intl.message(
+      'AC Technician',
+      name: 'ACTechnician',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Highest Rating`
+  String get HighestRating {
+    return Intl.message(
+      'Highest Rating',
+      name: 'HighestRating',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Your Review`
+  String get AddYourReview {
+    return Intl.message(
+      'Add Your Review',
+      name: 'AddYourReview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Write your review`
+  String get WriteYourReview {
+    return Intl.message(
+      'Write your review',
+      name: 'WriteYourReview',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Worker Profile`
+  String get WorkerProfile {
+    return Intl.message(
+      'Worker Profile',
+      name: 'WorkerProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Details`
+  String get Details {
+    return Intl.message('Details', name: 'Details', desc: '', args: []);
+  }
+
+  /// `Posts`
+  String get Posts {
+    return Intl.message('Posts', name: 'Posts', desc: '', args: []);
+  }
+
+  /// `Reviews`
+  String get Reviews {
+    return Intl.message('Reviews', name: 'Reviews', desc: '', args: []);
+  }
+
+  /// `Call Us`
+  String get CallUs {
+    return Intl.message('Call Us', name: 'CallUs', desc: '', args: []);
+  }
+
+  /// `WhatsApp`
+  String get WhatsApp {
+    return Intl.message('WhatsApp', name: 'WhatsApp', desc: '', args: []);
+  }
+
+  /// `years experience`
+  String get yearsExperience {
+    return Intl.message(
+      'years experience',
+      name: 'yearsExperience',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Apartment`
+  String get Apartment {
+    return Intl.message('Apartment', name: 'Apartment', desc: '', args: []);
+  }
+
+  /// `Villa`
+  String get Villa {
+    return Intl.message('Villa', name: 'Villa', desc: '', args: []);
+  }
+
+  /// `Office`
+  String get Office {
+    return Intl.message('Office', name: 'Office', desc: '', args: []);
+  }
+
+  /// `Fully Finished`
+  String get FullyFinished {
+    return Intl.message(
+      'Fully Finished',
+      name: 'FullyFinished',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Semi Finished`
+  String get SemiFinished {
+    return Intl.message(
+      'Semi Finished',
+      name: 'SemiFinished',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unfinished`
+  String get Unfinished {
+    return Intl.message('Unfinished', name: 'Unfinished', desc: '', args: []);
+  }
+
+  /// `Payment Details`
+  String get PaymentDetails {
+    return Intl.message(
+      'Payment Details',
+      name: 'PaymentDetails',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cash`
+  String get FullyPaid {
+    return Intl.message('Cash', name: 'FullyPaid', desc: '', args: []);
+  }
+
+  /// `Installment`
+  String get Installments {
+    return Intl.message(
+      'Installment',
+      name: 'Installments',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Installment over 10 Years`
+  String get InstallmentsOver10 {
+    return Intl.message(
+      'Installment over 10 Years',
+      name: 'InstallmentsOver10',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Installment over 6 Years`
+  String get InstallmentsOver6 {
+    return Intl.message(
+      'Installment over 6 Years',
+      name: 'InstallmentsOver6',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Installment over 2 Years`
+  String get InstallmentsOver2 {
+    return Intl.message(
+      'Installment over 2 Years',
+      name: 'InstallmentsOver2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Broker Profile`
+  String get BrokerProfile {
+    return Intl.message(
+      'Broker Profile',
+      name: 'BrokerProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Listing`
+  String get Listing {
+    return Intl.message('Listing', name: 'Listing', desc: '', args: []);
+  }
+
+  /// `Search for material shops`
+  String get search_for_material_shops {
+    return Intl.message(
+      'Search for material shops',
+      name: 'search_for_material_shops',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Featured Shops`
+  String get featured_shops {
+    return Intl.message(
+      'Featured Shops',
+      name: 'featured_shops',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Shops`
+  String get shops {
+    return Intl.message('Shops', name: 'shops', desc: '', args: []);
+  }
+
+  /// `No shops`
+  String get no_shops_available {
+    return Intl.message(
+      'No shops',
+      name: 'no_shops_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Category`
+  String get category {
+    return Intl.message('Category', name: 'category', desc: '', args: []);
+  }
+
+  /// `Category Name`
+  String get categoryName {
+    return Intl.message(
+      'Category Name',
+      name: 'categoryName',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Choose Category`
+  String get choose_category {
+    return Intl.message(
+      'Choose Category',
+      name: 'choose_category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Select Category`
+  String get select_category {
+    return Intl.message(
+      'Select Category',
+      name: 'select_category',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Cement`
+  String get Cement {
+    return Intl.message('Cement', name: 'Cement', desc: '', args: []);
+  }
+
+  /// `Bricks`
+  String get Bricks {
+    return Intl.message('Bricks', name: 'Bricks', desc: '', args: []);
+  }
+
+  /// `Steel`
+  String get Steel {
+    return Intl.message('Steel', name: 'Steel', desc: '', args: []);
+  }
+
+  /// `Paints`
+  String get Paints {
+    return Intl.message('Paints', name: 'Paints', desc: '', args: []);
+  }
+
+  /// `Tiles`
+  String get Tiles {
+    return Intl.message('Tiles', name: 'Tiles', desc: '', args: []);
+  }
+
+  /// `Products`
+  String get Products {
+    return Intl.message('Products', name: 'Products', desc: '', args: []);
+  }
+
+  /// `Decoration Engineer`
+  String get DecorationEngineer {
+    return Intl.message(
+      'Decoration Engineer',
+      name: 'DecorationEngineer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Finishing Engineer`
+  String get FinishingEngineer {
+    return Intl.message(
+      'Finishing Engineer',
+      name: 'FinishingEngineer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Construction Engineer`
+  String get ConstructionEngineer {
+    return Intl.message(
+      'Construction Engineer',
+      name: 'ConstructionEngineer',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Interior Designer`
+  String get InteriorDesigner {
+    return Intl.message(
+      'Interior Designer',
+      name: 'InteriorDesigner',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Architect`
+  String get Architect {
+    return Intl.message('Architect', name: 'Architect', desc: '', args: []);
+  }
+
+  /// `Engineers`
+  String get Engineers {
+    return Intl.message('Engineers', name: 'Engineers', desc: '', args: []);
+  }
+
+  /// `Search For Engineers`
+  String get SearchForEngineers {
+    return Intl.message(
+      'Search For Engineers',
+      name: 'SearchForEngineers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Featured Engineers`
+  String get FeaturedEngineers {
+    return Intl.message(
+      'Featured Engineers',
+      name: 'FeaturedEngineers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Engineers`
+  String get NoEngineers {
+    return Intl.message(
+      'No Engineers',
+      name: 'NoEngineers',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Engineer Profile`
+  String get EngineerProfile {
+    return Intl.message(
+      'Engineer Profile',
+      name: 'EngineerProfile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Engineer’s specialty`
+  String get EngineerSpecialty {
+    return Intl.message(
+      'Engineer’s specialty',
+      name: 'EngineerSpecialty',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Specialties`
+  String get Specialties {
+    return Intl.message('Specialties', name: 'Specialties', desc: '', args: []);
+  }
+
+  /// `Interior Design`
+  String get InteriorDesign {
+    return Intl.message(
+      'Interior Design',
+      name: 'InteriorDesign',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bathrooms`
+  String get Bathrooms {
+    return Intl.message('Bathrooms', name: 'Bathrooms', desc: '', args: []);
+  }
+
+  /// `Finishing`
+  String get Finishing {
+    return Intl.message('Finishing', name: 'Finishing', desc: '', args: []);
+  }
+
+  /// `Bedrooms`
+  String get Bedrooms {
+    return Intl.message('Bedrooms', name: 'Bedrooms', desc: '', args: []);
+  }
+
+  /// `Maximum`
+  String get Maximum {
+    return Intl.message('Maximum', name: 'Maximum', desc: '', args: []);
+  }
+
+  /// `Minimum`
+  String get Minimum {
+    return Intl.message('Minimum', name: 'Minimum', desc: '', args: []);
+  }
+
+  /// `Price Range`
+  String get PriceRange {
+    return Intl.message('Price Range', name: 'PriceRange', desc: '', args: []);
+  }
+
+  /// `Property Status`
+  String get PropertyStatus {
+    return Intl.message(
+      'Property Status',
+      name: 'PropertyStatus',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search Filters`
+  String get SearchFilters {
+    return Intl.message(
+      'Search Filters',
+      name: 'SearchFilters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search`
+  String get Search {
+    return Intl.message('Search', name: 'Search', desc: '', args: []);
+  }
+
+  /// `Compounds`
+  String get Compounds {
+    return Intl.message('Compounds', name: 'Compounds', desc: '', args: []);
+  }
+
+  /// `Recent Searches`
+  String get RecentSearches {
+    return Intl.message(
+      'Recent Searches',
+      name: 'RecentSearches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No Recent Searches`
+  String get NoRecentSearches {
+    return Intl.message(
+      'No Recent Searches',
+      name: 'NoRecentSearches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Popular Searches`
+  String get PopularSearches {
+    return Intl.message(
+      'Popular Searches',
+      name: 'PopularSearches',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Less`
+  String get Less {
+    return Intl.message('Less', name: 'Less', desc: '', args: []);
+  }
+
+  /// `More`
+  String get More {
+    return Intl.message('More', name: 'More', desc: '', args: []);
+  }
+
+  /// `Compounds Egypt`
+  String get CompoundsEgypt {
+    return Intl.message(
+      'Compounds Egypt',
+      name: 'CompoundsEgypt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Newest First`
+  String get NewestFirst {
+    return Intl.message(
+      'Newest First',
+      name: 'NewestFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Oldest First`
+  String get OldestFirst {
+    return Intl.message(
+      'Oldest First',
+      name: 'OldestFirst',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Beds And Baths`
+  String get BedsAndBaths {
+    return Intl.message(
+      'Beds And Baths',
+      name: 'BedsAndBaths',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Starting from`
+  String get starting_from {
+    return Intl.message(
+      'Starting from',
+      name: 'starting_from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real Estate Financing`
+  String get realEstateFinancingTitle {
+    return Intl.message(
+      'Real Estate Financing',
+      name: 'realEstateFinancingTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Housing and Development Bank`
+  String get housingAndDevelopmentBankTitle {
+    return Intl.message(
+      'Housing and Development Bank',
+      name: 'housingAndDevelopmentBankTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Offers real estate financing with reduced interest rates for citizens as per state policy`
+  String get housingAndDevelopmentBankDescription {
+    return Intl.message(
+      'Offers real estate financing with reduced interest rates for citizens as per state policy',
+      name: 'housingAndDevelopmentBankDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Egyptian Real Estate Bank`
+  String get egyptianRealEstateBankTitle {
+    return Intl.message(
+      'Egyptian Real Estate Bank',
+      name: 'egyptianRealEstateBankTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `One of the most prominent banks specialized in real estate financing in Egypt`
+  String get egyptianRealEstateBankDescription {
+    return Intl.message(
+      'One of the most prominent banks specialized in real estate financing in Egypt',
+      name: 'egyptianRealEstateBankDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Licenses`
+  String get licensesTitle {
+    return Intl.message('Licenses', name: 'licensesTitle', desc: '', args: []);
+  }
+
+  /// `Building Licenses`
+  String get buildingLicensesTitle {
+    return Intl.message(
+      'Building Licenses',
+      name: 'buildingLicensesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for obtaining a building license per the unified building law`
+  String get buildingLicensesDescription {
+    return Intl.message(
+      'Procedures for obtaining a building license per the unified building law',
+      name: 'buildingLicensesDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Operating Licenses`
+  String get operatingLicensesTitle {
+    return Intl.message(
+      'Operating Licenses',
+      name: 'operatingLicensesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for obtaining an operating license for various establishments`
+  String get operatingLicensesDescription {
+    return Intl.message(
+      'Procedures for obtaining an operating license for various establishments',
+      name: 'operatingLicensesDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real Estate Taxes`
+  String get realEstateTaxesTitle {
+    return Intl.message(
+      'Real Estate Taxes',
+      name: 'realEstateTaxesTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Value Added Tax`
+  String get valueAddedTaxTitle {
+    return Intl.message(
+      'Value Added Tax',
+      name: 'valueAddedTaxTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for paying value-added tax on real estate transactions`
+  String get valueAddedTaxDescription {
+    return Intl.message(
+      'Procedures for paying value-added tax on real estate transactions',
+      name: 'valueAddedTaxDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Property Tax`
+  String get propertyTaxTitle {
+    return Intl.message(
+      'Property Tax',
+      name: 'propertyTaxTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Annual tax imposed on properties owned by individuals and companies`
+  String get propertyTaxDescription {
+    return Intl.message(
+      'Annual tax imposed on properties owned by individuals and companies',
+      name: 'propertyTaxDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real Estate Registrations`
+  String get realEstateRegistrationsTitle {
+    return Intl.message(
+      'Real Estate Registrations',
+      name: 'realEstateRegistrationsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Property Registration`
+  String get propertyRegistrationTitle {
+    return Intl.message(
+      'Property Registration',
+      name: 'propertyRegistrationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for registering properties at the real estate registry`
+  String get propertyRegistrationDescription {
+    return Intl.message(
+      'Procedures for registering properties at the real estate registry',
+      name: 'propertyRegistrationDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Mortgage Registration`
+  String get mortgageRegistrationTitle {
+    return Intl.message(
+      'Mortgage Registration',
+      name: 'mortgageRegistrationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for registering mortgages to secure loans`
+  String get mortgageRegistrationDescription {
+    return Intl.message(
+      'Procedures for registering mortgages to secure loans',
+      name: 'mortgageRegistrationDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Real Estate Reconciliations`
+  String get realEstateReconciliationsTitle {
+    return Intl.message(
+      'Real Estate Reconciliations',
+      name: 'realEstateReconciliationsTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Property Dispute Resolution`
+  String get propertyDisputeResolutionTitle {
+    return Intl.message(
+      'Property Dispute Resolution',
+      name: 'propertyDisputeResolutionTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for resolving property disputes amicably or judicially`
+  String get propertyDisputeResolutionDescription {
+    return Intl.message(
+      'Procedures for resolving property disputes amicably or judicially',
+      name: 'propertyDisputeResolutionDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Building Violation Reconciliation`
+  String get buildingViolationReconciliationTitle {
+    return Intl.message(
+      'Building Violation Reconciliation',
+      name: 'buildingViolationReconciliationTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Procedures for reconciling building violations per the law`
+  String get buildingViolationReconciliationDescription {
+    return Intl.message(
+      'Procedures for reconciling building violations per the law',
+      name: 'buildingViolationReconciliationDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Register Request for {serviceTitle}`
+  String registerRequestFor(Object serviceTitle) {
+    return Intl.message(
+      'Register Request for $serviceTitle',
+      name: 'registerRequestFor',
+      desc: '',
+      args: [serviceTitle],
+    );
+  }
+
+  /// `Fill out the form below, and our team will follow up within 48 hours.`
+  String get fillFormPrompt {
+    return Intl.message(
+      'Fill out the form below, and our team will follow up within 48 hours.',
+      name: 'fillFormPrompt',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Full Name`
+  String get fullNameLabel {
+    return Intl.message('Full Name', name: 'fullNameLabel', desc: '', args: []);
+  }
+
+  /// `Please enter the name`
+  String get fullNameError {
+    return Intl.message(
+      'Please enter the name',
+      name: 'fullNameError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone Number`
+  String get phoneNumberLabel {
+    return Intl.message(
+      'Phone Number',
+      name: 'phoneNumberLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter the phone number`
+  String get phoneNumberError {
+    return Intl.message(
+      'Please enter the phone number',
+      name: 'phoneNumberError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid phone number (11 digits)`
+  String get phoneNumberInvalidError {
+    return Intl.message(
+      'Please enter a valid phone number (11 digits)',
+      name: 'phoneNumberInvalidError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request Details`
+  String get requestDetailsLabel {
+    return Intl.message(
+      'Request Details',
+      name: 'requestDetailsLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter your request details`
+  String get requestDetailsError {
+    return Intl.message(
+      'Please enter your request details',
+      name: 'requestDetailsError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submit Request`
+  String get submitRequestButton {
+    return Intl.message(
+      'Submit Request',
+      name: 'submitRequestButton',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Submitted Successfully`
+  String get submittedSuccessfullyTitle {
+    return Intl.message(
+      'Submitted Successfully',
+      name: 'submittedSuccessfullyTitle',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The app team will follow up within 48 hours.`
+  String get submittedSuccessfullyMessage {
+    return Intl.message(
+      'The app team will follow up within 48 hours.',
+      name: 'submittedSuccessfullyMessage',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `OK`
+  String get okButton {
+    return Intl.message('OK', name: 'okButton', desc: '', args: []);
+  }
+
+  /// `Contracting`
+  String get Contracting {
+    return Intl.message('Contracting', name: 'Contracting', desc: '', args: []);
+  }
+
+  /// `National ID`
+  String get nationalIdLabel {
+    return Intl.message(
+      'National ID',
+      name: 'nationalIdLabel',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid National ID`
+  String get nationalIdError {
+    return Intl.message(
+      'Please enter a valid National ID',
+      name: 'nationalIdError',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for interior design companies`
+  String get search_for_interior_design_companies {
+    return Intl.message(
+      'Search for interior design companies',
+      name: 'search_for_interior_design_companies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Modern`
+  String get Modern {
+    return Intl.message('Modern', name: 'Modern', desc: '', args: []);
+  }
+
+  /// `Classic`
+  String get Classic {
+    return Intl.message('Classic', name: 'Classic', desc: '', args: []);
+  }
+
+  /// `Minimalist`
+  String get Minimalist {
+    return Intl.message('Minimalist', name: 'Minimalist', desc: '', args: []);
+  }
+
+  /// `Industrial`
+  String get Industrial {
+    return Intl.message('Industrial', name: 'Industrial', desc: '', args: []);
+  }
+
+  /// `Scandinavian`
+  String get Scandinavian {
+    return Intl.message(
+      'Scandinavian',
+      name: 'Scandinavian',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bohemian`
+  String get Bohemian {
+    return Intl.message('Bohemian', name: 'Bohemian', desc: '', args: []);
+  }
+
+  /// `Traditional`
+  String get Traditional {
+    return Intl.message('Traditional', name: 'Traditional', desc: '', args: []);
+  }
+
+  /// `Featured Companies`
+  String get featured_companies {
+    return Intl.message(
+      'Featured Companies',
+      name: 'featured_companies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Companies`
+  String get companies {
+    return Intl.message('Companies', name: 'companies', desc: '', args: []);
+  }
+
+  /// `No companies available`
+  String get no_companies_available {
+    return Intl.message(
+      'No companies available',
+      name: 'no_companies_available',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our Services`
+  String get our_services {
+    return Intl.message(
+      'Our Services',
+      name: 'our_services',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Design Features`
+  String get design_features {
+    return Intl.message(
+      'Design Features',
+      name: 'design_features',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Our Process`
+  String get our_process {
+    return Intl.message('Our Process', name: 'our_process', desc: '', args: []);
+  }
+
+  /// `Portfolio`
+  String get portfolio {
+    return Intl.message('Portfolio', name: 'portfolio', desc: '', args: []);
+  }
+
+  /// `Request Design Consultation`
+  String get request_design_consultation {
+    return Intl.message(
+      'Request Design Consultation',
+      name: 'request_design_consultation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Contracting Companies`
+  String get ContractingCompanies {
+    return Intl.message(
+      'Contracting Companies',
+      name: 'ContractingCompanies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Project Features`
+  String get project_features {
+    return Intl.message(
+      'Project Features',
+      name: 'project_features',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Search for contracting companies`
+  String get search_for_contracting_companies {
+    return Intl.message(
+      'Search for contracting companies',
+      name: 'search_for_contracting_companies',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Request Construction Consultation`
+  String get request_construction_consultation {
+    return Intl.message(
+      'Request Construction Consultation',
+      name: 'request_construction_consultation',
+      desc: '',
+      args: [],
+    );
   }
 }
 

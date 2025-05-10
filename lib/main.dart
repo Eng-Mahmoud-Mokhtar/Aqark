@@ -1,4 +1,3 @@
-import 'package:bk/feature/Home/presentation/view_model/views/BottomHome.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bk/core/utiles/LocaleCubit.dart';
@@ -9,6 +8,7 @@ import 'feature/Boardring/presentation/view_model/views/widgets/OnBoardring.dart
 import 'feature/Home/presentation/view_model/views/Widget/BodyHome.dart';
 import 'feature/Verifiy/presentation/view_model/views/widgets/code.dart';
 import 'feature/login/presentation/view_model/views/widgets/phoneNumber.dart';
+import 'feature/splash/presentation/view_model/views/splash_view.dart';
 import 'feature/splash/presentation/view_model/views/widgets/splash_viev_body.dart';
 
 void main() {
@@ -48,7 +48,7 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           debugShowCheckedModeBanner: false,
-          home: Home(),
+          home: SplashScreen(),
         );
       },
     );

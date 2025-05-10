@@ -1,9 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../../core/utiles/AppBar.dart';
 import '../../../../../../core/utiles/constans.dart';
+import '../../../../../../generated/l10n.dart';
 import '../Materials.dart';
 
 class ShopDetailsScreen extends StatefulWidget {
@@ -70,15 +69,33 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
         _reviewController.clear();
         _isReviewComplete = false;
       });
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Review submitted successfully!'),
-          duration: Duration(seconds: 2),
-        ),
-      );
     }
   }
+
+  // Helper method to get localized shop type name
+  String getCategoryDisplayName(BuildContext context, String category) {
+    switch (category) {
+      case 'All':
+        return S.of(context).all;
+      case 'Cement':
+        return S.of(context).Cement;
+      case 'Bricks':
+        return S.of(context).Bricks;
+      case 'Steel':
+        return S.of(context).Steel;
+      case 'Paints':
+        return S.of(context).Paints;
+      case 'Tiles':
+        return S.of(context).Tiles;
+      case 'Plumbing':
+        return S.of(context).Plumbing;
+      case 'Electrical':
+        return S.of(context).Electrical;
+      default:
+        return category;
+    }
+  }
+
 
   Widget _buildStarRating() {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -173,7 +190,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                     product.image,
                     fit: BoxFit.cover,
                     width: double.infinity,
-                    height: screenWidth * 0.38,
+                    height: screenWidth * 0.35,
                   ),
                 ),
                 Padding(
@@ -210,6 +227,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
       ),
     );
   }
+
   Widget _buildReviewsTab() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -227,7 +245,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
           child: Column(
             children: [
               Text(
-                "Add Your Review",
+                S.of(context).AddYourReview,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.04,
@@ -254,7 +272,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                         ),
                         controller: _reviewController,
                         decoration: InputDecoration(
-                          hintText: "Write your review",
+                          hintText: S.of(context).WriteYourReview,
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             fontSize: screenWidth * 0.03,
@@ -397,7 +415,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          "Details",
+                          S.of(context).Details,
                           style: TextStyle(
                             fontSize: screenWidth * 0.035,
                             color: Colors.black,
@@ -410,7 +428,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                             Icon(Icons.work_outline, size: screenWidth * 0.04),
                             SizedBox(width: screenWidth * 0.02),
                             Text(
-                              widget.shop.category,
+                              getCategoryDisplayName(context, widget.shop.type),
                               style: TextStyle(
                                 fontSize: screenWidth * 0.03,
                                 color: Colors.black,
@@ -440,7 +458,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                             Icon(Icons.star_outline, size: screenWidth * 0.04),
                             SizedBox(width: screenWidth * 0.02),
                             Text(
-                              'Rating: (${widget.shop.rating})',
+                              '${S.of(context).Rating} ${widget.shop.rating}',
                               style: TextStyle(
                                 fontSize: screenWidth * 0.03,
                                 color: Colors.black,
@@ -489,7 +507,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Products (${widget.shop.products.length})",
+                                  "${S.of(context).Products} ${widget.shop.products.length}",
                                   style: TextStyle(
                                     fontSize: screenWidth * 0.035,
                                     fontWeight: FontWeight.bold,
@@ -518,7 +536,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                               ),
                               child: Center(
                                 child: Text(
-                                  "Reviews (${_reviews.length})",
+                                  "${S.of(context).Reviews} ${_reviews.length}",
                                   style: TextStyle(
                                     fontSize: screenWidth * 0.035,
                                     fontWeight: FontWeight.bold,
@@ -574,7 +592,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                                 ),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Call Us',
+                                  S.of(context).CallUs,
                                   style: TextStyle(
                                     fontSize: screenWidth * 0.035,
                                     color: KprimaryColor,
@@ -594,7 +612,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                         child: Container(
                           height: screenWidth * 0.12,
                           decoration: BoxDecoration(
-                            color: Color(0xff06cd46e),
+                            color: Color(0xff25D366),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Center(
@@ -607,7 +625,7 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
                                   width: screenWidth * 0.12,
                                 ),
                                 Text(
-                                  'WhatsApp',
+                                  S.of(context).WhatsApp,
                                   style: TextStyle(
                                     fontSize: screenWidth * 0.035,
                                     color: Colors.white,
@@ -628,4 +646,5 @@ class _ShopDetailsScreenState extends State<ShopDetailsScreen> {
         ),
       ),
     );
-  }}
+  }
+}

@@ -44,7 +44,6 @@ dependencies:
   animations:
   flutter_bloc:
   flutter_intl: ^0.0.1
-  shimmer:
   flutter_rating_bar:
 
 flutter_launcher_icons:

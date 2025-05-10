@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
 
@@ -12,36 +13,11 @@ class AboutUs extends StatelessWidget {
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: screenWidth * 0.1,
-        leading: Padding(
-          padding: EdgeInsets.only(left:screenHeight * 0.02),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black,size: screenHeight * 0.03,),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        title: Text(
-          S.of(context).About_Us,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: screenWidth * 0.035,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.5),
-          child: Container(
-            color: const Color(0xffE9E9E9),
-            height: 1.5,
-          ),
-        ),
+      backgroundColor: backgroundColor,
+      appBar: CustomAppBar(
+        title: S.of(context).About_Us,
+        onBack: () => Navigator.pop(context),
+        showSearch: false,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),

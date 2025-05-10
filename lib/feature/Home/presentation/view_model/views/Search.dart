@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utiles/constans.dart';
+import '../../../../../generated/l10n.dart';
 
 class Search extends StatefulWidget {
   const Search({Key? key}) : super(key: key);
@@ -37,8 +38,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController =
-        TabController(length: 4, vsync: this);
+    _tabController = TabController(length: 4, vsync: this);
   }
 
   @override
@@ -52,6 +52,9 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
     String text = searchController.text.trim();
     if (text.isNotEmpty && !recentSearches.contains(text)) {
       setState(() {
+        if (recentSearches.length >= 4) {
+          recentSearches.removeLast();
+        }
         recentSearches.insert(0, text);
       });
     }
@@ -66,6 +69,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
       backgroundColor: backgroundColor,
       body: Column(
         children: [
+          SizedBox(height: 20),
           Padding(
             padding: EdgeInsets.all(screenWidth * 0.04),
             child: Row(
@@ -95,25 +99,25 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                       controller: searchController,
                       onSubmitted: (_) => onSearch(),
                       decoration: InputDecoration(
-                        hintText: 'Search',
+                        hintText: S.of(context).Search,
                         hintStyle: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey,
-                      ),
-                      border: InputBorder.none,
-                      contentPadding: EdgeInsets.symmetric(
-                        vertical: screenWidth * 0.035,
-                        horizontal: screenWidth * 0.02,
-                      ),
-                      prefixIcon: Padding(
-                        padding: EdgeInsets.only(left: screenWidth * 0.01),
-                        child: Icon(
-                          Icons.search_outlined,
+                          fontSize: screenWidth * 0.03,
+                          fontWeight: FontWeight.bold,
                           color: Colors.grey,
-                          size: screenWidth * 0.05,
                         ),
-                      ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(
+                          vertical: screenWidth * 0.035,
+                          horizontal: screenWidth * 0.02,
+                        ),
+                        prefixIcon: Padding(
+                          padding: EdgeInsets.only(left: screenWidth * 0.01),
+                          child: Icon(
+                            Icons.search_outlined,
+                            color: Colors.grey,
+                            size: screenWidth * 0.05,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -131,14 +135,14 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
               fontWeight: FontWeight.bold,
             ),
             tabs: [
-              Tab(text: 'All'),
-              Tab(text: 'Compounds'),
-              Tab(text: 'Developers'),
+              Tab(text: S.of(context).all),
+              Tab(text: S.of(context).Compounds),
+              Tab(text: S.of(context).Developers),
             ],
           ),
           Expanded(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal:screenWidth * 0.02),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
               child: TabBarView(
                 controller: _tabController,
                 children: [
@@ -150,7 +154,7 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                         children: [
                           SizedBox(height: 10),
                           Text(
-                            'Recent Searches',
+                            S.of(context).RecentSearches,
                             style: TextStyle(
                               color: const Color(0xff2F2F2F),
                               fontSize: screenWidth * 0.035,
@@ -165,11 +169,10 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                 children: [
                                   Image.asset('Assets/file.png',
                                       width: screenWidth * 0.3,
-                                      color: KprimaryColor.withOpacity(0.08)
-                                  ),
+                                      color: KprimaryColor.withOpacity(0.08)),
                                   SizedBox(height: screenHeight * 0.02),
                                   Text(
-                                    'No Recent Searches',
+                                    S.of(context).NoRecentSearches,
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenWidth * 0.03,
@@ -179,10 +182,8 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                 ],
                               ),
                             )
-
                           else
-                            ...recentSearches
-                                .map((search) => GestureDetector(
+                            ...recentSearches.map((search) => GestureDetector(
                               onTap: () {
                                 searchController.text = search;
                                 onSearch();
@@ -193,12 +194,19 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                     mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      Flexible(
+                                        child: Text(
                                           search,
                                           style: TextStyle(
                                             color: Color(0xff2F2F2F),
                                             fontSize: screenWidth * 0.035,
-                                            fontWeight: FontWeight.w400,)
+                                            fontWeight: FontWeight.w400,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          textDirection:
+                                          Directionality.of(context),
+                                        ),
                                       ),
                                       Icon(
                                         Icons.outbond_outlined,
@@ -217,11 +225,10 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                     ),
                                 ],
                               ),
-                            ))
-                                .toList(),
+                            )).toList(),
                           SizedBox(height: 20.h),
                           Text(
-                            'Popular Searches',
+                            S.of(context).PopularSearches,
                             style: TextStyle(
                               color: const Color(0xff2F2F2F),
                               fontSize: screenWidth * 0.035,
@@ -234,17 +241,22 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                             runSpacing: 8.0,
                             children: [
                               ...popularSearches
-                                  .take(showAllPopular ? popularSearches.length : 8)
+                                  .take(showAllPopular
+                                  ? popularSearches.length
+                                  : 8)
                                   .map((search) => GestureDetector(
                                 onTap: () {
                                   searchController.text = search;
                                   onSearch();
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
                                   decoration: BoxDecoration(
-                                    color: KprimaryColor.withOpacity(0.1),
-                                    borderRadius: BorderRadius.circular(8),
+                                    color:
+                                    KprimaryColor.withOpacity(0.1),
+                                    borderRadius:
+                                    BorderRadius.circular(8),
                                   ),
                                   child: Text(
                                     search,
@@ -264,24 +276,29 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                                   });
                                 },
                                 child: Container(
-                                  padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
+                                  padding: EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 15),
                                   decoration: BoxDecoration(
-                                    color: showAllPopular ? KprimaryColor.withOpacity(0.1):KprimaryColor,
+                                    color: showAllPopular
+                                        ? KprimaryColor.withOpacity(0.1)
+                                        : KprimaryColor,
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                   child: Text(
-                                    showAllPopular ? 'Less' : 'More',
+                                    showAllPopular
+                                        ? S.of(context).Less
+                                        : S.of(context).More,
                                     style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: screenWidth * 0.03,
-                                      fontWeight: FontWeight.bold
-                                    ),
+                                        color: showAllPopular
+                                            ? SubText
+                                            : Colors.white,
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.bold),
                                   ),
                                 ),
                               ),
                             ],
                           ),
-
                         ],
                       ),
                     ),
@@ -292,11 +309,10 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                       children: [
                         Image.asset('Assets/file.png',
                             width: screenWidth * 0.3,
-                            color: KprimaryColor.withOpacity(0.08)
-                        ),
+                            color: KprimaryColor.withOpacity(0.08)),
                         SizedBox(height: screenHeight * 0.02),
                         Text(
-                          'No Results to Show',
+                          S.of(context).NoResultstoShow,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: screenWidth * 0.03,
@@ -312,11 +328,10 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                       children: [
                         Image.asset('Assets/file.png',
                             width: screenWidth * 0.3,
-                            color: KprimaryColor.withOpacity(0.08)
-                        ),
+                            color: KprimaryColor.withOpacity(0.08)),
                         SizedBox(height: screenHeight * 0.02),
                         Text(
-                          'No Results to Show',
+                          S.of(context).NoResultstoShow,
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: screenWidth * 0.03,

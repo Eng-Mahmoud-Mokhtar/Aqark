@@ -34,7 +34,6 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
       "date": "1 week ago"
     },
   ];
-
   final List<Map<String, dynamic>> _listings = List.generate(
       5,
       (index) => {
@@ -160,9 +159,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
             right: screenWidth * 0.04,
           ),
           child: GestureDetector(
-            onTap: () {
-              _navigateToPropertyDetails(listing);
-            },
+            onTap: () {},
             child: Container(
               width: screenWidth,
               decoration: BoxDecoration(
@@ -393,113 +390,6 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
       }).toList(),
     );
   }
-  void _navigateToPropertyDetails(Map<String, dynamic> property) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => Scaffold(
-          appBar: AppBar(
-            title: Text("Property Details"),
-          ),
-          body: SingleChildScrollView(
-            padding: EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.asset(
-                  property["image"],
-                  width: double.infinity,
-                  height: 250,
-                  fit: BoxFit.cover,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  property["title"],
-                  style: TextStyle(
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Row(
-                  children: [
-                    Icon(Icons.location_on, color: Colors.grey),
-                    SizedBox(width: 4),
-                    Text(property["location"]),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Row(
-                  children: [
-                    _buildDetailItem(
-                        Icons.bathtub, "${property["baths"]} Baths"),
-                    SizedBox(width: 16),
-                    _buildDetailItem(
-                        Icons.king_bed, "${property["beds"]} Beds"),
-                    SizedBox(width: 16),
-                    _buildDetailItem(
-                        Icons.aspect_ratio, "${property["size"]} m²"),
-                  ],
-                ),
-                SizedBox(height: 16),
-                Text(
-                  "Description",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                Text(property["description"]),
-                SizedBox(height: 16),
-                Text(
-                  "Details",
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                SizedBox(height: 8),
-                _buildDetailRow("Type", property["type"]),
-                _buildDetailRow("Finishing Type", property["finishingType"]),
-                _buildDetailRow("Listing Date", property["listingDate"]),
-                _buildDetailRow("Delivery Type", property["deliveryType"]),
-                _buildDetailRow("Payment", property["paymentDetails"]),
-                _buildDetailRow("Contact", property["ownerNumber"]),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  Widget _buildDetailItem(IconData icon, String text) {
-    return Row(
-      children: [
-        Icon(icon, color: SubText),
-        SizedBox(width: 4),
-        Text(text),
-      ],
-    );
-  }
-  Widget _buildDetailRow(String label, String value) {
-    return Padding(
-      padding: EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.grey[600],
-            ),
-          ),
-          Text(value),
-        ],
-      ),
-    );
-  }
   Widget _buildReviewsTab() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -517,7 +407,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
           child: Column(
             children: [
               Text(
-                "Add Your Review",
+                S.of(context).AddYourReview,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.04,
@@ -544,7 +434,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                         ),
                         controller: _reviewController,
                         decoration: InputDecoration(
-                          hintText: "Write your review",
+                          hintText: S.of(context).WriteYourReview,
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             fontSize: screenWidth * 0.03,
@@ -591,9 +481,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                     children: [
                       CircleAvatar(
                         radius: screenWidth * 0.06,
-                        backgroundImage: review["user"] == "User"
-                            ? AssetImage("Assets/Screenshot (13).png")
-                            : AssetImage(review["avatar"]),
+                        backgroundImage: AssetImage(review["avatar"]),
                       ),
                       SizedBox(width: screenWidth * 0.03),
                       Expanded(
@@ -649,7 +537,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Broker Profile',
+        title: S.of(context).BrokerProfile,
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
@@ -723,7 +611,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                             ),
                             child: Center(
                               child: Text(
-                                "${_listings.length} Listing${_listings.length == 1 ? '' : 's'}",
+                                "${_listings.length} ${S.of(context).Listing}",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
@@ -753,7 +641,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                             ),
                             child: Center(
                               child: Text(
-                                "${_reviews.length} Review${_reviews.length == 1 ? '' : 's'}",
+                                "${_reviews.length} ${S.of(context).Reviews}",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
@@ -811,7 +699,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                               ),
                               SizedBox(width: screenWidth * 0.02),
                               Text(
-                                'Call Us',
+                                S.of(context).CallUs,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: KprimaryColor,
@@ -845,7 +733,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
 
                               ),
                               Text(
-                                'WhatsApp',
+                                S.of(context).WhatsApp,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: Colors.white,

@@ -12,6 +12,7 @@ class ApartmentsCubit extends Cubit<String> {
 
   void selectType(String type) => emit(type);
 }
+
 class HomeDeveloper extends StatelessWidget {
   final Project project;
   final String developerLogo;
@@ -41,8 +42,7 @@ class HomeDeveloper extends StatelessWidget {
         appBar: CustomAppBar(
           title: developerName,
           onBack: () => Navigator.pop(context),
-          onSearch: () {},
-          showSearch: false,
+          showSearch: true,
         ),
         body: LayoutBuilder(
           builder: (context, constraints) {
@@ -82,7 +82,7 @@ class HomeDeveloper extends StatelessWidget {
         horizontal: screenWidth * 0.04,
         vertical: screenHeight * 0.02,
       ),
-      child:Column(
+      child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
@@ -100,7 +100,7 @@ class HomeDeveloper extends StatelessWidget {
                     ),
                   ),
                   Text(
-                  "52 ${S.of(context).AvailableResults}",
+                    "52 ${S.of(context).AvailableResults}",
                     style: TextStyle(
                       fontSize: screenWidth * 0.025,
                       fontWeight: FontWeight.bold,
@@ -110,7 +110,7 @@ class HomeDeveloper extends StatelessWidget {
                 ],
               ),
               ElevatedButton(
-                  onPressed: () => _showSortBottomSheet(context),
+                onPressed: () => _showSortBottomSheet(context),
                 style: ElevatedButton.styleFrom(
                   fixedSize: Size(screenWidth * 0.2, screenWidth * 0.1),
                   backgroundColor: KprimaryColor,
@@ -148,6 +148,7 @@ class HomeDeveloper extends StatelessWidget {
       ),
     );
   }
+
   void _showSortBottomSheet(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -162,158 +163,162 @@ class HomeDeveloper extends StatelessWidget {
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.5,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Icon(
-                        Icons.sort,
-                        color: KprimaryColor,
-                        size: screenWidth * 0.05,
-                      ),
-                      SizedBox(width: screenWidth * 0.02),
-                      Text(
-                        S.of(context).Sort,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Spacer(),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pop(context);
-                        },
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.black,
-                          size: screenWidth * 0.05,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenWidth * 0.01),
-                  Divider(
-                    color: Colors.grey.withOpacity(0.3),
-                    thickness: 1,
-                  ),
-                  SizedBox(height: screenWidth * 0.01),
-                  _buildSortOption(
-                    context,
-                    S.of(context).MinimumPrice,
-                    selectedSort.contains(S.of(context).MinimumPrice),
-                        () => setState(() {
-                      if (selectedSort.contains(S.of(context).MinimumPrice)) {
-                        selectedSort.remove(S.of(context).MinimumPrice);
-                      } else {
-                        selectedSort.add(S.of(context).MinimumPrice);
-                      }
-                    }),
-                  ),
-                  _buildSortOption(
-                    context,
-                    S.of(context).MaximumPrice,
-                    selectedSort.contains(S.of(context).MaximumPrice),
-                        () => setState(() {
-                      if (selectedSort.contains(S.of(context).MaximumPrice)) {
-                        selectedSort.remove(S.of(context).MaximumPrice);
-                      } else {
-                        selectedSort.add(S.of(context).MaximumPrice);
-                      }
-                    }),
-                  ),
-                  _buildSortOption(
-                    context,
-                    S.of(context).Newest,
-                    selectedSort.contains(S.of(context).Newest),
-                        () => setState(() {
-                      if (selectedSort.contains(S.of(context).Newest)) {
-                        selectedSort.remove(S.of(context).Newest);
-                      } else {
-                        selectedSort.add(S.of(context).Newest);
-                      }
-                    }),
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, screenWidth * 0.12),
-                            backgroundColor: KprimaryColor,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
-                                color: KprimaryColor,
-                                width: 3,
+        // Determine text direction based on locale
+        final isRtl = Localizations.localeOf(context).languageCode == 'ar';
+        return Directionality(
+          textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
+          child: StatefulBuilder(
+            builder: (context, setState) {
+              return Container(
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                height: screenHeight * 0.5,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Icon(
+                              Icons.sort,
+                              color: KprimaryColor,
+                              size: screenWidth * 0.05,
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Text(
+                              S.of(context).Sort,
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.035,
+                                fontWeight: FontWeight.bold,
                               ),
-                              borderRadius: BorderRadius.circular(8),
                             ),
+                          ],
+                        ),
+                        GestureDetector(
+                          onTap: () => Navigator.pop(context),
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.black,
+                            size: screenWidth * 0.05,
                           ),
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            '${S.of(context).Show} 52 ${S.of(context).Results}',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: screenWidth * 0.03,
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: screenWidth * 0.01),
+                    Divider(
+                      color: Colors.grey.withOpacity(0.3),
+                      thickness: 1,
+                    ),
+                    SizedBox(height: screenWidth * 0.01),
+                    _buildSortOption(
+                      context,
+                      S.of(context).MinimumPrice,
+                      selectedSort.contains(S.of(context).MinimumPrice),
+                          () => setState(() {
+                        if (selectedSort.contains(S.of(context).MinimumPrice)) {
+                          selectedSort.remove(S.of(context).MinimumPrice);
+                        } else {
+                          selectedSort.add(S.of(context).MinimumPrice);
+                        }
+                      }),
+                    ),
+                    _buildSortOption(
+                      context,
+                      S.of(context).MaximumPrice,
+                      selectedSort.contains(S.of(context).MaximumPrice),
+                          () => setState(() {
+                        if (selectedSort.contains(S.of(context).MaximumPrice)) {
+                          selectedSort.remove(S.of(context).MaximumPrice);
+                        } else {
+                          selectedSort.add(S.of(context).MaximumPrice);
+                        }
+                      }),
+                    ),
+                    _buildSortOption(
+                      context,
+                      S.of(context).Newest,
+                      selectedSort.contains(S.of(context).Newest),
+                          () => setState(() {
+                        if (selectedSort.contains(S.of(context).Newest)) {
+                          selectedSort.remove(S.of(context).Newest);
+                        } else {
+                          selectedSort.add(S.of(context).Newest);
+                        }
+                      }),
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, screenWidth * 0.12),
+                              backgroundColor: KprimaryColor,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: KprimaryColor,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () => Navigator.pop(context),
+                            child: Text(
+                              '${S.of(context).Show} 52 ${S.of(context).Results}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: screenWidth * 0.03,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(width: screenWidth * 0.02),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, screenWidth * 0.12),
-                            backgroundColor: Colors.white,
-                            shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                        SizedBox(width: screenWidth * 0.02),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, screenWidth * 0.12),
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                side: BorderSide(
+                                  color: selectedSort.isEmpty
+                                      ? KprimaryColor.withOpacity(0.3)
+                                      : KprimaryColor,
+                                  width: 1,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() => selectedSort.clear());
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              S.of(context).Reset,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
                                 color: selectedSort.isEmpty
                                     ? KprimaryColor.withOpacity(0.3)
                                     : KprimaryColor,
-                                width: 1,
+                                fontSize: screenWidth * 0.03,
                               ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                          ),
-                          onPressed: () {
-                            setState(() {
-                              selectedSort.clear();
-                            });
-                            Navigator.pop(context);
-                          },
-                          child: Text(
-                            S.of(context).Reset,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: selectedSort.isEmpty
-                                  ? KprimaryColor.withOpacity(0.3)
-                                  : KprimaryColor,
-                              fontSize: screenWidth * 0.03,
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  )
-                ],
-              ),
-            );
-          },
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );
   }
+
   Widget _buildSortOption(
       BuildContext context,
       String label,
@@ -321,6 +326,8 @@ class HomeDeveloper extends StatelessWidget {
       Function() onTap,
       ) {
     final screenWidth = MediaQuery.of(context).size.width;
+    final isRtl = Localizations.localeOf(context).languageCode == 'ar';
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
@@ -328,21 +335,20 @@ class HomeDeveloper extends StatelessWidget {
         height: 55,
         margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
         decoration: BoxDecoration(
-          color: isSelected
-              ? KprimaryColor.withOpacity(0.1)
-              : KprimaryColor.withOpacity(0.05),
+          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
-            color: isSelected
-                ? KprimaryColor
-                : KprimaryColor.withOpacity(0.3),
+            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
             width: 1.0,
           ),
         ),
-        alignment: Alignment.centerLeft,
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03),
+        // Align content based on language
+        alignment: isRtl ? Alignment.centerRight : Alignment.centerLeft,
+        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04), // Increased padding for better spacing
         child: Text(
           label,
+          // Align text based on language
+          textAlign: isRtl ? TextAlign.right : TextAlign.left,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: Colors.black,
@@ -352,7 +358,6 @@ class HomeDeveloper extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildTypeFilter(BuildContext context, double screenWidth) {
     final apartmentTypes = [
@@ -376,14 +381,13 @@ class HomeDeveloper extends StatelessWidget {
                   margin: EdgeInsets.only(
                     left: Localizations.localeOf(context).languageCode == 'ar' ? screenWidth * 0.02 : 0,
                     right: Localizations.localeOf(context).languageCode == 'ar' ? 0 : screenWidth * 0.02,
-                  ),                  padding: EdgeInsets.symmetric(
+                  ),
+                  padding: EdgeInsets.symmetric(
                     horizontal: screenWidth * 0.04,
                     vertical: screenWidth * 0.02,
                   ),
                   decoration: BoxDecoration(
-                    color: selectedType == type
-                        ? KprimaryColor
-                        : KprimaryColor.withOpacity(0.1),
+                    color: selectedType == type ? KprimaryColor : KprimaryColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -416,7 +420,7 @@ class HomeDeveloper extends StatelessWidget {
           if (selectedType == S.of(context).all) return true;
           if (selectedType == S.of(context).DeveloperSale) return apartment.isDeveloperSale;
           if (selectedType == S.of(context).Resale) return !apartment.isDeveloperSale;
-          return apartment.type == selectedType;
+          return false; // Fallback for invalid types
         }).toList();
         return filteredApartments.isEmpty
             ? _buildNoResults(context)
@@ -424,7 +428,7 @@ class HomeDeveloper extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           padding: EdgeInsets.only(bottom: screenHeight * 0.01),
-          gridDelegate:  SliverGridDelegateWithFixedCrossAxisCount(
+          gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: 2,
             crossAxisSpacing: screenWidth * 0.02,
             mainAxisSpacing: screenWidth * 0.02,
@@ -548,11 +552,8 @@ class HomeDeveloper extends StatelessWidget {
                             fit: BoxFit.contain,
                             child: IconButton(
                               icon: Icon(
-                                apartment.isFavorite
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color:
-                                apartment.isFavorite ? Colors.red : SubText,
+                                apartment.isFavorite ? Icons.favorite : Icons.favorite_border,
+                                color: apartment.isFavorite ? Colors.red : SubText,
                                 size: screenWidth * 0.1,
                               ),
                               onPressed: () {
@@ -573,14 +574,14 @@ class HomeDeveloper extends StatelessWidget {
                         '${apartment.price} ${S.of(context).EGP}',
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
-                          color:Colors.white,
+                          color: Colors.white,
                           fontWeight: FontWeight.w700,
                           shadows: [
                             Shadow(
                               color: Colors.black.withOpacity(0.5),
                               offset: Offset(0, 1),
                               blurRadius: 3,
-                            )
+                            ),
                           ],
                         ),
                       ),
@@ -655,9 +656,10 @@ class HomeDeveloper extends StatelessWidget {
     );
   }
 }
+
 final List<RealStateObjects> defaultApartments = [
   RealStateObjects(
-    type: "apartment",
+    type: 'Apartment',
     images: [
       'Assets/30d6e5a3-9774-4ba7-a03f-3c2f32b99d24.jpeg',
       'Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg',
@@ -668,17 +670,16 @@ final List<RealStateObjects> defaultApartments = [
     beds: 4,
     size: 180,
     price: '4,200,000',
-    description:
-    'Experience luxury living with stunning city views and modern amenities.',
-    finishingType: 'Semi-Finished',
+    description: 'Experience luxury living with stunning city views and modern amenities.',
+    finishingType: 'Unfinished',
     listingDate: '12/4/2025',
     ownerNumber: '01017900067',
     deliveryType: '2026',
-    PaymentDetails: 'Fully Paid',
+    PaymentDetails: 'Cash',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Villas',
+    type: 'Villa',
     images: [
       'Assets/movie-night-by-pool-whole-family.jpg',
       'Assets/house-isolated-field.jpg',
@@ -698,7 +699,7 @@ final List<RealStateObjects> defaultApartments = [
     isDeveloperSale: true,
   ),
   RealStateObjects(
-    type: 'Offices',
+    type: 'Office',
     images: [
       'Assets/modern-office-space-with-futuristic-decor-furniture.jpg',
       'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',    ],
@@ -713,11 +714,11 @@ final List<RealStateObjects> defaultApartments = [
     listingDate: '10/5/2025',
     ownerNumber: '01017900067',
     deliveryType: '2026',
-    PaymentDetails: 'Fully Paid',
+    PaymentDetails: 'Installment over 10 Years',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Apartments',
+    type: 'Apartment',
     images: [
       'Assets/shot-panoramic-composition-bedroom.jpg',
       'Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg',
@@ -729,15 +730,15 @@ final List<RealStateObjects> defaultApartments = [
     size: 80,
     price: '1,800,000',
     description: 'A cozy studio apartment in the heart of the city.',
-    finishingType: 'Semi-Finished',
+    finishingType: 'Semi Finished',
     listingDate: '15/6/2025',
     ownerNumber: '01017900067',
     deliveryType: '2026',
-    PaymentDetails: 'Installments',
+    PaymentDetails: 'Installment over 2 Years',
     isDeveloperSale: true,
   ),
   RealStateObjects(
-    type: 'Villas',
+    type: 'Villa',
     images: [
       'Assets/house-isolated-field.jpg',
       'Assets/movie-night-by-pool-whole-family.jpg',
@@ -753,11 +754,11 @@ final List<RealStateObjects> defaultApartments = [
     listingDate: '20/7/2025',
     ownerNumber: '01017900067',
     deliveryType: '2027',
-    PaymentDetails: 'Fully Paid',
+    PaymentDetails: 'Cash',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Offices',
+    type: 'Office',
     images: [
       'Assets/room-used-official-event.jpg',
       'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',
@@ -773,11 +774,11 @@ final List<RealStateObjects> defaultApartments = [
     listingDate: '25/8/2025',
     ownerNumber: '01017900067',
     deliveryType: '2026',
-    PaymentDetails: 'Fully Paid',
+    PaymentDetails: 'Cash',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Apartments',
+    type: 'Apartment',
     images: [
       'Assets/30d6e5a3-9774-4ba7-a03f-3c2f32b99d24.jpeg',
       'Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg',
@@ -789,15 +790,15 @@ final List<RealStateObjects> defaultApartments = [
     size: 150,
     price: '2,500,000',
     description: 'A luxury apartment in a prime location with a stunning city view.',
-    finishingType: 'Super Lux',
+    finishingType: 'Fully Finished',
     listingDate: '10/10/2023',
     ownerNumber: '01012345678',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Installments over 5 years',
+    deliveryType: '2040',
+    PaymentDetails: 'Installment over 10 Years',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Apartments',
+    type: 'Apartment',
     images: [
       'Assets/30d6e5a3-9774-4ba7-a03f-3c2f32b99d24.jpeg',
       'Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg',
@@ -809,17 +810,17 @@ final List<RealStateObjects> defaultApartments = [
     size: 100,
     price: '5,000',
     description: 'A modern apartment for rent in a quiet area close to all amenities.',
-    finishingType: 'Semi-Finished',
+    finishingType: 'Semi Finished',
     listingDate: '09/15/2023',
     ownerNumber: '01087654321',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Annual',
+    deliveryType: '2025',
+    PaymentDetails: 'Installment over 10 Years',
     isDeveloperSale: true,
   ),
 
   // Villas
   RealStateObjects(
-    type: 'Villas',
+    type: 'Villa',
     images: [
       'Assets/movie-night-by-pool-whole-family.jpg',
       'Assets/house-isolated-field.jpg',
@@ -831,15 +832,15 @@ final List<RealStateObjects> defaultApartments = [
     size: 300,
     price: '8,000,000',
     description: 'A luxury villa with a private garden and swimming pool in an upscale compound.',
-    finishingType: 'Super Lux',
+    finishingType: 'Semi Finished',
     listingDate: '08/20/2023',
     ownerNumber: '01011223344',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Cash or Installments',
+    deliveryType: '2028',
+    PaymentDetails: 'Installment over 2 Years',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Villas',
+    type: 'Villa',
     images: [
       'Assets/house-isolated-field.jpg',
       'Assets/movie-night-by-pool-whole-family.jpg',
@@ -851,15 +852,57 @@ final List<RealStateObjects> defaultApartments = [
     size: 250,
     price: '20,000',
     description: 'A stylish seasonal rental villa with a sea view.',
-    finishingType: 'Luxury Finish',
+    finishingType: 'Semi Finished',
     listingDate: '07/05/2023',
     ownerNumber: '01055667788',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Monthly',
+    deliveryType: '2030',
+    PaymentDetails: 'Installment over 6 Years',
     isDeveloperSale: true,
   ),
   RealStateObjects(
-    type: 'Apartments',
+    type: 'Office',
+    images: [
+      'Assets/photorealistic-environment-lawyer.jpg',
+      'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',
+    ],
+    location: 'Fifth Settlement',
+    address: 'Business Tower, 10th Floor',
+    baths: 2,
+    beds: 0,
+    size: 120,
+    price: '3,500,000',
+    description: 'A luxurious office in a strategic location near all services.',
+    finishingType: 'Semi Finished',
+    listingDate: '06/12/2023',
+    ownerNumber: '01099887766',
+    deliveryType: '2025',
+    PaymentDetails: 'Cash',
+    isDeveloperSale: false,
+  ),
+  RealStateObjects(
+    type: 'Office',
+    images: [
+      'Assets/photorealistic-environment-lawyer.jpg',
+      'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',
+    ],
+    location: 'Nasr City',
+    address: 'Mostafa El-Nahas Street, Building 15',
+    baths: 1,
+    beds: 0,
+    size: 80,
+    price: '8,000',
+    description: 'A modern office for rent in a prime location near public transportation.',
+    finishingType: 'Semi Finished',
+    listingDate: '05/25/2023',
+    ownerNumber: '01033445566',
+    deliveryType: '2025',
+    PaymentDetails: 'Installment over 10 Years',
+    isDeveloperSale: true,
+  ),
+
+  // Additional examples
+  RealStateObjects(
+    type: 'Apartment',
     images: [
       'Assets/30d6e5a3-9774-4ba7-a03f-3c2f32b99d24.jpeg',
       'Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg',
@@ -871,15 +914,15 @@ final List<RealStateObjects> defaultApartments = [
     size: 200,
     price: '4,000,000',
     description: 'A luxurious duplex apartment with a garden view.',
-    finishingType: 'Super Lux',
+    finishingType: 'Semi Finished',
     listingDate: '04/30/2023',
     ownerNumber: '01022334455',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Installments over 7 years',
+    deliveryType: '2023',
+    PaymentDetails: 'Installment over 5 Years',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Villas',
+    type: 'Villa',
     images: [
       'Assets/movie-night-by-pool-whole-family.jpg',
       'Assets/house-isolated-field.jpg',
@@ -891,15 +934,15 @@ final List<RealStateObjects> defaultApartments = [
     size: 400,
     price: '12,000,000',
     description: 'A luxury villa with a direct sea view and a private pool.',
-    finishingType: 'Luxury Finish',
+    finishingType: 'Semi Finished',
     listingDate: '03/15/2023',
     ownerNumber: '01066778899',
-    deliveryType: 'Ready to move',
-    PaymentDetails: 'Cash or Installments',
+    deliveryType: '2025',
+    PaymentDetails: 'Installment over 2 Years',
     isDeveloperSale: false,
   ),
   RealStateObjects(
-    type: 'Offices',
+    type: 'Office',
     images: [
       'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',
       'Assets/photorealistic-environment-lawyer.jpg',
@@ -911,15 +954,14 @@ final List<RealStateObjects> defaultApartments = [
     size: 150,
     price: '5,000,000',
     description: 'A luxurious office in Cairo Tower with a panoramic city view.',
-    finishingType: 'Lux Finish',
+    finishingType: 'Semi Finished',
     listingDate: '02/10/2023',
     ownerNumber: '01044556677',
-    deliveryType: 'Ready for use',
+    deliveryType: '2025',
     PaymentDetails: 'Cash',
     isDeveloperSale: false,
   ),
 ];
-
 class RealStateObjects {
   final List<String> images;
   final String type;

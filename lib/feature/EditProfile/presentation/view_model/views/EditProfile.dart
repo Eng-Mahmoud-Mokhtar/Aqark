@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
 
@@ -36,39 +37,12 @@ class EditProfileView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return Scaffold(
       backgroundColor: backgroundColor,
-      appBar: AppBar(
-        backgroundColor: backgroundColor,
-        elevation: 0,
-        automaticallyImplyLeading: false,
-        leadingWidth: screenWidth * 0.1,
-        leading: Padding(
-          padding: EdgeInsets.only(left:screenHeight * 0.02),
-          child: IconButton(
-            icon: Icon(Icons.arrow_back_ios, color: Colors.black,size: screenHeight * 0.03,),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-        title: Text(
-          S.of(context).editProfile,
-          style: TextStyle(
-            color: Colors.black,
-            fontSize: screenWidth * 0.035,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(1.5),
-          child: Container(
-            color: const Color(0xffE9E9E9),
-            height: 1.5,
-          ),
-        ),
+      appBar: CustomAppBar(
+        title: S.of(context).editProfile,
+        onBack: () => Navigator.pop(context),
+        showSearch: false,
       ),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(screenWidth * 0.04),
@@ -83,10 +57,7 @@ class EditProfileView extends StatelessWidget {
                   children: [
                     _buildTextField(
                         context, S.of(context).name, 'name', state['name'] ?? ''),
-                    SizedBox(height: screenWidth * 0.01),
-                    _buildTextField(
-                        context,S.of(context).email, 'email', state['email'] ?? ''),
-                    SizedBox(height: screenWidth * 0.01),
+                    SizedBox(height: screenWidth * 0.02),
                     _buildTextField(
                         context, S.of(context).PhoneNumber, 'phone', state['phone'] ?? ''),
                   ],
@@ -138,91 +109,121 @@ class EditProfileView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
-            style: TextStyle(
-                fontSize: screenWidth * 0.035,
-                fontWeight: FontWeight.bold)),
-        SizedBox(height: screenWidth * 0.015),
-        Container(
-          height: screenWidth * 0.12,
-          decoration: BoxDecoration(
-            color: const Color(0xffFAFAFA),
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: const Color(0xffE9E9E9)),
-          ),
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-          child: TextField(
+        key == 'phone'
+            ? RichText(
+          text: TextSpan(
+            text: S.of(context).PhoneNumber,
             style: TextStyle(
                 color: Colors.black,
-                fontSize: screenWidth * 0.03,
+                fontSize: screenWidth * 0.035,
                 fontWeight: FontWeight.bold),
+            children: const [
+              TextSpan(
+                text: ' * ',
+                style: TextStyle(
+                    color: SecondaryColor, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        )
+            : Text(
+          label,
+          style: TextStyle(
+              fontSize: screenWidth * 0.035,
+              fontWeight: FontWeight.bold),
+        ),
+        SizedBox(height: screenWidth * 0.015),
+        SizedBox(
+          height: screenWidth * 0.12,
+        child: DecoratedBox(
+          decoration: BoxDecoration(
+          color: const Color(0xffFAFAFA),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: const Color(0xffE9E9E9))),
+          child: TextField(
+            style: TextStyle(
+              fontSize: screenWidth * 0.03,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
             onChanged: (value) {
               context.read<EditProfileCubit>().updateField(key, value);
             },
             decoration: InputDecoration(
               hintStyle: TextStyle(
-                  color: SubText,
-                  fontSize: screenWidth * 0.03,
-                  fontWeight: FontWeight.bold),
+                fontSize: screenWidth * 0.03,
+                fontWeight: FontWeight.bold,
+                color: Colors.grey,
+              ),
               border: InputBorder.none,
-              contentPadding:
-                  EdgeInsets.symmetric(vertical: screenWidth * 0.035),
-              hintText: hint,
+              contentPadding: EdgeInsets.symmetric(
+              vertical: screenWidth * 0.035,
+              horizontal: screenWidth * 0.02,
+              ),
+            hintText: hint,
             ),
             inputFormatters: [
               LengthLimitingTextInputFormatter(15),
             ],
           ),
         ),
-      ],
+        )
+      ]
     );
   }
 
-  Widget _buildSaveCancelButtons(context) {
+  Widget _buildSaveCancelButtons(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Expanded(
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 12.sp, horizontal: 40.sp),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.sp),
-                side: const BorderSide(color: Color(0xffE72929)),
+          child: Container(
+            height: screenWidth * 0.12,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  side: const BorderSide(color: Color(0xffE72929)),
+                ),
+                backgroundColor: backgroundColor,
               ),
-              backgroundColor: backgroundColor,
-            ),
-            child: Center(
-              child: Text(
-                S.of(context).cancel,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  fontWeight: FontWeight.bold,
-                  color: const Color(0xffE72929),
+              child: Center(
+                child: Text(
+                  S.of(context).cancel,
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.bold,
+                    color: const Color(0xffE72929),
+                  ),
                 ),
               ),
             ),
           ),
         ),
-        SizedBox(width: 10.w),
+        SizedBox(width: 10),
         Expanded(
-          child: ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.symmetric(vertical: 12.sp, horizontal: 40.sp),
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(8.sp),
+          child: Container(
+            height: screenWidth * 0.12,
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                padding: EdgeInsets.zero,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                backgroundColor: KprimaryColor,
               ),
-              backgroundColor: KprimaryColor,
-            ),
-            child: Text(
-              S.of(context).save,
-              style: TextStyle(
-                fontSize: screenWidth * 0.03,
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
+              child: Text(
+                S.of(context).save,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),

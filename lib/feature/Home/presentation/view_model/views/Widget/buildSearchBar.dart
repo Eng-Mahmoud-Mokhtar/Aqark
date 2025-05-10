@@ -6,7 +6,6 @@ import '../Search.dart';
 
 Widget buildSearchBar(BuildContext context) {
   final screenWidth = MediaQuery.of(context).size.width;
-
   return SizedBox(
     height: screenWidth * 0.12,
     child: Row(
@@ -89,7 +88,6 @@ Widget buildSearchBar(BuildContext context) {
     ),
   );
 }
-
 void showFilterBottomSheet(BuildContext context) {
   final screenHeight = MediaQuery.of(context).size.height;
 
@@ -112,12 +110,10 @@ void showFilterBottomSheet(BuildContext context) {
     },
   );
 }
-
 class FilterHomeContent extends StatefulWidget {
   @override
   _FilterHomeContentState createState() => _FilterHomeContentState();
 }
-
 class _FilterHomeContentState extends State<FilterHomeContent> {
   int selectedIndex = -1;
   int selectedActionIndex = -1;
@@ -125,17 +121,27 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
   double _currentSliderValue = 2000000;
   int selectedBedroomsIndex = -1;
   int selectedBathroomsIndex = -1;
-
-  final List<String> categories = ['Apartment', 'Villa', 'Office', 'Shop'];
-  final List<String> actions = ['For Sale', 'For Rent'];
-  final List<String> types = ['Fully Finished', 'Semi Finished', 'Core & Shell'];
   final List<String> Bedrooms = ['1', '2', '3', '4', '5+'];
   final List<String> Bathrooms = ['1', '2', '3', '4', '5+'];
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-
+    final screenHeight = MediaQuery.of(context).size.height;
+    final List<String> categories = [
+      S.of(context).Apartment,
+      S.of(context).Villa,
+      S.of(context).Office,
+    ];
+    final List<String> actions = [
+      S.of(context).for_sale,
+      S.of(context).for_rent,
+    ];
+    final List<String> types = [
+      S.of(context).FullyFinished,
+      S.of(context).SemiFinished,
+      S.of(context).Unfinished,
+    ];
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Stack(
@@ -149,22 +155,40 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   SizedBox(height: screenWidth * 0.04),
                   Row(
                     children: [
-                      IconButton(
-                        icon: Icon(Icons.arrow_back_ios,size: screenWidth * 0.04,color: Colors.black,),
-                        onPressed: () => Navigator.pop(context),
+                      Image.asset(
+                        'Assets/icons8-filter-48.png',
+                        width: screenWidth * 0.05,
+                        height: screenWidth * 0.05,
+                        color: KprimaryColor,
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
-                        'Search Filters',
+                        S.of(context).SearchFilters,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                          size: screenWidth * 0.05,
+                        ),
+                      ),
                     ],
                   ),
+                  SizedBox(height: screenHeight * 0.015),
+                  Divider(
+                    color: Colors.grey.withOpacity(0.3),
+                    thickness: 1,
+                  ),
                   buildFilterSection(
-                    title: 'Property types',
+                    title: S.of(context).PropertyType,
                     items: categories,
                     selectedIndex: selectedIndex,
                     onTap: (index) {
@@ -175,7 +199,7 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   ),
                   SizedBox(height: screenWidth * 0.01),
                   buildFilterSection(
-                    title: 'Property Status',
+                    title: S.of(context).PropertyStatus,
                     items: actions,
                     selectedIndex: selectedActionIndex,
                     onTap: (index) {
@@ -188,7 +212,10 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   SizedBox(height: screenWidth * 0.01),
                   Divider(color: Colors.grey.shade300, thickness: 1),
                   SizedBox(height: screenWidth * 0.015),
-                  Text('Price Range', style: _sectionTitleStyle(screenWidth)),
+                  Text(
+                    S.of(context).PriceRange,
+                    style: _sectionTitleStyle(screenWidth),
+                  ),
                   Slider(
                     value: _currentSliderValue,
                     min: 0,
@@ -205,14 +232,20 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   ),
                   Row(
                     children: [
-                      Text('Minimum', style: _labelStyle(screenWidth)),
+                      Text(
+                        S.of(context).Minimum,
+                        style: _labelStyle(screenWidth),
+                      ),
                       Spacer(),
-                      Text('Maximum', style: _labelStyle(screenWidth)),
+                      Text(
+                        S.of(context).Maximum,
+                        style: _labelStyle(screenWidth),
+                      ),
                     ],
                   ),
                   SizedBox(height: screenWidth * 0.01),
                   buildFilterSection(
-                    title: 'Bedrooms',
+                    title: S.of(context).Bedrooms,
                     items: Bedrooms,
                     selectedIndex: selectedBedroomsIndex,
                     onTap: (index) {
@@ -223,7 +256,7 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   ),
                   SizedBox(height: screenWidth * 0.01),
                   buildFilterSection(
-                    title: 'Bathrooms',
+                    title: S.of(context).Bathrooms,
                     items: Bathrooms,
                     selectedIndex: selectedBathroomsIndex,
                     onTap: (index) {
@@ -236,7 +269,7 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                   Divider(color: Colors.grey.shade300, thickness: 1),
                   SizedBox(height: screenWidth * 0.01),
                   buildFilterSection(
-                    title: 'Finishing',
+                    title: S.of(context).Finishing,
                     items: types,
                     selectedIndex: selectedTypeIndex,
                     onTap: (index) {
@@ -327,7 +360,6 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
       ),
     );
   }
-
   Widget buildFilterSection({
     required String title,
     required List<String> items,
@@ -361,10 +393,14 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
               children: List.generate(items.length, (index) {
                 return Expanded(
                   child: Padding(
-                    padding: EdgeInsets.only(right: index < items.length - 1 ? 8 : 0),
+                    padding: EdgeInsetsDirectional.only(end: index < items.length - 1 ? 8 : 0),
                     child: GestureDetector(
                       onTap: () => onTap(index),
                       child: Container(
+                        margin: EdgeInsets.only(
+                          left: Localizations.localeOf(context).languageCode == 'ar' ? screenWidth * 0.02 : 0,
+                          right: Localizations.localeOf(context).languageCode == 'ar' ? 0 : screenWidth * 0.02,
+                        ),
                         decoration: BoxDecoration(
                           color: selectedIndex == index
                               ? KprimaryColor
@@ -379,6 +415,8 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                               fontWeight: FontWeight.bold,
                               fontSize: screenWidth * 0.03,
                             ),
+                            textAlign: TextAlign.center,
+                            textDirection: Directionality.of(context),
                           ),
                         ),
                       ),
@@ -400,14 +438,12 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
       fontWeight: FontWeight.bold,
     );
   }
-
   TextStyle _labelStyle(double screenWidth) {
     return TextStyle(
       color: SubText,
       fontSize: screenWidth * 0.03,
     );
   }
-
   String _formatSliderValue(double value) {
     final formatter = NumberFormat('#,###');
     return formatter.format(value.round());

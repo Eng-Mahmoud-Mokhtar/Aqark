@@ -13,7 +13,6 @@ class DevelopersPage extends StatelessWidget {
       appBar: CustomAppBar(
         title:S.of(context).Developers,
         onBack: () => Navigator.pop(context),
-        onSearch: () {},
         showSearch: false,
       ),
       body: Padding(
@@ -227,7 +226,6 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
       appBar: CustomAppBar(
         title: widget.developerName,
         onBack: () => Navigator.pop(context),
-        onSearch: () {},
         showSearch: false,
       ),
       body: SingleChildScrollView(

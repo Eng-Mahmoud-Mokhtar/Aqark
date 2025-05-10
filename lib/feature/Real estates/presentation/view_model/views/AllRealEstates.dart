@@ -39,7 +39,6 @@ class AllApartments extends StatelessWidget {
         appBar: CustomAppBar(
           title: S.of(context).Properties,
           onBack: () => Navigator.pop(context),
-          onSearch: () {},
           showSearch: true,
         ),
         body: Padding(

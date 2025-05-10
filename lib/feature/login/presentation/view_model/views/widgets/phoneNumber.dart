@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../../../../../core/utiles/constans.dart';
 import '../../../../../../generated/l10n.dart';
 
-// CountryCubit لإدارة حالة اختيار الدولة
 class CountryCubit extends Cubit<CountryState> {
   CountryCubit() : super(CountryState.initial());
 
@@ -67,7 +67,6 @@ class CountryState {
   }
 }
 
-// قائمة الدول
 final List<Map<String, String>> countryList = [
   {'flag': '🇦🇫', 'code': '93', 'name': 'Afghanistan', 'short': 'AF'},
   {'flag': '🇦🇱', 'code': '355', 'name': 'Albania', 'short': 'AL'},
@@ -118,7 +117,6 @@ final List<Map<String, String>> countryList = [
   {'flag': '🇻🇳', 'code': '84', 'name': 'Vietnam', 'short': 'VN'},
 ];
 
-// واجهة اختيار رقم الهاتف
 class PhoneNumber extends StatelessWidget {
   const PhoneNumber({super.key});
 
@@ -271,14 +269,14 @@ class PhoneNumber extends StatelessWidget {
               text: TextSpan(
                 text:  S.of(context).PhoneNumber,
                 style: TextStyle(
-                    color: Colors.grey,
+                    color: Colors.black,
                     fontSize: screenWidth * 0.035,
-                    fontWeight: FontWeight.w500),
+                    fontWeight: FontWeight.bold),
                 children: const [
                   TextSpan(
-                    text: '*',
+                    text: ' * ',
                     style: TextStyle(
-                        color: Colors.red, fontWeight: FontWeight.bold),
+                        color: SecondaryColor, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
@@ -296,8 +294,8 @@ class PhoneNumber extends StatelessWidget {
                     GestureDetector(
                       onTap: () => showCountryPicker(context),
                       child: Padding(
-                        padding: EdgeInsets.only(
-                            left: screenWidth * 0.04, right: screenWidth * 0.02),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: screenWidth * 0.02),
                         child: Row(
                           children: [
                             Text(state.selectedCountryShort,
@@ -307,15 +305,15 @@ class PhoneNumber extends StatelessWidget {
                             Icon(Icons.keyboard_arrow_down,
                                 size: screenWidth * 0.05,
                                 color: Colors.grey.shade500),
+                            SizedBox(width: screenWidth * 0.01),
+                            Container(
+                                height: screenWidth * 0.1,
+                                width: 1.0,
+                                color: Colors.grey.shade300),
                           ],
                         ),
                       ),
                     ),
-                    Container(
-                        height: screenWidth * 0.1,
-                        width: 1.0,
-                        color: Colors.grey.shade300),
-                    SizedBox(width: screenWidth * 0.02),
                     Expanded(
                       child: TextField(
                         style: TextStyle(

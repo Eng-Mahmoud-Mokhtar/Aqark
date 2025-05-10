@@ -3,7 +3,6 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../generated/l10n.dart';
 import 'Widgets/ShopMaterial.dart';
 
@@ -35,11 +34,11 @@ class _MaterialsScreenState extends State<Materials> {
   final List<MaterialShop> shops = [
     MaterialShop(
       name: 'El-Madina Cement',
-      type: 'Cement Supplier',
+      type: 'Cement',
       description: 'Specialized in all types of construction cement',
       address: 'Nasr City, Cairo',
       image:
-          'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg',
+      'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg',
       rating: 4.8,
       reviewCount: 56,
       category: 'Cement',
@@ -53,9 +52,9 @@ class _MaterialsScreenState extends State<Materials> {
     ),
     MaterialShop(
       name: 'Sanitary Hub',
-      type: 'Plumbing Supplier',
+      type: 'Plumbing',
       description:
-          'Specialized in all types of plumbing materials and accessories',
+      'Specialized in all types of plumbing materials and accessories',
       address: 'Nasr City, Cairo',
       image: 'Assets/side-view-man-working-as-plumber.jpg',
       rating: 4.7,
@@ -73,7 +72,7 @@ class _MaterialsScreenState extends State<Materials> {
     ),
     MaterialShop(
       name: 'Egypt Bricks / طوب مصر',
-      type: 'Bricks Supplier',
+      type: 'Bricks',
       description: 'High quality red and white bricks',
       address: '6th October City',
       image: 'Assets/brick-piles-placed-factory-floor.jpg',
@@ -90,7 +89,7 @@ class _MaterialsScreenState extends State<Materials> {
     ),
     MaterialShop(
       name: 'Ezz Steel / حديد عز',
-      type: 'Steel Supplier',
+      type: 'Steel',
       description: 'Construction steel of all diameters',
       address: 'Downtown, Cairo',
       image: 'Assets/arc-welding-steel-construction-site.jpg',
@@ -107,12 +106,12 @@ class _MaterialsScreenState extends State<Materials> {
     ),
     MaterialShop(
       name: 'Jotun Paints / جوتن للدهانات',
-      type: 'Paint Supplier',
+      type: 'Paints',
       description: 'Premium interior and exterior paints',
       address: 'Heliopolis, Cairo',
       image: 'Assets/top-view-paint-can.jpg',
       rating: 4.3,
-      reviewCount: 31,
+      reviewCount: 33,
       category: 'Paints',
       isFeatured: false,
       products: [
@@ -128,10 +127,10 @@ class _MaterialsScreenState extends State<Materials> {
       description: 'High-quality electrical supplies for homes and businesses',
       address: 'El-Matarya, Cairo',
       image:
-          'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg',
+      'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg',
       rating: 4.6,
       reviewCount: 48,
-      category: 'Electrical Supplies',
+      category: 'Electrical',
       isFeatured: true,
       products: [
         ShopProduct('LED Ceiling Light', '120 EGP/pc',
@@ -144,7 +143,7 @@ class _MaterialsScreenState extends State<Materials> {
     ),
     MaterialShop(
       name: 'Cleopatra Tiles / كليوباترا للسيراميك',
-      type: 'Tiles Supplier',
+      type: 'Tiles',
       description: 'Ceramic and porcelain tiles',
       address: 'Mohandessin, Giza',
       image: 'Assets/still-life-putting-up-decorative-vinyls.jpg',
@@ -161,7 +160,7 @@ class _MaterialsScreenState extends State<Materials> {
     ),
   ];
 
-  // Filter shops based on search, category and rating
+  // Filter shops based on search, category, and rating
   List<MaterialShop> get filteredShops {
     return shops.where((shop) {
       final matchesSearch =
@@ -189,6 +188,36 @@ class _MaterialsScreenState extends State<Materials> {
         .toList();
   }
 
+  // Helper method to get localized category name
+  String getCategoryDisplayName(BuildContext context, String category) {
+    switch (category) {
+      case 'All':
+        return S.of(context).all;
+      case 'Cement':
+        return S.of(context).Cement;
+      case 'Bricks':
+        return S.of(context).Bricks;
+      case 'Steel':
+        return S.of(context).Steel;
+      case 'Paints':
+        return S.of(context).Paints;
+      case 'Tiles':
+        return S.of(context).Tiles;
+      case 'Plumbing':
+        return S.of(context).Plumbing;
+      case 'Electrical':
+        return S.of(context).Electrical;
+      default:
+        return category;
+    }
+  }
+
+  List<Map<String, dynamic>> _getFilterOptions(BuildContext context) {
+    return [
+      {"title": S.of(context).HighestRating, "value": "rating"},
+    ];
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -196,7 +225,7 @@ class _MaterialsScreenState extends State<Materials> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Material Shops',
+        title: S.of(context).Materials,
         onBack: () {
           Navigator.pop(context);
         },
@@ -230,42 +259,45 @@ class _MaterialsScreenState extends State<Materials> {
       child: Row(
         children: [
           Expanded(
-              flex: 5,
-              child: Container(
-                  height: screenWidth * 0.12,
-                  decoration: BoxDecoration(
-                    color: const Color(0xffFAFAFA),
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: const Color(0xffE9E9E9)),
+            flex: 5,
+            child: Container(
+              height: screenWidth * 0.12,
+              decoration: BoxDecoration(
+                color: const Color(0xffFAFAFA),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
+              child: TextField(
+                onChanged: (value) => setState(() => searchQuery = value),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  hintText: S.of(context).search_for_material_shops,
+                  hintStyle: TextStyle(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
                   ),
-                  child: TextField(
-                      onChanged: (value) => setState(() => searchQuery = value),
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      decoration: InputDecoration(
-                        hintText: 'Search for material shops',
-                        hintStyle: TextStyle(
-                          fontSize: screenWidth * 0.03,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.grey,
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.035,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
-                          child: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey,
-                            size: screenWidth * 0.05,
-                          ),
-                        ),
-                      )))),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.035,
+                    horizontal: screenWidth * 0.02,
+                  ),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                    child: Icon(
+                      Icons.search_outlined,
+                      color: Colors.grey,
+                      size: screenWidth * 0.05,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
           SizedBox(width: screenWidth * 0.02),
           Expanded(
             flex: 1,
@@ -325,12 +357,12 @@ class _MaterialsScreenState extends State<Materials> {
               ),
               decoration: BoxDecoration(
                 color:
-                    isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
+                isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
                 child: Text(
-                  categories[index],
+                  getCategoryDisplayName(context, categories[index]),
                   style: TextStyle(
                     fontSize: screenWidth * 0.03,
                     fontWeight: FontWeight.bold,
@@ -356,7 +388,7 @@ class _MaterialsScreenState extends State<Materials> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'Featured Shops',
+          S.of(context).featured_shops,
           style: TextStyle(
             fontSize: screenWidth * 0.035,
             color: Colors.black,
@@ -365,7 +397,7 @@ class _MaterialsScreenState extends State<Materials> {
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.45,
+          height: MediaQuery.of(context).size.width * 0.55,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -432,7 +464,7 @@ class _MaterialsScreenState extends State<Materials> {
               ),
               SizedBox(height: screenHeight * 0.001),
               Text(
-                shop.type,
+                getCategoryDisplayName(context, shop.type),
                 style: TextStyle(
                   color: KprimaryColor,
                   fontSize: screenWidth * 0.03,
@@ -473,7 +505,7 @@ class _MaterialsScreenState extends State<Materials> {
               ),
               SizedBox(height: screenHeight * 0.001),
               Text(
-                '${shop.rating.toStringAsFixed(1)} (${shop.reviewCount})',
+                '${shop.rating.toStringAsFixed(1)}',
                 style: TextStyle(
                   fontSize: screenWidth * 0.03,
                   color: SubText,
@@ -501,7 +533,7 @@ class _MaterialsScreenState extends State<Materials> {
         ),
         child: Center(
           child: Text(
-            'No shops available',
+            S.of(context).no_shops_available,
             style: TextStyle(
               fontSize: screenWidth * 0.035,
               color: Colors.black,
@@ -516,7 +548,7 @@ class _MaterialsScreenState extends State<Materials> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          'All Shops',
+          S.of(context).shops,
           style: TextStyle(
             fontSize: screenWidth * 0.035,
             color: Colors.black,
@@ -579,7 +611,7 @@ class _MaterialsScreenState extends State<Materials> {
                   ),
                   SizedBox(height: screenHeight * 0.001),
                   Text(
-                    shop.type,
+                    getCategoryDisplayName(context, shop.type),
                     style: TextStyle(
                       color: KprimaryColor,
                       fontWeight: FontWeight.bold,
@@ -631,6 +663,7 @@ class _MaterialsScreenState extends State<Materials> {
       ),
     );
   }
+
   void _showAddLocationSheet({
     required BuildContext context,
     required Map<String, List<String>> governoratesWithCities,
@@ -678,7 +711,7 @@ class _MaterialsScreenState extends State<Materials> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select Location',
+                        S.of(context).SelectLocation,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -733,14 +766,14 @@ class _MaterialsScreenState extends State<Materials> {
                           horizontal: screenWidth * 0.02,
                         ),
                         prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                           child: Icon(
                             Icons.search_outlined,
                             color: Colors.grey,
                             size: screenWidth * 0.05,
                           ),
                         ),
-                        hintText: 'Search for governorate or city',
+                        hintText: S.of(context).SearchForGovernorateOrCity,
                       ),
                       onChanged: (value) {
                         setState(() {
@@ -756,8 +789,7 @@ class _MaterialsScreenState extends State<Materials> {
                         children: [
                           if (selectedGovernorate.isEmpty)
                             ...governoratesWithCities.keys
-                                .where((gov) =>
-                            searchText.isEmpty ||
+                                .where((gov) => searchText.isEmpty ||
                                 gov.toLowerCase().contains(searchText.toLowerCase()))
                                 .map((governorate) => Column(
                               children: [
@@ -792,8 +824,7 @@ class _MaterialsScreenState extends State<Materials> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: governoratesWithCities[selectedGovernorate]!
-                                  .where((city) =>
-                              searchText.isEmpty ||
+                                  .where((city) => searchText.isEmpty ||
                                   city.toLowerCase().contains(searchText.toLowerCase()))
                                   .map((city) => Column(
                                 children: [
@@ -815,9 +846,6 @@ class _MaterialsScreenState extends State<Materials> {
                                     onTap: () {
                                       onLocationSelected(selectedGovernorate, city);
                                       Navigator.pop(context);
-                                      ScaffoldMessenger.of(context).showSnackBar(
-                                        SnackBar(content: Text('$city')),
-                                      );
                                     },
                                   ),
                                   Divider(
@@ -842,37 +870,152 @@ class _MaterialsScreenState extends State<Materials> {
       },
     );
   }
-  final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "Highest Rating", "value": "rating"},
-  ];
+
   final Map<String, List<String>> governoratesWithCities = {
-    "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
-    "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
-    "Alexandria": ["Smouha", "Sidi Gaber", "Asafra", "Mandara", "Montaza", "Gleem", "Stanley", "Miami", "San Stefano"],
-    "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
-    "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
+    "Cairo": [
+      "Maadi",
+      "Mokattam",
+      "Nasr City",
+      "Zamalek",
+      "Dokki",
+      "Heliopolis",
+      "Shubra",
+      "New Cairo",
+      "El Marg"
+    ],
+    "Giza": [
+      "Dokki",
+      "Mohandessin",
+      "Haram",
+      "6th October",
+      "Sheikh Zayed",
+      "Faisal",
+      "Bulaq Dakrour",
+      "Imbaba"
+    ],
+    "Alexandria": [
+      "Smouha",
+      "Sidi Gaber",
+      "Asafra",
+      "Mandara",
+      "Montaza",
+      "Gleem",
+      "Stanley",
+      "Miami",
+      "San Stefano"
+    ],
+    "Minya": [
+      "New Minya",
+      "Mallawi",
+      "Deir Mawas",
+      "Maghagha",
+      "Abu Qurqas",
+      "Samalout",
+      "Beni Mazar"
+    ],
+    "Assiut": [
+      "New Assiut",
+      "Dayrout",
+      "Sadfa",
+      "El Badari",
+      "Abnoub",
+      "El Quseyya",
+      "Manfalut"
+    ],
     "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
     "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
     "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
     "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
     "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
-    "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
+    "South Sinai": [
+      "Sharm El-Sheikh",
+      "Dahab",
+      "Nuweiba",
+      "Saint Catherine",
+      "Taba"
+    ],
     "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
-    "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
+    "Ismailia": [
+      "Ismailia City",
+      "Fayed",
+      "Qantara West",
+      "Tell El Kebir"
+    ],
     "Port Said": ["Port Said City", "Port Fouad"],
     "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
-    "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
-    "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
-    "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
-    "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
-    "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
-    "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
-    "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
-    "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
-    "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
+    "Beheira": [
+      "Damanhour",
+      "Kafr El Dawwar",
+      "Edku",
+      "Rashid",
+      "Abu Hummus"
+    ],
+    "Dakahlia": [
+      "Mansoura",
+      "Talkha",
+      "Mit Ghamr",
+      "Sherbin",
+      "Belqas"
+    ],
+    "Sharqia": [
+      "Zagazig",
+      "10th of Ramadan",
+      "Bilbeis",
+      "Minya El Qamh",
+      "Fakous"
+    ],
+    "Gharbia": [
+      "Tanta",
+      "El Mahalla El Kubra",
+      "Kafr El Zayat",
+      "Zifta",
+      "Samanoud"
+    ],
+    "Monufia": [
+      "Shibin El Kom",
+      "Sadat City",
+      "Ashmoun",
+      "Quesna",
+      "Menouf"
+    ],
+    "Fayoum": [
+      "Fayoum City",
+      "Senoures",
+      "Etsa",
+      "Tamiya",
+      "Youssef El Seddik"
+    ],
+    "Beni Suef": [
+      "Beni Suef City",
+      "Nasser",
+      "Biba",
+      "El Wasta",
+      "Ihnasya"
+    ],
+    "Kafr El Sheikh": [
+      "Kafr El Sheikh City",
+      "Desouk",
+      "Baltim",
+      "Motobas",
+      "Fuwwah"
+    ],
+    "Damietta": [
+      "Damietta City",
+      "New Damietta",
+      "Ras El Bar",
+      "Ezbet El Borg",
+      "Kafr Saad"
+    ],
     "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
-    "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
+    "Matrouh": [
+      "Marsa Matrouh",
+      "Siwa",
+      "El Alamein",
+      "Sidi Barrani",
+      "Al Negila"
+    ],
   };
+
   String? _selectedGovernorate;
   String? _selectedCity;
   String _selectedFilter = "none";
@@ -895,7 +1038,6 @@ class _MaterialsScreenState extends State<Materials> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Header (بدون تغيير)
                   Row(
                     children: [
                       Image.asset(
@@ -906,7 +1048,7 @@ class _MaterialsScreenState extends State<Materials> {
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
-                        'Search Options',
+                        S.of(context).SearchOptions,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -930,13 +1072,11 @@ class _MaterialsScreenState extends State<Materials> {
                     color: Colors.grey.withOpacity(0.3),
                     thickness: 1,
                   ),
-
-                  // Location Section (بدون تغيير)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Location',
+                        S.of(context).Location,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -975,10 +1115,11 @@ class _MaterialsScreenState extends State<Materials> {
                           ),
                           child: (_selectedGovernorate != null && _selectedCity != null)
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
-                                Icon(Icons.location_on_outlined, color: KprimaryColor, size: screenWidth * 0.045),
+                                Icon(Icons.location_on_outlined,
+                                    color: KprimaryColor, size: screenWidth * 0.045),
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
@@ -1000,7 +1141,7 @@ class _MaterialsScreenState extends State<Materials> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Location',
+                                  S.of(context).ChooseLocation,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -1015,13 +1156,11 @@ class _MaterialsScreenState extends State<Materials> {
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.02),
-
-                  // Category Section (المعدل بنفس التصميم مع تغيير البيانات)
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Category',
+                        S.of(context).category,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -1059,14 +1198,15 @@ class _MaterialsScreenState extends State<Materials> {
                           ),
                           child: (selectedCategory != 'All')
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
-                                Icon(Icons.category_outlined, color: KprimaryColor, size: screenWidth * 0.045),
+                                Icon(Icons.category_outlined,
+                                    color: KprimaryColor, size: screenWidth * 0.045),
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
-                                    selectedCategory,
+                                    getCategoryDisplayName(context, selectedCategory),
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenWidth * 0.03,
@@ -1084,7 +1224,7 @@ class _MaterialsScreenState extends State<Materials> {
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Category',
+                                  S.of(context).choose_category,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -1099,10 +1239,8 @@ class _MaterialsScreenState extends State<Materials> {
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.02),
-
-                  // بقية الأقسام (بدون تغيير)
                   Text(
-                    'Rating',
+                    S.of(context).Rating,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -1110,7 +1248,7 @@ class _MaterialsScreenState extends State<Materials> {
                     ),
                   ),
                   SizedBox(height: screenHeight * 0.008),
-                  ..._filterOptions.map((option) {
+                  ..._getFilterOptions(context).map((option) {
                     bool isSelected = _selectedFilter == option['value'];
                     return GestureDetector(
                       onTap: () {
@@ -1123,17 +1261,20 @@ class _MaterialsScreenState extends State<Materials> {
                         margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
                         padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
                         decoration: BoxDecoration(
-                          color: isSelected ? KprimaryColor.withOpacity(0.1)
+                          color: isSelected
+                              ? KprimaryColor.withOpacity(0.1)
                               : KprimaryColor.withOpacity(0.05),
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isSelected ? KprimaryColor
+                            color: isSelected
+                                ? KprimaryColor
                                 : KprimaryColor.withOpacity(0.3),
                             width: 1.0,
                           ),
                         ),
                         child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenWidth * 0.02),
+                          padding: EdgeInsets.symmetric(
+                              horizontal: screenWidth * 0.03, vertical: screenWidth * 0.02),
                           child: Text(
                             option['title'],
                             style: TextStyle(
@@ -1167,7 +1308,7 @@ class _MaterialsScreenState extends State<Materials> {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            '${S.of(context).Show} 52 ${S.of(context).Results}',
+                            "${S.of(context).Show} 52",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -1277,7 +1418,7 @@ class _MaterialsScreenState extends State<Materials> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Select Category',
+                    S.of(context).select_category,
                     style: TextStyle(
                       fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
@@ -1301,11 +1442,14 @@ class _MaterialsScreenState extends State<Materials> {
                     return Column(
                       children: [
                         ListTile(
-                          title: Text(category, style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.black,
-                            fontSize: screenWidth * 0.03,
-                          ),),
+                          title: Text(
+                            getCategoryDisplayName(context, category),
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.03,
+                            ),
+                          ),
                           onTap: () {
                             onCategorySelected(category);
                             Navigator.pop(context);
@@ -1327,7 +1471,8 @@ class _MaterialsScreenState extends State<Materials> {
         );
       },
     );
-  }}
+  }
+}
 
 class MaterialShop {
   final String name;
@@ -1370,4 +1515,3 @@ class FavoriteCubit extends Cubit<bool> {
     emit(!state);
   }
 }
-

@@ -32,7 +32,6 @@ class DetailesProperty extends StatelessWidget {
   final String deliveryType;
   final String PaymentDetails;
 
-
   const DetailesProperty({
     Key? key,
     required this.name,
@@ -49,7 +48,7 @@ class DetailesProperty extends StatelessWidget {
     required this.ownerNumber,
     required this.listingDate,
     required this.deliveryType,
-    required this.PaymentDetails
+    required this.PaymentDetails,
   }) : super(key: key);
 
   @override
@@ -64,7 +63,6 @@ class DetailesProperty extends StatelessWidget {
         appBar: CustomAppBar(
           title: name,
           onBack: () => Navigator.pop(context),
-          onSearch: () {},
           showSearch: false,
         ),
         body: ListView.builder(
@@ -76,7 +74,7 @@ class DetailesProperty extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Container(
-                      height: screenHeight * 0.3,
+                      height: screenWidth * 0.5,
                       child: Stack(
                         children: [
                           GestureDetector(
@@ -99,7 +97,7 @@ class DetailesProperty extends StatelessWidget {
                                   images[index],
                                   fit: BoxFit.cover,
                                   width: screenWidth,
-                                  height: screenHeight * 0.3,
+                                  height: screenWidth * 0.5,
                                 );
                               },
                             ),
@@ -155,7 +153,7 @@ class DetailesProperty extends StatelessWidget {
                             child: Container(
                               color: Colors.black.withOpacity(0.4),
                               width: screenWidth,
-                              height: screenHeight * 0.3,
+                              height: screenWidth * 0.5,
                               child: Padding(
                                 padding: EdgeInsets.all(screenWidth * 0.04),
                                 child: Row(
@@ -182,7 +180,7 @@ class DetailesProperty extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
-                                            '$price ${S.of(context).EGP} ',
+                                            '$price ${S.of(context).EGP}',
                                             style: TextStyle(
                                               fontSize: screenWidth * 0.03,
                                               color: Colors.white,
@@ -208,36 +206,43 @@ class DetailesProperty extends StatelessWidget {
                           Row(
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    name,
-                                    style: TextStyle(
-                                      fontSize: screenWidth * 0.04,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  SizedBox(height: screenHeight * 0.005),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on_outlined, size: screenWidth * 0.05, color: SecondaryColor),
-                                      SizedBox(width: screenWidth * 0.01),
-                                      Text(
-                                        '$location - $address',
-                                        style: TextStyle(
-                                          fontSize: screenWidth * 0.03,
-                                          color: const Color(0xff9E9E9E),
-                                          fontWeight: FontWeight.w500,
-                                        ),
-                                        overflow: TextOverflow.ellipsis,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      name,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.04,
+                                        fontWeight: FontWeight.bold,
                                       ),
-                                    ],
-                                  ),
-                                ],
+                                    ),
+                                    SizedBox(height: screenHeight * 0.005),
+                                    Row(
+                                      children: [
+                                        Icon(Icons.location_on_outlined, size: screenWidth * 0.05, color: SecondaryColor),
+                                        SizedBox(width: screenWidth * 0.01),
+                                        Expanded(
+                                          child: Text(
+                                            '$location - $address',
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: TextStyle(
+                                              fontSize: screenWidth * 0.03,
+                                              color: const Color(0xff9E9E9E),
+                                              fontWeight: FontWeight.w500,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ],
+                                ),
                               ),
-                              Spacer(),
+                              SizedBox(width: screenWidth * 0.02),
                               Row(
                                 children: [
                                   InkWell(
@@ -348,7 +353,7 @@ class DetailesProperty extends StatelessWidget {
                             ),
                           ),
                           SizedBox(height: screenHeight * 0.02),
-                          buildAdditionalInfo(screenWidth, screenHeight,context),
+                          buildAdditionalInfo(screenWidth, screenHeight, context),
                           SizedBox(height: screenHeight * 0.02),
                           Text(
                             S.of(context).AboutProperty,
@@ -382,7 +387,40 @@ class DetailesProperty extends StatelessWidget {
       ),
     );
   }
-  Widget buildAdditionalInfo(double screenWidth, double screenHeight,BuildContext context) {
+
+  // Translation function to map raw keys to localized strings
+  String getTranslatedValue(BuildContext context, String key) {
+    switch (key) {
+    // Type
+      case 'Apartment':
+        return S.of(context).Apartment;
+      case 'Villa':
+        return S.of(context).Villa;
+      case 'Office':
+        return S.of(context).Office;
+    // Finishing Type
+      case 'Semi Finished':
+        return S.of(context).SemiFinished;
+      case 'Fully Finished':
+        return S.of(context).FullyFinished;
+      case 'Unfinished':
+        return S.of(context).Unfinished;
+    // Payment Details
+      case 'Fully Paid':
+        return S.of(context).FullyPaid;
+      case 'Installments':
+        return S.of(context).Installments;
+      case 'Installment over 10 Years':
+        return S.of(context).InstallmentsOver10;
+      case 'Installment over 5 Years':
+        return S.of(context).InstallmentsOver6;
+      case 'Installment over 2 Years':
+        return S.of(context).InstallmentsOver2;
+      default:
+        return key;
+    }
+  }
+  Widget buildAdditionalInfo(double screenWidth, double screenHeight, BuildContext context) {
     return Column(
       children: [
         Container(
@@ -391,14 +429,14 @@ class DetailesProperty extends StatelessWidget {
             color: KprimaryColor.withOpacity(0.02),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: buildInfoRow(S.of(context).finishingType, finishingType, screenWidth),
+          child: buildInfoRow(S.of(context).finishingType, getTranslatedValue(context, finishingType), screenWidth),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
           ),
-          child: buildInfoRow(S.of(context).PropertyType, type, screenWidth),
+          child: buildInfoRow(S.of(context).PropertyType, getTranslatedValue(context, type), screenWidth),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
@@ -406,14 +444,14 @@ class DetailesProperty extends StatelessWidget {
             color: KprimaryColor.withOpacity(0.02),
             borderRadius: BorderRadius.circular(8),
           ),
-          child: buildInfoRow(S.of(context).deliveryType, deliveryType, screenWidth),
+          child: buildInfoRow(S.of(context).deliveryType, getTranslatedValue(context, deliveryType), screenWidth),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(8),
           ),
-          child: buildInfoRow(S.of(context).PaymentDetails, PaymentDetails, screenWidth),
+          child: buildInfoRow(S.of(context).PaymentDetails, getTranslatedValue(context, PaymentDetails), screenWidth),
         ),
         Container(
           padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.02),

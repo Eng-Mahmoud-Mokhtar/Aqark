@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import '../../../../../../core/utiles/Assets_Data.dart';
+import '../../../../../../core/utiles/AppBar.dart';
 import '../../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
 
@@ -9,7 +9,6 @@ class ContactCubit extends Cubit<Map<String, String>> {
   ContactCubit()
       : super({
     "name": "Mahmoud",
-    "email": "Mahmoud@gmail.com",
     "phone": "01017900067",
     "message": "",
   });
@@ -19,195 +18,251 @@ class ContactCubit extends Cubit<Map<String, String>> {
   }
 }
 
-class ContactUsScreen extends StatelessWidget {
+class ContactUsScreen extends StatefulWidget {
   const ContactUsScreen({Key? key}) : super(key: key);
+
+  @override
+  _ContactUsScreenState createState() => _ContactUsScreenState();
+}
+
+class _ContactUsScreenState extends State<ContactUsScreen> {
+  final TextEditingController _messageController = TextEditingController();
+  double _messageFieldHeight = 0.3; // Initial height as fraction of screenWidth
+
+  @override
+  void initState() {
+    super.initState();
+    _messageController.addListener(_updateMessageFieldHeight);
+  }
+
+  @override
+  void dispose() {
+    _messageController.dispose();
+    super.dispose();
+  }
+
+  void _updateMessageFieldHeight() {
+    final text = _messageController.text;
+    final lineCount = '\n'.allMatches(text).length + 1;
+    setState(() {
+      _messageFieldHeight = lineCount > 3 || text.length > 100
+          ? 0.5 // Larger height for big messages
+          : 0.3; // Default height
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-
     return BlocProvider(
       create: (context) => ContactCubit(),
       child: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: backgroundColor,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          leadingWidth: screenWidth * 0.1,
-          leading: Padding(
-            padding: EdgeInsets.only(left:screenHeight * 0.02),
-            child: IconButton(
-              icon: Icon(Icons.arrow_back_ios, color: Colors.black,size: screenHeight * 0.03,),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
-          ),
-          title: Text(
-            S.of(context).contactUs,
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: screenWidth * 0.035,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          bottom: PreferredSize(
-            preferredSize: const Size.fromHeight(1.5),
-            child: Container(
-              color: const Color(0xffE9E9E9),
-              height: 1.5,
-            ),
-          ),
+        backgroundColor: backgroundColor,
+        appBar: CustomAppBar(
+          title: S.of(context).contactUs,
+          onBack: () => Navigator.pop(context),
+          showSearch: false,
         ),
         body: SingleChildScrollView(
-          child: Padding(
-            padding: EdgeInsets.all(screenWidth * 0.04),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Image.asset(
-                    AssetsData.Logo,
-                    width: screenWidth * 0.3,
-                  ),
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildProfileImage(screenWidth),
+              SizedBox(height: screenWidth * 0.15),
+              BlocBuilder<ContactCubit, Map<String, String>>(
+                builder: (context, state) {
+                  return Column(
+                    children: [
+                      _buildTextField(
+                          context, S.of(context).name, 'name', state['name'] ?? ''),
+                      SizedBox(height: screenWidth * 0.02),
+                      _buildTextField(context, S.of(context).PhoneNumber, 'phone',
+                          state['phone'] ?? ''),
+                    ],
+                  );
+                },
+              ),
+              SizedBox(height: screenWidth * 0.05),
+              Text(
+                S.of(context).SendMessage,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: screenWidth * 0.04),
-                BlocBuilder<ContactCubit, Map<String, String>>(
-                  builder: (context, state) {
-                    return Column(
-                      children: [
-                        buildTextField(context, S.of(context).name, "name"),
-                        SizedBox(height: screenWidth * 0.03),
-                        buildTextField(context, S.of(context).email, "email"),
-                        SizedBox(height: screenWidth * 0.03),
-                        buildTextField(context, S.of(context).PhoneNumber, "phone"),
-                      ],
-                    );
-                  },
-                ),
-                SizedBox(height: screenWidth * 0.05),
-                Text(
-                    S.of(context).SendMessage,
-                      style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold)
-                  ),
-                SizedBox(height: 6.h),
-                BlocBuilder<ContactCubit, Map<String, String>>(
-                  builder: (context, state) {
-                    return Container(
-                      height: screenWidth * 0.3,
-                      width: double.infinity,
-                      padding: EdgeInsets.symmetric(horizontal: 12.w),
-                      decoration: BoxDecoration(
-                        color: Color(0xffFAFAFA),
-                        borderRadius: BorderRadius.circular(8.r),
-                        border: Border.all(color: Color(0xffE9E9E9), width: 1.0),
-                      ),
-                      child: TextField(
-                        maxLines: null,
-                        onChanged: (value) =>
-                            context.read<ContactCubit>().updateField("message", value),
-                        decoration: InputDecoration(
-                          hintText: S.of(context).WriteMessage,
-                          hintStyle: TextStyle(
-                              color: SubText,
-                              fontSize: screenWidth * 0.03,
-                              fontWeight: FontWeight.bold
-                          ),
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.symmetric(vertical: 12.h),
-                        ),
-                        style: TextStyle(
-                          fontSize: 12.sp,
-                          fontWeight: FontWeight.w400,
-                          color: Color(0xff2F2F2F),
-                        ),
-                      ),
-                    );
-                  },
-                ),
-                SizedBox(height: 20.h),
-                ElevatedButton(
-                  onPressed: () {
-                    final contactInfo = context.read<ContactCubit>().state;
-                    print("Name: ${contactInfo['name']}");
-                    print("Email: ${contactInfo['email']}");
-                    print("Phone: ${contactInfo['phone']}");
-                    print("Message: ${contactInfo['message']}");
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: KprimaryColor,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(6.r),
-                    ),
-                  ),
-                  child: SizedBox(
-                    height: screenWidth * 0.12,
+              ),
+              SizedBox(height: 6.h),
+              BlocBuilder<ContactCubit, Map<String, String>>(
+                builder: (context, state) {
+                  return Container(
+                    height: screenWidth * _messageFieldHeight,
                     width: double.infinity,
-                    child: Center(
-                      child: Text(
-                        S.of(context).Send,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14.sp,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                    padding: EdgeInsets.symmetric(horizontal: 12.w),
+                    decoration: BoxDecoration(
+                      color: Color(0xffFAFAFA),
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: Color(0xffE9E9E9), width: 1.0),
+                    ),
+                    child: TextField(
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.03,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      controller: _messageController,
+                      maxLines: null,
+                      onChanged: (value) =>
+                          context.read<ContactCubit>().updateField("message", value),
+                      decoration: InputDecoration(
+                        hintText: S.of(context).WriteMessage,
+                        hintStyle: TextStyle(
+                          color: SubText,
+                          fontSize: screenWidth * 0.03,
+                          fontWeight: FontWeight.bold,
                         ),
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.symmetric(vertical: 12.h),
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: 20.h),
+              ElevatedButton(
+                onPressed: () {
+                  final contactInfo = context.read<ContactCubit>().state;
+                  print("Name: ${contactInfo['name']}");
+                  print("Phone: ${contactInfo['phone']}");
+                  print("Message: ${contactInfo['message']}");
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: KprimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8.r),
+                  ),
+                ),
+                child: SizedBox(
+                  height: screenWidth * 0.12,
+                  width: double.infinity,
+                  child: Center(
+                    child: Text(
+                      S.of(context).Send,
+                      textAlign: TextAlign.center,
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.w600,
+                        color: Colors.white,
                       ),
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
-  Widget buildTextField(BuildContext context, String label, String fieldKey) {
-    final screenWidth = MediaQuery.of(context).size.width;
 
-    return BlocBuilder<ContactCubit, Map<String, String>>(
-      builder: (context, state) {
-        return Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              label,
-                style: TextStyle(
-                    fontSize: screenWidth * 0.035,
-                    fontWeight: FontWeight.bold)
-            ),
-            SizedBox(height: screenWidth * 0.015),
-            Container(
-              height: screenWidth * 0.12,
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+  Widget _buildProfileImage(double screenWidth) {
+    return Center(
+      child: Stack(
+        children: [
+          CircleAvatar(
+            backgroundImage: AssetImage("Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG"),
+            radius: screenWidth * 0.21,
+            backgroundColor: Colors.grey.shade200,
+          ),
+          Positioned(
+            right: 0.0,
+            bottom: screenWidth * 0.05,
+            child: Container(
               decoration: BoxDecoration(
-                color: const Color(0xffFAFAFA),
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: const Color(0xffE9E9E9)),
+                shape: BoxShape.circle,
+                color: KprimaryColor,
               ),
-              child: TextField(
-                style: TextStyle(
-                    color: Colors.grey,
-                    fontSize: screenWidth * 0.03,
-                    fontWeight: FontWeight.bold
-                ),
-                controller: TextEditingController(text: state[fieldKey]),
-                enabled: false,
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding:
-                  EdgeInsets.symmetric(vertical: screenWidth * 0.045),
-                ),
+              width: screenWidth * 0.090,
+              height: screenWidth * 0.090,
+              child: Icon(
+                Icons.mode_edit_outline_outlined,
+                color: Colors.white,
+                size: 16.sp,
               ),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTextField(
+      BuildContext context, String label, String key, String hint) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        key == 'phone'
+            ? RichText(
+          text: TextSpan(
+            text: S.of(context).PhoneNumber,
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: screenWidth * 0.035,
+              fontWeight: FontWeight.bold,
+            ),
+            children: const [
+              TextSpan(
+                text: ' * ',
+                style: TextStyle(
+                  color: SecondaryColor,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        )
+            : Text(
+          label,
+          style: TextStyle(
+            fontSize: screenWidth * 0.035,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: screenWidth * 0.015),
+        SizedBox(
+          height: screenWidth * 0.12,
+          child: DecoratedBox(
+            decoration: BoxDecoration(
+              color: const Color(0xffFAFAFA),
+              borderRadius: BorderRadius.circular(8),
+              border: Border.all(color: const Color(0xffE9E9E9)),
+            ),
+            child: TextField(
+              style: TextStyle(
+                fontSize: screenWidth * 0.03,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
+              ),
+              onChanged: (value) {
+                context.read<ContactCubit>().updateField(key, value);
+              },
+              decoration: InputDecoration(
+                hintStyle: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.grey,
+                ),
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.symmetric(
+                  vertical: screenWidth * 0.035,
+                  horizontal: screenWidth * 0.02,
+                ),
+                hintText: hint,
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/utiles/DetailesProperty.dart';
 import '../../../../../core/utiles/constans.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-
 import '../../../../../generated/l10n.dart';
+import 'Widget/buildDetailsRow.dart';
+import 'Widget/buildLocationRow.dart';
+import 'Widget/buildPriceRow.dart';
 
 class SuggestApartments {
   final List<String> images;
@@ -158,129 +159,24 @@ class _SuggestPropertiesState extends State<SuggestProperties> {
                     ),
                   ),
                   SizedBox(height: screenWidth * 0.02),
-                  _buildLocationRow(screenWidth, apartment.address, apartment.location),
+                  buildLocationRow(
+                      screenWidth, apartment.address, apartment.location),
                   SizedBox(height: screenWidth * 0.01),
-                  _buildDetailsRow(screenWidth, apartment.baths.toString(), apartment.beds.toString(), apartment.size.toString()),
+                  buildDetailsRow(
+                      context,
+                      screenWidth,
+                      apartment.baths.toString(),
+                      apartment.beds.toString(),
+                      apartment.size.toString()),
                   SizedBox(height: screenWidth * 0.01),
-                  _buildPriceRow(screenWidth, apartment.price, apartment.ownerNumber),
+                  buildPriceRow(screenWidth, apartment.price,
+                      apartment.ownerNumber, context),
                 ],
               ),
             ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget _buildLocationRow(double screenWidth, String address, String location) {
-    return Row(
-      children: [
-        Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
-        SizedBox(width: screenWidth * 0.01),
-        Text(
-          '$address , $location',
-          style: TextStyle(
-            fontSize: screenWidth * 0.03,
-            color: const Color(0xff9E9E9E),
-            fontWeight: FontWeight.w400,
-          ),
-          overflow: TextOverflow.ellipsis,
-        ),
-      ],
-    );
-  }
-
-  Widget _buildDetailsRow(double screenWidth, String baths, String beds, String size) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
-      children: [
-        _buildDetailItem(screenWidth, 'Assets/icons8-bathtub-48.png', baths, ' Baths'),
-        SizedBox(width: screenWidth * 0.03),
-        _buildDetailItem(screenWidth, 'Assets/icons8-bedroom-50.png', beds, ' Beds'),
-        SizedBox(width: screenWidth * 0.03),
-        _buildDetailItem(screenWidth, 'Assets/icons8-enlarge-30.png', size, ' M'),
-      ],
-    );
-  }
-
-  Widget _buildDetailItem(double screenWidth, String iconPath, String count, String label) {
-    return Row(
-      children: [
-        Image.asset(iconPath, width: screenWidth * 0.04, height: screenWidth * 0.04),
-        SizedBox(width: screenWidth * 0.01),
-        Text(
-          '$count$label',
-          style: TextStyle(
-            fontSize: screenWidth * 0.03,
-            color: const Color(0xff9E9E9E),
-            fontWeight: FontWeight.w400,
-          ),
-        ),
-      ],
-    );
-  }
-
-  Widget _buildPriceRow(double screenWidth, String price, String ownerNumber) {
-    return Row(
-      children: [
-        Text(
-          '$price EGP',
-          style: TextStyle(
-            fontSize: screenWidth * 0.04,
-            color: SecondaryColor,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        Spacer(),
-        GestureDetector(
-          onTap: () {
-            // launch('tel:$ownerNumber');
-          },
-          child: Container(
-            width: screenWidth * 0.1,
-            height: screenWidth * 0.1,
-            decoration: BoxDecoration(
-              color: Colors.blue.withOpacity(0.1),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: Icon(
-                Icons.phone_outlined,
-                size: screenWidth * 0.05,
-                color: KprimaryColor,
-              ),
-            ),
-          ),
-        ),
-        SizedBox(width: 10.w),
-        GestureDetector(
-          onTap: () {
-            final formattedNumber = ownerNumber.startsWith('0')
-                ? ownerNumber.replaceFirst('0', '+20')
-                : '+20$ownerNumber';
-            final message = 'Hello, I would like to inquire about the property.';
-            final whatsappUrl = 'https://wa.me/$formattedNumber?text=${Uri.encodeComponent(message)}';
-            // launch(whatsappUrl);
-          },
-          child: Container(
-            width: screenWidth * 0.1,
-            height: screenWidth * 0.1,
-            decoration: BoxDecoration(
-              color: Color(0xff06cd46e),
-              shape: BoxShape.circle,
-            ),
-            child: Center(
-              child: AspectRatio(
-                aspectRatio: 2,
-                child: FittedBox(
-                  fit: BoxFit.contain,
-                  child: Image.asset('Assets/logos_whatsapp-icon.png'),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ],
     );
   }
 
@@ -388,7 +284,7 @@ class _SuggestPropertiesState extends State<SuggestProperties> {
         ),
         SizedBox(height: 10),
         Container(
-          height: screenWidth * 0.73,
+          height: screenWidth * 0.8,
           child: ScrollConfiguration(
             behavior: ScrollConfiguration.of(context).copyWith(
               scrollbars: false,

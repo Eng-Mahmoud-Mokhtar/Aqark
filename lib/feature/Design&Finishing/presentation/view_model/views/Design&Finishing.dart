@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
+import '../../../../../generated/l10n.dart';
+import 'ContractingCompany.dart';
 import 'Engineer.dart';
+import 'InteriorDesign.dart';
+
 
 class DesignFinishing extends StatelessWidget {
   const DesignFinishing({super.key});
@@ -15,13 +19,34 @@ class DesignFinishing extends StatelessWidget {
         'title': 'Interior Design',
         'icon': Icons.room_preferences,
         'details': {
-          'description': 'Innovative interior designs to suit all tastes.',
+          'description': 'Innovative interior designs tailored to all tastes and needs.',
           'services': [
-            'Bedroom design',
-            'Living room design',
-            'Kitchen design',
+            'Bedroom Design',
+            'Living Room Design',
+            'Kitchen Design',
+            'Bathroom Design',
+            'Home Office Design',
           ],
-          'image': 'Assets/blueprint.png',
+          'image': 'Assets/armchair-green-living-room-with-copy-space.jpg',
+          'features': [
+            '3D design visualization',
+            'Color and material selection',
+            'Space-saving solutions',
+            'Integrated lighting design',
+            'Modern or classic designs per request',
+          ],
+          'process': [
+            {'step': '1', 'title': 'Consultation', 'desc': 'Discuss requirements and ideas'},
+            {'step': '2', 'title': 'Survey', 'desc': 'Measure space and gather specifications'},
+            {'step': '3', 'title': 'Initial Design', 'desc': 'Present preliminary concepts'},
+            {'step': '4', 'title': 'Final Design', 'desc': 'Prepare detailed design'},
+            {'step': '5', 'title': 'Execution', 'desc': 'Oversee implementation with the team'},
+          ],
+          'portfolio': [
+            'Assets/armchair-green-living-room-with-copy-space.jpg',
+            'Assets/modern-office-space-with-futuristic-decor-furniture.jpg',
+            'Assets/armchair-green-living-room-with-copy-space.jpg',
+          ],
         },
       },
       {
@@ -30,24 +55,24 @@ class DesignFinishing extends StatelessWidget {
         'details': {
           'description': 'High-quality finishing and construction with modern techniques.',
           'services': [
-            'Exterior finishing',
-            'Interior finishing',
-            'Bathroom finishing',
+            'Exterior Finishing',
+            'Interior Finishing',
+            'Bathroom Finishing',
           ],
-          'image': 'assets/finishing.jpg',
+          'image': 'Assets/building.png',
         },
       },
       {
         'title': 'Engineers',
         'icon': Icons.engineering,
         'details': {
-          'description': 'Specialized engineers in design and finishing.',
+          'description': 'Specialized engineers for design and finishing.',
           'services': [
-            'Decoration engineer',
-            'Finishing engineer',
-            'Construction engineer',
+            'Interior Design Engineer',
+            'Finishing Engineer',
+            'Construction Engineer',
           ],
-          'image': 'assets/engineers.jpg',
+          'image': 'Assets/engineers.jpg',
         },
       },
     ];
@@ -55,9 +80,8 @@ class DesignFinishing extends StatelessWidget {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Design & Finishing',
+        title: S.of(context).Design_Finishing,
         onBack: () => Navigator.pop(context),
-        onSearch: () {},
         showSearch: false,
       ),
       body: Padding(
@@ -69,19 +93,19 @@ class DesignFinishing extends StatelessWidget {
           children: [
             _buildCategoryItem(
               imagePath: "Assets/blueprint.png",
-              label: 'Interior Design',
+              label: S.of(context).InteriorDesign,
               onTap: () => _navigateToDetails(context, categories[0]),
               screenWidth: screenWidth,
             ),
             _buildCategoryItem(
               imagePath: "Assets/building.png",
-              label: 'Building',
+              label: S.of(context).Contracting,
               onTap: () => _navigateToDetails(context, categories[1]),
               screenWidth: screenWidth,
             ),
             _buildCategoryItem(
               imagePath: "Assets/architect.png",
-              label: 'Engineers',
+              label: S.of(context).Engineers,
               onTap: () => _navigateToDetails(context, categories[2]),
               screenWidth: screenWidth,
             ),
@@ -136,102 +160,31 @@ class DesignFinishing extends StatelessWidget {
   }
 
   void _navigateToDetails(BuildContext context, Map<String, dynamic> category) {
-    if (category['title'] == 'Engineers') {
+    final title = category['title'] as String? ?? 'Unknown';
+    final details = category['details'] as Map<String, dynamic>? ?? {};
+
+    if (title == 'Engineers') {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => EngineersScreen()),
+      );
+    } else if (title == 'Interior Design') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => InteriorDesignCompanies(
+
+          ),
+        ),
       );
     } else {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => DesignDetails(
-            title: category['title'],
-            details: category['details'],
-          ),
+          builder: (context) => ContractingCompanies(),
         ),
       );
     }
   }
 }
-
-class DesignDetails extends StatelessWidget {
-  final String title;
-  final Map<String, dynamic> details;
-
-  const DesignDetails({
-    super.key,
-    required this.title,
-    required this.details,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: CustomAppBar(
-        title: title,
-        onBack: () => Navigator.pop(context),
-        onSearch: () {},
-        showSearch: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Image.asset(
-              details['image'],
-              fit: BoxFit.cover,
-              width: double.infinity,
-              height: 200,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    details['description'],
-                    style: const TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Available Services:',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ...details['services'].map((service) => Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 8.0),
-                    child: Row(
-                      children: [
-                        const Icon(
-                          Icons.check_circle,
-                          color: Colors.green,
-                          size: 20,
-                        ),
-                        const SizedBox(width: 8),
-                        Text(
-                          service,
-                          style: const TextStyle(fontSize: 16),
-                        ),
-                      ],
-                    ),
-                  )).toList(),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-
-
 

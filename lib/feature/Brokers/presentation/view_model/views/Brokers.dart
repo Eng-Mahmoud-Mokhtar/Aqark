@@ -1,135 +1,438 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../Home/presentation/view_model/views/BottomHome.dart';
 import 'BrokerDetailsPage.dart';
 
-class BrokersPage extends StatefulWidget {
-  const BrokersPage({super.key});
+class BrokersScreen extends StatefulWidget {
+  const BrokersScreen({Key? key}) : super(key: key);
 
   @override
-  State<BrokersPage> createState() => _BrokersPageState();
+  _BrokersScreenState createState() => _BrokersScreenState();
 }
 
-class _BrokersPageState extends State<BrokersPage> {
-  final List<Map<String, dynamic>> brokers = [
-    {
-      "name": "Ahmed Hassan",
-      "phone": "+20 101 234 5678",
-      "location": "Cairo",
-      "city": "New Cairo",
-      "details": "Luxury real estate expert with 10 years of experience.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.2,
-      "reviews": 15,
-    },
-    {
-      "name": "Mohamed Ali",
-      "phone": "+20 102 876 5432",
-      "location": "Alexandria",
-      "city": "Smouha",
-      "details": "Specialist in commercial properties and offices.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 3.8,
-      "reviews": 10,
-    },
-    {
-      "name": "Mahmoud Ibrahim",
-      "phone": "+20 103 654 3210",
-      "location": "Giza",
-      "city": "Dokki",
-      "details": "Experienced in residential and investment properties.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.5,
-      "reviews": 7,
-    },
-    {
-      "name": "Sara Khaled",
-      "phone": "+20 104 789 0123",
-      "location": "Nasr City",
-      "city": "6th District",
-      "details": "Expert in rentals and small property deals.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.0,
-      "reviews": 5,
-    },
-    {
-      "name": "Ali Mostafa",
-      "phone": "+20 105 908 7654",
-      "location": "Maadi",
-      "city": "Degla",
-      "details": "Real estate evaluator and market analyst.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.7,
-      "reviews": 12,
-    },
-    {
-      "name": "Yasmine Abdullah",
-      "phone": "+20 106 321 6789",
-      "location": "6th October",
-      "city": "Sheikh Zayed",
-      "details": "High-end property sales and purchases.",
-      "image": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.3,
-      "reviews": 11,
-    },
-  ];
-  String searchQuery = "";
-  String _selectedFilter = "none";
+class _BrokersScreenState extends State<BrokersScreen> {
+  String searchQuery = '';
+  double minRating = 3.0;
 
-  final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "Highest Rating", "value": "rating"},
-  ];
-  String? _selectedGovernorate;
-  String? _selectedCity;
+  List<Broker> get filteredBrokers {
+    return brokers.where((broker) {
+      final matchesSearch = broker.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          broker.location.toLowerCase().contains(searchQuery.toLowerCase()) ||
+          broker.city.toLowerCase().contains(searchQuery.toLowerCase());
+      final matchesRating = broker.rating >= minRating;
+      final matchesLocation = _selectedGovernorate == null || broker.location == _selectedGovernorate;
+      final matchesCity = _selectedCity == null || broker.city == _selectedCity;
 
-  void _showFilterBottomSheet() {
+      return matchesSearch && matchesRating && matchesLocation && matchesCity;
+    }).toList();
+  }
+
+  List<Broker> get featuredBrokers {
+    return brokers.where((broker) => broker.isFeatured).toList();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: CustomAppBar(
+        title: S.of(context).Brokers,
+        onBack: () {
+          Navigator.pop(
+            context,
+          );
+        },
+        showSearch: false,
+      ),
+      body: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          child: Column(
+            children: [
+              _buildSearchBar(),
+              const SizedBox(height: 16),
+              _buildFeaturedSection(),
+              const SizedBox(height: 16),
+              _buildAllBrokersSection(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildSearchBar() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return SizedBox(
+      height: screenWidth * 0.12,
+      child: Row(
+        children: [
+          Expanded(
+            flex: 5,
+            child: Container(
+              height: screenWidth * 0.12,
+              decoration: BoxDecoration(
+                color: const Color(0xffFAFAFA),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
+              child: TextField(
+                onChanged: (value) => setState(() => searchQuery = value),
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                decoration: InputDecoration(
+                  hintText: S.of(context).SearchForBrokers,
+                  hintStyle: TextStyle(
+                    fontSize: screenWidth * 0.03,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.grey,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.symmetric(
+                    vertical: screenWidth * 0.035,
+                    horizontal: screenWidth * 0.02,
+                  ),
+                  prefixIcon: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                    child: Icon(
+                      Icons.search_outlined,
+                      color: Colors.grey,
+                      size: screenWidth * 0.05,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+          SizedBox(width: screenWidth * 0.02),
+          Expanded(
+            flex: 1,
+            child: Container(
+              height: screenWidth * 0.12,
+              decoration: BoxDecoration(
+                color: const Color(0xffFAFAFA),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: const Color(0xffE9E9E9)),
+              ),
+              child: IconButton(
+                icon: Image.asset(
+                  'Assets/icons8-filter-48.png',
+                  width: screenWidth * 0.05,
+                  height: screenWidth * 0.05,
+                  color: KprimaryColor,
+                  fit: BoxFit.contain,
+                ),
+                onPressed: _showAdvancedFilter,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeaturedSection() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final featured = featuredBrokers;
+    if (featured.isEmpty) return const SizedBox.shrink();
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.of(context).FeaturedBrokers,
+          style: TextStyle(
+            fontSize: screenWidth * 0.035,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: screenWidth * 0.02),
+        SizedBox(
+          height: MediaQuery.of(context).size.width * 0.5,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: featured.length,
+            itemBuilder: (context, index) {
+              return _buildFeaturedBrokerContainer(featured[index]);
+            },
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildFeaturedBrokerContainer(Broker broker) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
-    final Map<String, List<String>> governoratesWithCities = {
-      "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
-      "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
-      "Alexandria": ["Smouha", "Sidi Gaber", "Asafra", "Mandara", "Montaza", "Gleem", "Stanley", "Miami", "San Stefano"],
-      "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
-      "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
-      "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
-      "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
-      "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
-      "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
-      "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
-      "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
-      "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
-      "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
-      "Port Said": ["Port Said City", "Port Fouad"],
-      "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
-      "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
-      "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
-      "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
-      "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
-      "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
-      "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
-      "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
-      "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
-      "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
-      "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
-      "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
-    };
+    return Container(
+      width: screenWidth * 0.4,
+      margin: EdgeInsets.only(
+        left: Localizations.localeOf(context).languageCode == 'ar' ? screenWidth * 0.02 : 0,
+        right: Localizations.localeOf(context).languageCode == 'ar' ? 0 : screenWidth * 0.02,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 2,
+            blurRadius: 5,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => _showBrokerDetails(broker),
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.02),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CircleAvatar(
+                radius: screenWidth * 0.07,
+                backgroundImage: AssetImage(broker.image),
+              ),
+              SizedBox(height: screenHeight * 0.01),
+              Text(
+                broker.name,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+              SizedBox(height: screenHeight * 0.001),
+              Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
+                  SizedBox(width: screenWidth * 0.01),
+                  Flexible(
+                    child: Text(
+                      "${broker.city}, ${broker.location}",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.03,
+                        color: SubText,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                ],
+              ),
+              SizedBox(height: screenHeight * 0.002),
+              RatingBarIndicator(
+                rating: broker.rating,
+                itemBuilder: (context, _) => Icon(
+                  Icons.star,
+                  color: SecondaryColor,
+                ),
+                itemCount: 5,
+                itemSize: screenWidth * 0.04,
+              ),
+              SizedBox(height: screenHeight * 0.001),
+              Text(
+                '${broker.rating.toStringAsFixed(1)}',
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: SubText,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildAllBrokersSection() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final brokersList = filteredBrokers;
+    if (brokersList.isEmpty) {
+      return Container(
+        margin: EdgeInsets.only(bottom: screenWidth * 0.03),
+        padding: EdgeInsets.all(screenWidth * 0.03),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: SubText, width: 1),
+        ),
+        child: Center(
+          child: Text(
+            S.of(context).NoBrokersAvailable,
+            style: TextStyle(
+              fontSize: screenWidth * 0.035,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      );
+    }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          S.of(context).Brokers,
+          style: TextStyle(
+            fontSize: screenWidth * 0.035,
+            color: Colors.black,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: screenWidth * 0.02),
+        ListView.builder(
+          physics: const NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: brokersList.length,
+          itemBuilder: (context, index) {
+            return _buildBrokerContainer(brokersList[index]);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildBrokerContainer(Broker broker) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    return Container(
+      margin: EdgeInsets.only(bottom: screenWidth * 0.03),
+      padding: EdgeInsets.all(screenWidth * 0.03),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        border: Border.all(color: Colors.grey.shade300),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.withOpacity(0.1),
+            spreadRadius: 1,
+            blurRadius: 5,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: InkWell(
+        onTap: () => _showBrokerDetails(broker),
+        child: Row(
+          children: [
+            CircleAvatar(
+              radius: screenWidth * 0.07,
+              backgroundImage: AssetImage(broker.image),
+            ),
+            SizedBox(width: screenWidth * 0.04),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    broker.name,
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.035,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: screenHeight * 0.001),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
+                      SizedBox(width: screenWidth * 0.001),
+                      Text(
+                        "${broker.city}, ${broker.location}",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: SubText,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              children: [
+                Icon(Icons.star, size: screenWidth * 0.05, color: SecondaryColor),
+                SizedBox(height: screenWidth * 0.01),
+                Text(
+                  '${broker.rating.toStringAsFixed(1)}',
+                  style: TextStyle(
+                    color: SubText,
+                    fontSize: screenWidth * 0.03,
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showBrokerDetails(Broker broker) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BrokerDetailsPage(
+          broker: {
+            "name": broker.name,
+            "phone": broker.phone,
+            "location": broker.location,
+            "city": broker.city,
+            "details": broker.details,
+            "image": broker.image,
+            "rating": broker.rating,
+            "reviews": broker.reviews,
+            "isFeatured": broker.isFeatured,
+          },
+        ),
+      ),
+    );
+  }
+
+  final List<Map<String, dynamic>> _filterOptions = [
+    {"title": "HighestRating", "value": "rating"},
+  ];
+
+  String? _selectedGovernorate;
+  String? _selectedCity;
+  String _selectedFilter = "none";
+
+  void _showAdvancedFilter() {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-      ),
-      builder: (BuildContext context) {
+      builder: (context) {
         return StatefulBuilder(
-          builder: (BuildContext context, StateSetter setState) {
+          builder: (context, setModalState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.55,
+              height: screenHeight * 0.7,
               child: Column(
+                mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
@@ -142,7 +445,7 @@ class _BrokersPageState extends State<BrokersPage> {
                       ),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
-                        'Search Options',
+                        S.of(context).SearchOptions,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -170,7 +473,7 @@ class _BrokersPageState extends State<BrokersPage> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'Location',
+                        S.of(context).Location,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -184,7 +487,7 @@ class _BrokersPageState extends State<BrokersPage> {
                             context: context,
                             governoratesWithCities: governoratesWithCities,
                             onLocationSelected: (governorate, city) {
-                              setState(() {
+                              setModalState(() {
                                 _selectedGovernorate = governorate;
                                 _selectedCity = city;
                               });
@@ -209,15 +512,15 @@ class _BrokersPageState extends State<BrokersPage> {
                           ),
                           child: (_selectedGovernorate != null && _selectedCity != null)
                               ? Padding(
-                            padding: EdgeInsets.only(left: screenWidth * 0.02),
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                             child: Row(
                               children: [
-                                Icon(Icons.location_on_outlined, color: KprimaryColor
-                                    , size: screenWidth * 0.045),
+                                Icon(Icons.location_on_outlined,
+                                    color: KprimaryColor, size: screenWidth * 0.045),
                                 SizedBox(width: screenWidth * 0.02),
                                 Expanded(
                                   child: Text(
-                                    '$_selectedCity , $_selectedGovernorate',
+                                    '$_selectedCity, $_selectedGovernorate',
                                     style: TextStyle(
                                       color: Colors.black,
                                       fontSize: screenWidth * 0.03,
@@ -227,14 +530,15 @@ class _BrokersPageState extends State<BrokersPage> {
                                 ),
                               ],
                             ),
-                          ) : Center(
+                          )
+                              : Center(
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
-                                  'Choose Location',
+                                  S.of(context).ChooseLocation,
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Colors.black,
@@ -246,54 +550,52 @@ class _BrokersPageState extends State<BrokersPage> {
                           ),
                         ),
                       ),
-                      SizedBox(height: screenHeight * 0.02),
-                      Text(
-                        'Rating',
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.008),
-                      ..._filterOptions.map((option) {
-                        bool isSelected = _selectedFilter == option['value'];
-                        return GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _selectedFilter = option['value'];
-                            });
-                          },
-                          child: Container(
-                            width: double.infinity,
-                            margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
-                            decoration: BoxDecoration(
-                              color: isSelected ? KprimaryColor.withOpacity(0.1)
-                                  : KprimaryColor.withOpacity(0.05),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: isSelected ? KprimaryColor
-                                    : KprimaryColor.withOpacity(0.3),
-                                width: 1.0,
-                              ),
-                            ),
-                            child: Padding(
-                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.03, vertical: screenWidth * 0.02),
-                              child: Text(
-                                option['title'],
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: screenWidth * 0.03,
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                      }).toList(),
                     ],
                   ),
+                  SizedBox(height: screenHeight * 0.02),
+                  Text(
+                    S.of(context).Rating,
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.035,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.black,
+                    ),
+                  ),
+                  SizedBox(height: screenHeight * 0.008),
+                  ..._filterOptions.map((option) {
+                    bool isSelected = _selectedFilter == option['value'];
+                    return GestureDetector(
+                      onTap: () {
+                        setModalState(() {
+                          _selectedFilter = option['value'];
+                        });
+                      },
+                      child: Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                        decoration: BoxDecoration(
+                          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
+                          borderRadius: BorderRadius.circular(8),
+                          border: Border.all(
+                            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
+                            width: 1.0,
+                          ),
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                          child: Text(
+                            S.of(context).HighestRating,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                              fontSize: screenWidth * 0.03,
+                            ),
+                          ),
+                        ),
+                      ),
+                    );
+                  }).toList(),
                   const Spacer(),
                   Row(
                     children: [
@@ -312,10 +614,11 @@ class _BrokersPageState extends State<BrokersPage> {
                             ),
                           ),
                           onPressed: () {
+                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
-                            '${S.of(context).Show} 52 ${S.of(context).Results}',
+                            '${S.of(context).Show} ${filteredBrokers.length} ${S.of(context).Results}',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -327,46 +630,27 @@ class _BrokersPageState extends State<BrokersPage> {
                       SizedBox(width: screenWidth * 0.02),
                       Expanded(
                         child: ElevatedButton(
-                          style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all(
-                              Size(double.infinity, screenWidth * 0.12),
+                          style: ElevatedButton.styleFrom(
+                            minimumSize: Size(double.infinity, screenWidth * 0.12),
+                            backgroundColor: Colors.white,
+                            foregroundColor: KprimaryColor,
+                            side: BorderSide(
+                              color: KprimaryColor,
+                              width: 1,
                             ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return Colors.white;
-                              }
-                              return Colors.white;
-                            }),
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return KprimaryColor.withOpacity(0.3);
-                              }
-                              return KprimaryColor;
-                            }),
-                            side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                              return BorderSide(
-                                color: (states.contains(MaterialState.disabled))
-                                    ? KprimaryColor.withOpacity(0.3)
-                                    : KprimaryColor,
-                                width: 1,
-                              );
-                            }),
-                            shape: MaterialStateProperty.all(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
                             ),
                           ),
-                          onPressed: (_selectedGovernorate == null &&
-                              _selectedCity == null &&
-                              _selectedFilter == "none")
+                          onPressed: (_selectedGovernorate == null && _selectedCity == null && _selectedFilter == "none")
                               ? null
                               : () {
-                            setState(() {
+                            setModalState(() {
                               _selectedFilter = "none";
                               _selectedCity = null;
                               _selectedGovernorate = null;
                             });
+                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
@@ -388,6 +672,7 @@ class _BrokersPageState extends State<BrokersPage> {
       },
     );
   }
+
   void _showAddLocationSheet({
     required BuildContext context,
     required Map<String, List<String>> governoratesWithCities,
@@ -404,15 +689,15 @@ class _BrokersPageState extends State<BrokersPage> {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
       builder: (context) {
         return StatefulBuilder(
-          builder: (context, setState) {
+          builder: (context, setModalState) {
             return Container(
               height: screenHeight * 0.7,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
               ),
@@ -435,7 +720,7 @@ class _BrokersPageState extends State<BrokersPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
-                        'Select Location',
+                        S.of(context).SelectLocation,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           fontWeight: FontWeight.bold,
@@ -444,14 +729,14 @@ class _BrokersPageState extends State<BrokersPage> {
                       ),
                       IconButton(
                         icon: Icon(
-                          Icons.arrow_forward_ios,
+                          Icons.close,
                           size: screenWidth * 0.045,
                         ),
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+                        constraints: const BoxConstraints(),
                         onPressed: () {
                           if (selectedGovernorate.isNotEmpty) {
-                            setState(() {
+                            setModalState(() {
                               selectedGovernorate = "";
                               selectedCity = "";
                               searchText = "";
@@ -490,17 +775,17 @@ class _BrokersPageState extends State<BrokersPage> {
                           horizontal: screenWidth * 0.02,
                         ),
                         prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                           child: Icon(
                             Icons.search_outlined,
                             color: Colors.grey,
                             size: screenWidth * 0.05,
                           ),
                         ),
-                        hintText: 'Search for governorate or city',
+                        hintText: S.of(context).SearchForGovernorateOrCity,
                       ),
                       onChanged: (value) {
-                        setState(() {
+                        setModalState(() {
                           searchText = value;
                         });
                       },
@@ -514,8 +799,7 @@ class _BrokersPageState extends State<BrokersPage> {
                           if (selectedGovernorate.isEmpty)
                             ...governoratesWithCities.keys
                                 .where((gov) =>
-                            searchText.isEmpty ||
-                                gov.toLowerCase().contains(searchText.toLowerCase()))
+                            searchText.isEmpty || gov.toLowerCase().contains(searchText.toLowerCase()))
                                 .map((governorate) => Column(
                               children: [
                                 ListTile(
@@ -530,7 +814,7 @@ class _BrokersPageState extends State<BrokersPage> {
                                     ),
                                   ),
                                   onTap: () {
-                                    setState(() {
+                                    setModalState(() {
                                       selectedGovernorate = governorate;
                                       searchText = "";
                                     });
@@ -550,8 +834,7 @@ class _BrokersPageState extends State<BrokersPage> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: governoratesWithCities[selectedGovernorate]!
                                   .where((city) =>
-                              searchText.isEmpty ||
-                                  city.toLowerCase().contains(searchText.toLowerCase()))
+                              searchText.isEmpty || city.toLowerCase().contains(searchText.toLowerCase()))
                                   .map((city) => Column(
                                 children: [
                                   ListTile(
@@ -565,11 +848,20 @@ class _BrokersPageState extends State<BrokersPage> {
                                         fontSize: screenWidth * 0.03,
                                       ),
                                     ),
-                                    trailing: selectedCity == city
-                                        ? Icon(Icons.check,
-                                        color: KprimaryColor, size: screenWidth * 0.05)
+                                    trailing: _selectedCity == city
+                                        ? Padding(
+                                      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                                      child: Icon(
+                                        Icons.check,
+                                        color: KprimaryColor,
+                                        size: screenWidth * 0.05,
+                                      ),
+                                    )
                                         : null,
                                     onTap: () {
+                                      setModalState(() {
+                                        selectedCity = city;
+                                      });
                                       onLocationSelected(selectedGovernorate, city);
                                       Navigator.pop(context);
                                     },
@@ -597,197 +889,135 @@ class _BrokersPageState extends State<BrokersPage> {
     );
   }
 
-  @override
-  Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+  final List<Broker> brokers = [
+    Broker(
+      name: "Ahmed Hassan",
+      phone: "+20 101 234 5678",
+      location: "Cairo",
+      city: "New Cairo",
+      details: "Luxury real estate expert with 10 years of experience.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 4.2,
+      reviews: 15,
+      isFeatured: true,
+    ),
+    Broker(
+      name: "Mohamed Ali",
+      phone: "+20 102 876 5432",
+      location: "Alexandria",
+      city: "Smouha",
+      details: "Specialist in commercial properties and offices.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 3.8,
+      reviews: 10,
+      isFeatured: true,
+    ),
+    Broker(
+      name: "Mahmoud Ibrahim",
+      phone: "+20 103 654 3210",
+      location: "Giza",
+      city: "Dokki",
+      details: "Experienced in residential and investment properties.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 4.5,
+      reviews: 7,
+      isFeatured: true,
+    ),
+    Broker(
+      name: "Sara Khaled",
+      phone: "+20 104 789 0123",
+      location: "Cairo",
+      city: "Nasr City",
+      details: "Expert in rentals and small property deals.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 4.0,
+      reviews: 5,
+      isFeatured: false,
+    ),
+    Broker(
+      name: "Ali Mostafa",
+      phone: "+20 105 908 7654",
+      location: "Cairo",
+      city: "Maadi",
+      details: "Real estate evaluator and market analyst.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 4.7,
+      reviews: 12,
+      isFeatured: true,
+    ),
+    Broker(
+      name: "Yasmine Abdullah",
+      phone: "+20 106 321 6789",
+      location: "Giza",
+      city: "Sheikh Zayed",
+      details: "High-end property sales and purchases.",
+      image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
+      rating: 4.3,
+      reviews: 11,
+      isFeatured: false,
+    ),
+  ];
 
-    List<Map<String, dynamic>> filteredBrokers = brokers.where((broker) {
-      if (searchQuery.isNotEmpty) {
-        final nameMatch = broker["name"].toLowerCase().contains(searchQuery.toLowerCase());
-        final locationMatch = broker["location"].toLowerCase().contains(searchQuery.toLowerCase()) ||
-            broker["city"].toLowerCase().contains(searchQuery.toLowerCase());
-        return nameMatch || locationMatch;
-      }
-      return true;
-    }).toList();
-    return Scaffold(
-      backgroundColor: backgroundColor,
-      appBar: CustomAppBar(
-        title: 'Brokers',
-        onBack: () {
-          Navigator.pop(context);
-        },
-        showSearch: false,
-      ),
-      body: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.04),
-        child: Column(
-          children: [
-            SizedBox(
-              height: screenWidth * 0.12,
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      height: screenWidth * 0.12,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFAFAFA),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xffE9E9E9)),
-                      ),
-                      child: TextField(
-                        onChanged: (value) {
-                          setState(() {
-                            searchQuery = value;
-                          });
-                        },
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.03,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        textAlignVertical: TextAlignVertical.center,
-                        decoration: InputDecoration(
-                          hintText: 'Search by name or location',
-                          hintStyle: TextStyle(
-                            fontSize: screenWidth * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                          border: InputBorder.none,
-                          isCollapsed: false,
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: screenWidth * 0.035,
-                            horizontal: screenWidth * 0.02,
-                          ),
-                          prefixIcon: Icon(
-                            Icons.search_outlined,
-                            color: Colors.grey,
-                            size: screenWidth * 0.06,
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: screenWidth * 0.02),
-                  Expanded(
-                    flex: 1,
-                    child: Container(
-                      height: screenWidth * 0.12,
-                      decoration: BoxDecoration(
-                        color: const Color(0xffFAFAFA),
-                        borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: const Color(0xffE9E9E9)),
-                      ),
-                      child: IconButton(
-                        icon: Image.asset(
-                          'Assets/icons8-filter-48.png',
-                          width: screenWidth * 0.05,
-                          height: screenWidth * 0.05,
-                          color: KprimaryColor,
-                          fit: BoxFit.contain,
-                        ),
-                        onPressed: _showFilterBottomSheet,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            SizedBox(height: screenWidth * 0.03),
-            Expanded(
-              child: ListView.builder(
-                itemCount: filteredBrokers.length,
-                itemBuilder: (context, index) {
-                  final broker = filteredBrokers[index];
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => BrokerDetailsPage(broker: broker),
-                        ),
-                      );
-                    },
-                    child: Container(
-                      margin: EdgeInsets.only(bottom: screenWidth * 0.03),
-                      padding: EdgeInsets.all(screenWidth * 0.03),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(10),
-                        border: Border.all(color: Colors.grey.shade300),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 5,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        children: [
-                          CircleAvatar(
-                            radius: screenWidth * 0.07,
-                            backgroundImage: AssetImage(broker["image"]),
-                          ),
-                          SizedBox(width: screenWidth * 0.04),
-                          Expanded(
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  broker["name"],
-                                  style: TextStyle(
-                                    fontSize: screenWidth * 0.035,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                Row(
-                                  children: [
-                                    Icon(Icons.location_on_outlined,
-                                        size: screenWidth * 0.04, color: SecondaryColor),
-                                    SizedBox(width: screenWidth * 0.01),
-                                    Text(
-                                      "${broker["location"]}, ${broker["city"]}",
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 0.03,
-                                        color: SubText,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ),
-                          Column(
-                            children: [
-                              Icon(Icons.star,
-                                  size: screenWidth * 0.05,
-                                  color: SecondaryColor),
-                              SizedBox(height: screenWidth * 0.01),
-                              Text(
-                                broker["rating"].toString(),
-                                style: TextStyle(
-                                  color: SubText,
-                                  fontSize: screenWidth * 0.03,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
+  final Map<String, List<String>> governoratesWithCities = {
+    "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
+    "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
+    "Alexandria": [
+      "Smouha",
+      "Sidi Gaber",
+      "Asafra",
+      "Mandara",
+      "Montaza",
+      "Gleem",
+      "Stanley",
+      "Miami",
+      "San Stefano"
+    ],
+    "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
+    "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
+    "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
+    "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
+    "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
+    "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
+    "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
+    "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
+    "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
+    "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
+    "Port Said": ["Port Said City", "Port Fouad"],
+    "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
+    "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
+    "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
+    "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
+    "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
+    "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
+    "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
+    "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
+    "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
+    "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
+    "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
+    "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
+  };
 }
 
+class Broker {
+  final String name;
+  final String phone;
+  final String location;
+  final String city;
+  final String details;
+  final String image;
+  final double rating;
+  final int reviews;
+  final bool isFeatured;
+
+  Broker({
+    required this.name,
+    required this.phone,
+    required this.location,
+    required this.city,
+    required this.details,
+    required this.image,
+    required this.rating,
+    required this.reviews,
+    required this.isFeatured,
+  });
+}

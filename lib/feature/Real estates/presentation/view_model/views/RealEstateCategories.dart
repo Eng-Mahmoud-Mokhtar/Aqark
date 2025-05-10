@@ -20,7 +20,6 @@ class RealEstateCategories extends StatelessWidget {
       appBar: CustomAppBar(
         title: S.of(context).RealEstate,
         onBack: () => Navigator.pop(context),
-        onSearch: () {},
         showSearch: false,
       ),
       body: Padding(
@@ -39,7 +38,7 @@ class RealEstateCategories extends StatelessWidget {
             _buildCategoryItem(
               imagePath: "Assets/user.png",
               label: S.of(context).Brokers,
-              onTap: () => _navigateTo(context, BrokersPage()),
+              onTap: () => _navigateTo(context, BrokersScreen()),
               screenWidth: screenWidth,
             ),
             _buildCategoryItem(

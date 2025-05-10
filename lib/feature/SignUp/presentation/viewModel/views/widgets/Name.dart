@@ -16,12 +16,12 @@ class Name extends StatelessWidget {
           text: TextSpan(
             text: S.of(context).FullName ,
             style: TextStyle(
-                color: Colors.grey,
+                color: Colors.black,
                 fontSize: screenWidth * 0.035,
-                fontWeight: FontWeight.w500),
+                fontWeight: FontWeight.bold),
             children: const [
               TextSpan(
-                text: '*',
+                text: ' * ',
                 style: TextStyle(
                     color: SecondaryColor, fontWeight: FontWeight.bold),
               ),

@@ -22,7 +22,7 @@ class Home extends StatelessWidget {
 
     final List<Widget> pages = [
       const BodyHome(),
-      ExplorePage(),
+      ExplorePage(apartments: [],),
       WorkersScreen(),
       const MoreScreen(),
     ];

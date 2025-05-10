@@ -20,7 +20,6 @@ class FavoritePage extends StatelessWidget {
         appBar: CustomAppBar(
           title: S.of(context).favorites,
           onBack: () => Navigator.pop(context),
-          onSearch: () {},
           showSearch: true,
         ),
         body: Padding(

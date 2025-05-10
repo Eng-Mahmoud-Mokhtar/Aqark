@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
+import '../../../../../generated/l10n.dart';
 import 'Workers.dart';
 
 class WorkerDetailsScreen extends StatefulWidget {
@@ -32,60 +33,63 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
       "date": "1 week ago"
     },
   ];
+  final List<Map<String, dynamic>> _posts = [
+    {
+      "image": "Assets/side-view-man-working-as-plumber.jpg",
+      "title": "Outdoor Tiling",
+      "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
+      "date": "March 2025",
+    },
+    {
+      "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
+      "title": "Kitchen Plumbing",
+      "caption": "Installed a full water system for a modern kitchen in Riyadh.",
+      "date": "April 2025",
+    },
+    {
+      "image": "Assets/carpenter-works-with-tree.jpg",
+      "title": "Bathroom Leak Fix",
+      "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
+      "date": "February 2025",
+    },
+    {
+      "image": "Assets/side-view-man-working-as-plumber.jpg",
+      "title": "Patio Tiling",
+      "caption": "Tiled a large patio area for a residence in Dammam.",
+      "date": "January 2025",
+    },
+    {
+      "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
+      "title": "Electrical Rewiring",
+      "caption": "Rewired an office building in Jeddah for improved safety.",
+      "date": "December 2024",
+    },
+    {
+      "image": "Assets/carpenter-works-with-tree.jpg",
+      "title": "Custom Furniture",
+      "caption": "Crafted custom wooden furniture for a home in Riyadh.",
+      "date": "November 2024",
+    },
+  ];
 
-  final List<Map<String, dynamic>> _posts = List.generate(6, (index) {
-    final data = [
-      {
-        "image": "Assets/side-view-man-working-as-plumber.jpg",
-        "title": "Outdoor Tiling",
-        "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
-        "likes": 1,
-        "liked": false,
-        "date": "March 2025",
-      },
-      {
-        "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
-        "title": "Kitchen Plumbing",
-        "caption": "Installed a full water system for a modern kitchen in Riyadh.",
-        "likes": 5,
-        "liked": false,
-        "date": "April 2025",
-      },
-      {
-        "image": "Assets/carpenter-works-with-tree.jpg",
-        "title": "Bathroom Leak Fix",
-        "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
-        "likes": 10,
-        "liked": false,
-        "date": "February 2025",
-      },
-      {
-        "image": "Assets/side-view-man-working-as-plumber.jpg",
-        "title": "Outdoor Tiling",
-        "caption": "Completed outdoor tiling work for a villa entrance in Jeddah.",
-        "likes": 1,
-        "liked": false,
-        "date": "March 2025",
-      },
-      {
-        "image": "Assets/man-electrical-technician-working-switchboard-with-fuses.jpg",
-        "title": "Kitchen Plumbing",
-        "caption": "Installed a full water system for a modern kitchen in Riyadh.",
-        "likes": 5,
-        "liked": false,
-        "date": "April 2025",
-      },
-      {
-        "image": "Assets/carpenter-works-with-tree.jpg",
-        "title": "Bathroom Leak Fix",
-        "caption": "Fixed a pipe leak and installed new faucets in a guest bathroom.",
-        "likes": 10,
-        "liked": false,
-        "date": "February 2025",
-      },
-    ];
-    return data[index];
-  });
+  String getTranslatedProfession(BuildContext context, String professionId) {
+    switch (professionId) {
+      case 'mason':
+        return S.of(context).Mason;
+      case 'plumber':
+        return S.of(context).Plumber;
+      case 'carpenter':
+        return S.of(context).Carpenter;
+      case 'electrician':
+        return S.of(context).Electrician;
+      case 'painter':
+        return S.of(context).Painter;
+      case 'ac_technician':
+        return S.of(context).ACTechnician;
+      default:
+        return professionId;
+    }
+  }
 
   bool _isReviewComplete = false;
 
@@ -241,59 +245,20 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                         ),
                       ),
                       SizedBox(height: screenHeight * 0.005),
-                  Text(
-                          post["caption"],
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.03,
-                            color: Colors.grey[700],
-                          ),
+                      Text(
+                        post["caption"],
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.grey[700],
                         ),
+                      ),
                       SizedBox(height: screenHeight * 0.01),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            post["date"],
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.025,
-                              color:SubText,
-                            ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              setState(() {
-                                post["liked"] = !(post["liked"] ?? false);
-                                if (post["liked"]) {
-                                  post["likes"] += 1;
-                                } else {
-                                  post["likes"] -= 1;
-                                }
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Icon(
-                                  (post["liked"] ?? false)
-                                      ? Icons.favorite
-                                      : Icons.favorite_border,
-                                  color: (post["liked"] ?? false) ? Colors.red : SubText,
-                                  size: screenWidth * 0.05,
-                                ),
-                                SizedBox(width: 4),
-                                if (post["likes"] > 0)
-                                  Text(
-                                    post["likes"].toString(),
-                                    style: TextStyle(
-                                      color: SubText,
-                                      fontSize: screenWidth * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                          ),
-
-                        ],
+                      Text(
+                        post["date"],
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.025,
+                          color: SubText,
+                        ),
                       ),
                     ],
                   ),
@@ -323,7 +288,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
           child: Column(
             children: [
               Text(
-                "Add Your Review",
+                S.of(context).AddYourReview,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: screenWidth * 0.04,
@@ -350,7 +315,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                         ),
                         controller: _reviewController,
                         decoration: InputDecoration(
-                          hintText: "Write your review",
+                          hintText: S.of(context).WriteYourReview,
                           border: InputBorder.none,
                           hintStyle: TextStyle(
                             fontSize: screenWidth * 0.03,
@@ -455,7 +420,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: 'Worker Profile',
+        title: S.of(context).WorkerProfile,
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
@@ -482,7 +447,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                     ),
                     SizedBox(height: screenHeight * 0.005),
                     Text(
-                      widget.worker.profession,
+                      getTranslatedProfession(context, widget.worker.profession),
                       style: TextStyle(
                         fontSize: screenWidth * 0.04,
                         color: KprimaryColor,
@@ -506,7 +471,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "Details",
+                        S.of(context).Details,
                         style: TextStyle(
                           fontSize: screenWidth * 0.035,
                           color: Colors.black,
@@ -519,7 +484,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                           Icon(Icons.work_outline, size: screenWidth * 0.04),
                           SizedBox(width: screenWidth * 0.02),
                           Text(
-                            widget.worker.experience,
+                            "${widget.worker.experience} ${S.of(context).yearsExperience}",
                             style: TextStyle(
                               fontSize: screenWidth * 0.03,
                               color: Colors.black,
@@ -549,7 +514,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                           Icon(Icons.star_outline, size: screenWidth * 0.04),
                           SizedBox(width: screenWidth * 0.02),
                           Text(
-                            'Rating: (${widget.worker.rating})',
+                            '${S.of(context).Rating} : (${widget.worker.rating})',
                             style: TextStyle(
                               fontSize: screenWidth * 0.03,
                               color: Colors.black,
@@ -572,7 +537,6 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                   ),
                 ),
                 SizedBox(height: screenHeight * 0.02),
-
                 // Tabs
                 Container(
                   height: screenWidth * 0.12,
@@ -599,7 +563,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                "Posts (${_posts.length})",
+                                "${S.of(context).Posts} (${_posts.length})",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
@@ -628,7 +592,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                             ),
                             child: Center(
                               child: Text(
-                                "Reviews (${_reviews.length})",
+                                "${S.of(context).Reviews} (${_reviews.length})",
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   fontWeight: FontWeight.bold,
@@ -662,7 +626,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                 children: [
                   Expanded(
                     child: InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         height: screenWidth * 0.12,
                         decoration: BoxDecoration(
@@ -684,7 +648,7 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                               ),
                               SizedBox(width: screenWidth * 0.02),
                               Text(
-                                'Call Us',
+                                S.of(context).CallUs,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: KprimaryColor,
@@ -700,11 +664,11 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                   SizedBox(width: screenWidth * 0.02),
                   Expanded(
                     child: InkWell(
-                      onTap: (){},
+                      onTap: () {},
                       child: Container(
                         height: screenWidth * 0.12,
                         decoration: BoxDecoration(
-                          color: Color(0xff06cd46e),
+                          color: const Color(0xff25D366),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
@@ -715,10 +679,9 @@ class _WorkerDetailsScreenState extends State<WorkerDetailsScreen> {
                                 'Assets/logos_whatsapp-icon.png',
                                 height: screenWidth * 0.12,
                                 width: screenWidth * 0.12,
-
                               ),
                               Text(
-                                'WhatsApp',
+                                S.of(context).WhatsApp,
                                 style: TextStyle(
                                   fontSize: screenWidth * 0.035,
                                   color: Colors.white,
