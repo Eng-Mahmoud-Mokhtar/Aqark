@@ -1,18 +1,18 @@
 import 'package:bk/core/utiles/constans.dart';
 import 'package:flutter/material.dart';
-
 import '../../feature/Home/presentation/view_model/views/Search.dart';
-import '../../feature/Home/presentation/view_model/views/Widget/buildSearchBar.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final VoidCallback onBack;
   final bool showSearch;
+  final VoidCallback? onPressed;
 
   const CustomAppBar({
     Key? key,
     required this.title,
     required this.onBack,
+    this.onPressed,
     this.showSearch = true,
   }) : super(key: key);
 
@@ -74,35 +74,34 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
           ),
         ),
-        Padding(
-          padding: EdgeInsetsDirectional.only(
-            start: screenWidth * 0.015,
-            end: screenWidth * 0.04,
-            top: screenWidth * 0.02,
-            bottom: screenWidth * 0.02,
-          ),
-          child: Container(
-            height: screenWidth * 0.1,
-            width: screenWidth * 0.1,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey.shade400),
+        if (onPressed != null)
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              start: screenWidth * 0.015,
+              end: screenWidth * 0.04,
+              top: screenWidth * 0.02,
+              bottom: screenWidth * 0.02,
             ),
-            child: IconButton(
-              icon: Image.asset(
-                'Assets/icons8-filter-48.png',
-                width: screenWidth * 0.06,
-                height: screenWidth * 0.06,
-                color: Colors.grey.shade600,
-                fit: BoxFit.contain,
+            child: Container(
+              height: screenWidth * 0.1,
+              width: screenWidth * 0.1,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade400),
               ),
-              onPressed: () {
-                showFilterBottomSheet(context);
-              },
+              child: IconButton(
+                icon: Image.asset(
+                  'Assets/icons8-filter-48.png',
+                  width: screenWidth * 0.06,
+                  height: screenWidth * 0.06,
+                  color: Colors.grey.shade600,
+                  fit: BoxFit.contain,
+                ),
+                onPressed: onPressed, // فقط لو موجودة
+              ),
             ),
           ),
-        ),
       ]
           : [],
       bottom: PreferredSize(

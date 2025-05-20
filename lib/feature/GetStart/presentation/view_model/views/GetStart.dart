@@ -1,6 +1,7 @@
 import 'package:bk/feature/GetStart/presentation/view_model/views/widgets/BodyPageWelcome.dart';
 import 'package:bk/feature/GetStart/presentation/view_model/views/widgets/ContitionAndPrivacy.dart';
 import 'package:flutter/material.dart';
+import '../../../../../core/utiles/Assets_Data.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../Home/presentation/view_model/views/BottomHome.dart';
 
@@ -29,9 +30,10 @@ class Welcome extends StatelessWidget {
                             SizedBox(height: screenHeight * 0.1),
                             Center(
                               child: Image.asset(
-                                'Assets/1.png',
+                                AssetsData.Logo,
                                 width: screenWidth * 0.355,
                                 height: screenHeight * 0.25,
+                                color: KprimaryColor,
                                 fit: BoxFit.contain,
                               ),
                             ),

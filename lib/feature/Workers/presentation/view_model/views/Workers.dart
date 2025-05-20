@@ -516,6 +516,10 @@ class _WorkersScreenState extends State<WorkersScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
@@ -788,11 +792,10 @@ class _WorkersScreenState extends State<WorkersScreen> {
                             ),
                           ),
                           onPressed: () {
-                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
-                            '${S.of(context).Show} ${filteredWorkers.length} ${S.of(context).Results}',
+                            "${S.of(context).Show} 52",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -804,31 +807,46 @@ class _WorkersScreenState extends State<WorkersScreen> {
                       SizedBox(width: screenWidth * 0.02),
                       Expanded(
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, screenWidth * 0.12),
-                            backgroundColor: Colors.white,
-                            foregroundColor: KprimaryColor,
-                            side: BorderSide(
-                              color: KprimaryColor,
-                              width: 1,
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(
+                              Size(double.infinity, screenWidth * 0.12),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Colors.white;
+                              }
+                              return Colors.white;
+                            }),
+                            foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return KprimaryColor.withOpacity(0.3);
+                              }
+                              return KprimaryColor;
+                            }),
+                            side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+                              return BorderSide(
+                                color: (states.contains(MaterialState.disabled))
+                                    ? KprimaryColor.withOpacity(0.3)
+                                    : KprimaryColor,
+                                width: 1,
+                              );
+                            }),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
                           onPressed: (_selectedGovernorate == null &&
                               _selectedCity == null &&
-                              _selectedFilter == "none" &&
-                              selectedWorkers == 'all')
+                              _selectedFilter == "none")
                               ? null
                               : () {
-                            setModalState(() {
+                            setState(() {
                               _selectedFilter = "none";
                               _selectedCity = null;
                               _selectedGovernorate = null;
-                              selectedWorkers = 'all';
                             });
-                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
@@ -1173,6 +1191,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Ahmed Mohamed',
     profession: 'mason',
+    phone: "+20 106 321 6789",
     experience: '8',
     address: 'Nasr City, Cairo',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1184,6 +1203,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Mahmoud Ali',
     profession: 'plumber',
+    phone: "+20 106 321 6789",
     experience: '6',
     address: 'Maadi, Cairo',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1195,6 +1215,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Ibrahim Samy',
     profession: 'carpenter',
+    phone: "+20 106 321 6789",
     experience: '7',
     address: 'Heliopolis, Cairo',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1206,6 +1227,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Khaled Hussein',
     profession: 'electrician',
+    phone: "+20 106 321 6789",
     experience: '5',
     address: 'Zamalek, Cairo',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1217,6 +1239,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Mostafa Ahmed',
     profession: 'painter',
+    phone: "+20 106 321 6789",
     experience: '4',
     address: 'Dokki, Giza',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1228,6 +1251,7 @@ final List<Worker> workers = [
   Worker(
     name: 'Yasser Abdullah',
     profession: 'ac_technician',
+    phone: "+20 106 321 6789",
     experience: '9',
     address: 'Sheikh Zayed, Giza',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
@@ -1240,6 +1264,7 @@ final List<Worker> workers = [
     name: 'Emad El-Sayed',
     profession: 'mason',
     experience: '10',
+    phone: "+20 106 321 6789",
     address: 'Mokattam, Cairo',
     image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
     rating: 2.6,
@@ -1280,6 +1305,7 @@ class Worker {
   final String name;
   final String profession;
   final String experience;
+  final String phone;
   final String address;
   final String image;
   final double rating;
@@ -1291,6 +1317,7 @@ class Worker {
     required this.name,
     required this.profession,
     required this.experience,
+    required this.phone,
     required this.address,
     required this.image,
     required this.rating,

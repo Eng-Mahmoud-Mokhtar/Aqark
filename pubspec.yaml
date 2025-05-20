@@ -47,9 +47,10 @@ dependencies:
   flutter_rating_bar:
 
 flutter_launcher_icons:
+  adaptive_icon_background: "#FFFFFF"
   android: true
   ios: true
-  image_path: "Assets/2.jpg"
+  image_path: "Assets/freepik__logo-design-for-a-real-estate-app-featuring-the-le__89841.png"
 
 dev_dependencies:
   flutter_test:

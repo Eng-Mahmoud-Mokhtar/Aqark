@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import '../../../../../core/utiles/DetailesProperty.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import 'Widget/buildDetailsRow.dart';
-import 'Widget/buildLocationRow.dart';
-import 'Widget/buildPriceRow.dart';
+import 'AllRealEstates.dart';
+
 
 class SuggestApartments {
   final List<String> images;
@@ -159,8 +158,7 @@ class _SuggestPropertiesState extends State<SuggestProperties> {
                     ),
                   ),
                   SizedBox(height: screenWidth * 0.02),
-                  buildLocationRow(
-                      screenWidth, apartment.address, apartment.location),
+                  buildLocationRow(screenWidth, apartment.address, apartment.location),
                   SizedBox(height: screenWidth * 0.01),
                   buildDetailsRow(
                       context,

@@ -13,142 +13,33 @@ class BrokerDetailsPage extends StatefulWidget {
 }
 
 class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
-  int _currentTabIndex = 0;
-  double _selectedRating = 0.0;
-  final TextEditingController _reviewController = TextEditingController();
-  final List<Map<String, dynamic>> _reviews = [
-    {
-      "user": "John Smith",
-      "avatar": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 4.5,
-      "comment":
-          "Excellent service! Very professional broker who helped me find my dream home quickly. The whole process was smooth and efficient.",
-      "date": "2 days ago"
-    },
-    {
-      "user": "Sarah Johnson",
-      "avatar": "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      "rating": 5.0,
-      "comment":
-          "Highly recommended! Knowledgeable and patient throughout the entire process. Went above and beyond to find the perfect property for my family.",
-      "date": "1 week ago"
-    },
-  ];
   final List<Map<String, dynamic>> _listings = List.generate(
-      5,
-      (index) => {
-            "isFavorite": false,
-            "image": "Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg",
-            "title": "Luxury Apartment ${index + 1}",
-            "location": "Cairo, Street, ${index + 15}",
-            "baths": 2,
-            "beds": 3 + index,
-            "size": 150 + (index * 20),
-            "price": 1800000 + (index * 100000),
-            "description": "This is a detailed description of property ${index + 1} with all features and amenities",
-            "type": "Apartment",
-            "finishingType": "High End",
-            "listingDate": "2023-06-${10 + index}",
-            "ownerNumber": "0101234567${index}",
-            "deliveryType": "Ready",
-            "paymentDetails": "Cash or Installment"
-          });
-  bool _isReviewComplete = false;
-  @override
-  void initState() {
-    super.initState();
-    _reviewController.addListener(_updateReviewStatus);
-  }
-  @override
-  void dispose() {
-    _reviewController.dispose();
-    super.dispose();
-  }
-  void _updateReviewStatus() {
-    setState(() {
-      _isReviewComplete =
-          _selectedRating > 0 && _reviewController.text.isNotEmpty;
-    });
-  }
-  void _submitReview() {
-    if (_isReviewComplete) {
-      setState(() {
-        _reviews.insert(0, {
-          "user": "User",
-          "avatar": "Assets/Screenshot (13).png",
-          "rating": _selectedRating,
-          "comment": _reviewController.text,
-          "date": "Just now"
-        });
-        _selectedRating = 0.0;
-        _reviewController.clear();
-        _isReviewComplete = false;
-      });
-    }
-  }
-  Widget _buildStarRating() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: List.generate(5, (index) {
-        return GestureDetector(
-          onTap: () {
-            setState(() {
-              _selectedRating = index + 1.0;
-              _updateReviewStatus();
-            });
-          },
-          child: Icon(
-            index < _selectedRating.floor()
-                ? Icons.star
-                : (index < _selectedRating
-                    ? Icons.star_half
-                    : Icons.star_border),
-            size: screenWidth * 0.06,
-            color: SecondaryColor,
-          ),
-        );
-      }),
-    );
-  }
-  Widget _buildRatingIndicator(double rating) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Row(
-          children: List.generate(
-            rating.floor(),
-            (i) => Icon(Icons.star,
-                size: screenWidth * 0.04, color: SecondaryColor),
-          ),
-        ),
-        if (rating % 1 >= 0.5)
-          Icon(Icons.star_half,
-              size: screenWidth * 0.04, color: SecondaryColor),
-        Row(
-          children: List.generate(
-            5 - rating.ceil(),
-            (i) => Icon(Icons.star_border,
-                size: screenWidth * 0.04, color: SecondaryColor),
-          ),
-        ),
-        SizedBox(width: 4),
-        Text(
-          rating.toStringAsFixed(1),
-          style: TextStyle(
-            fontSize: screenWidth * 0.03,
-            color: Colors.grey,
-          ),
-        ),
-      ],
-    );
-  }
+    5,
+        (index) => {
+      "isFavorite": false,
+      "image": "Assets/2f16b3f2-2b9b-4231-8768-5e09cb827110.jpeg",
+      "title": "Luxury Apartment ${index + 1}",
+      "location": "Cairo, Street, ${index + 15}",
+      "baths": 2,
+      "beds": 3 + index,
+      "size": 150 + (index * 20),
+      "price": 1800000 + (index * 100000),
+      "description": "This is a detailed description of property ${index + 1} with all features and amenities",
+      "type": "Apartment",
+      "finishingType": "High End",
+      "listingDate": "2023-06-${10 + index}",
+      "ownerNumber": "0101234567${index}",
+      "deliveryType": "Ready",
+      "paymentDetails": "Cash or Installment"
+    },
+  );
+
   Widget _buildListingsTab() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
 
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: _listings.asMap().entries.map((entry) {
         final index = entry.key;
         final listing = entry.value;
@@ -171,6 +62,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                 ),
               ),
               child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Stack(
                     children: [
@@ -204,12 +96,8 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                             ),
                             child: Center(
                               child: Icon(
-                                listing["isFavorite"]
-                                    ? Icons.favorite
-                                    : Icons.favorite_border,
-                                color: listing["isFavorite"]
-                                    ? Colors.red
-                                    : SubText,
+                                listing["isFavorite"] ? Icons.favorite : Icons.favorite_border,
+                                color: listing["isFavorite"] ? Colors.red : SubText,
                                 size: screenWidth * 0.06,
                               ),
                             ),
@@ -224,7 +112,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          mainAxisAlignment: MainAxisAlignment.start,
                           children: [
                             Expanded(
                               child: Text(
@@ -236,40 +124,12 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                                 ),
                               ),
                             ),
-                            Container(
-                              padding: EdgeInsets.symmetric(
-                                horizontal: screenWidth * 0.04,
-                                vertical: screenWidth * 0.01,
-                              ),
-                              decoration: BoxDecoration(
-                                color: KprimaryColor,
-                                borderRadius: BorderRadius.circular(8),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    spreadRadius: 1,
-                                    blurRadius: 3,
-                                    offset: Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                S.of(context).for_rent,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.025,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         SizedBox(height: screenWidth * 0.02),
                         Row(
                           children: [
-                            Icon(Icons.location_on_outlined,
-                                size: screenWidth * 0.04,
-                                color: SecondaryColor),
+                            Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
                             SizedBox(width: screenWidth * 0.01),
                             Expanded(
                               child: Text(
@@ -286,90 +146,91 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                         ),
                         SizedBox(height: screenWidth * 0.01),
                         Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.01,
-                                  vertical: screenWidth * 0.01,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: KprimaryColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/icons8-bathtub-48.png',
-                                      width: screenWidth * 0.05,
-                                      height: screenWidth * 0.05,
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.01,
+                                vertical: screenWidth * 0.01,
+                              ),
+                              decoration: BoxDecoration(
+                                color: KprimaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    'Assets/icons8-bathtub-48.png',
+                                    width: screenWidth * 0.05,
+                                    height: screenWidth * 0.05,
+                                  ),
+                                  SizedBox(width: screenWidth * 0.01),
+                                  Text(
+                                    listing["baths"].toString(),
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.03,
+                                      color: KprimaryColor,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                    SizedBox(width: screenWidth * 0.01),
-                                    Text(
-                                      listing["baths"].toString(),
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 0.03,
-                                        color: KprimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: screenWidth * 0.01,
+                                vertical: screenWidth * 0.01,
+                              ),
+                              decoration: BoxDecoration(
+                                color: KprimaryColor.withOpacity(0.1),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Row(
+                                children: [
+                                  Image.asset(
+                                    'Assets/icons8-bedroom-50.png',
+                                    width: screenWidth * 0.05,
+                                    height: screenWidth * 0.05,
+                                  ),
+                                  SizedBox(width: screenWidth * 0.01),
+                                  Text(
+                                    listing["beds"].toString(),
+                                    style: TextStyle(
+                                      fontSize: screenWidth * 0.03,
+                                      color: KprimaryColor,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Container(
-                                padding: EdgeInsets.symmetric(
-                                  horizontal: screenWidth * 0.01,
-                                  vertical: screenWidth * 0.01,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: KprimaryColor.withOpacity(0.1),
-                                  borderRadius: BorderRadius.circular(5),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Image.asset(
-                                      'Assets/icons8-bedroom-50.png',
-                                      width: screenWidth * 0.05,
-                                      height: screenWidth * 0.05,
-                                    ),
-                                    SizedBox(width: screenWidth * 0.01),
-                                    Text(
-                                      listing["beds"].toString(),
-                                      style: TextStyle(
-                                        fontSize: screenWidth * 0.03,
-                                        color: KprimaryColor,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Text(
+                              '|',
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.06,
+                                fontWeight: FontWeight.w300,
+                                color: Colors.grey.shade400,
                               ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Text(
-                                '|',
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.06,
-                                  fontWeight: FontWeight.w300,
-                                  color: Colors.grey.shade400,
-                                ),
+                            ),
+                            SizedBox(width: screenWidth * 0.02),
+                            Image.asset(
+                              'Assets/icons8-enlarge-30.png',
+                              width: screenWidth * 0.04,
+                              height: screenWidth * 0.04,
+                            ),
+                            SizedBox(width: screenWidth * 0.01),
+                            Text(
+                              '${listing["size"]} ${S.of(context).m}',
+                              style: TextStyle(
+                                fontSize: screenWidth * 0.03,
+                                color: const Color(0xff9E9E9E),
+                                fontWeight: FontWeight.w400,
                               ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Image.asset(
-                                'Assets/icons8-enlarge-30.png',
-                                width: screenWidth * 0.04,
-                                height: screenWidth * 0.04,
-                              ),
-                              SizedBox(width: screenWidth * 0.01),
-                              Text(
-                                '${listing["size"]} ${S.of(context).m}',
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.03,
-                                  color: const Color(0xff9E9E9E),
-                                  fontWeight: FontWeight.w400,
-                                ),
-                              ),
-                            ]),
+                            ),
+                          ],
+                        ),
                         SizedBox(height: screenWidth * 0.01),
                         Text(
                           '${listing["price"]} ${S.of(context).EGP}',
@@ -378,7 +239,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                             color: SecondaryColor,
                             fontWeight: FontWeight.w700,
                           ),
-                        )
+                        ),
                       ],
                     ),
                   ),
@@ -390,146 +251,7 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
       }).toList(),
     );
   }
-  Widget _buildReviewsTab() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    return Column(
-      children: [
-        Container(
-          height: screenHeight * 0.26,
-          margin: EdgeInsets.all(screenWidth * 0.04),
-          padding: EdgeInsets.all(screenWidth * 0.04),
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(8),
-            border: Border.all(color: Colors.grey.shade300),
-          ),
-          child: Column(
-            children: [
-              Text(
-                S.of(context).AddYourReview,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: screenWidth * 0.04,
-                ),
-              ),
-              SizedBox(height: screenHeight * 0.01),
-              _buildStarRating(),
-              SizedBox(height: screenHeight * 0.02),
-              Container(
-                height: screenWidth * 0.12,
-                decoration: BoxDecoration(
-                  color: const Color(0xffFAFAFA),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: const Color(0xffE9E9E9)),
-                ),
-                child: Row(
-                  children: [
-                    Expanded(
-                      child: TextField(
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.03,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                        controller: _reviewController,
-                        decoration: InputDecoration(
-                          hintText: S.of(context).WriteYourReview,
-                          border: InputBorder.none,
-                          hintStyle: TextStyle(
-                            fontSize: screenWidth * 0.03,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey,
-                          ),
-                          contentPadding: EdgeInsets.symmetric(
-                            vertical: screenWidth * 0.035,
-                            horizontal: screenWidth * 0.02,
-                          ),
-                        ),
-                      ),
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.send,
-                          color: _isReviewComplete ? KprimaryColor : SubText,
-                          size: screenWidth * 0.06),
-                      onPressed: _isReviewComplete ? _submitReview : null,
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          ),
-        ),
-        Column(
-          children: _reviews.map((review) {
-            return Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04,
-                vertical: screenWidth * 0.02,
-              ),
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: screenWidth * 0.06,
-                        backgroundImage: AssetImage(review["avatar"]),
-                      ),
-                      SizedBox(width: screenWidth * 0.03),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  review["user"],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: screenWidth * 0.035,
-                                  ),
-                                ),
-                                Text(
-                                  review["date"],
-                                  style: TextStyle(
-                                    color: SubText,
-                                    fontSize: screenWidth * 0.03,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: screenWidth * 0.01),
-                            _buildRatingIndicator(review["rating"]),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    review["comment"],
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.03,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -541,216 +263,126 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                SizedBox(height: screenHeight * 0.04),
-                Hero(
-                  tag: 'broker-avatar-${widget.broker["name"]}',
-                  child: CircleAvatar(
-                    radius: screenWidth * 0.15,
-                    backgroundImage: AssetImage(widget.broker["image"]),
-                  ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: screenHeight * 0.02),
+            Center(
+              child: Hero(
+                tag: 'broker-avatar-${widget.broker["name"] ?? "unknown"}',
+                child: CircleAvatar(
+                  radius: screenWidth * 0.15,
+                  backgroundImage: AssetImage(widget.broker["image"] ?? 'Assets/default_broker.png'),
                 ),
-                SizedBox(height: screenHeight * 0.02),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.broker["name"],
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.location_on_outlined,
-                          color: SecondaryColor,
-                          size: screenWidth * 0.045,
-                        ),
-                        Text(
-                          "${widget.broker["location"]}, ${widget.broker["city"]}",
-                          style: TextStyle(
-                            fontSize: screenWidth * 0.035,
-                            color: SubText,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ],
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Center(
+              child: Text(
+                widget.broker["name"] ?? "Unknown Broker",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.05,
+                  fontWeight: FontWeight.bold,
                 ),
-                SizedBox(height: screenHeight * 0.02),
-                Container(
-                  height: screenWidth * 0.12,
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                  decoration: BoxDecoration(
-                    color: KprimaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).Details,
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.035,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
-                  child: Row(
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
                     children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _currentTabIndex = 0;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: _currentTabIndex == 0
-                                  ? KprimaryColor
-                                  : Colors.transparent,
-                              borderRadius:
-                                  BorderRadius.circular(screenWidth * 0.02),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${_listings.length} ${S.of(context).Listing}",
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 0
-                                      ? Colors.white
-                                      : KprimaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
+                      Icon(
+                        Icons.work_outline,
+                        size: screenWidth * 0.04,
+                      ),
+                      SizedBox(width: screenWidth * 0.02),
+                      Text(
+                        "${widget.broker["experience"] ?? "5"} ${S.of(context).yearsExperience}",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _currentTabIndex = 1;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: _currentTabIndex == 1
-                                  ? KprimaryColor
-                                  : Colors.transparent,
-                              borderRadius:
-                                  BorderRadius.circular(screenWidth * 0.02),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${_reviews.length} ${S.of(context).Reviews}",
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 1
-                                      ? Colors.white
-                                      : KprimaryColor,
-                                ),
-                              ),
-                            ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
+                    children: [
+                      Icon(Icons.location_on_outlined, size: screenWidth * 0.04),
+                      SizedBox(width: screenWidth * 0.02),
+                      Text(
+                        "${widget.broker["location"] ?? "Unknown"}, ${widget.broker["city"] ?? "Unknown"}",
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.black,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone_outlined,
+                        size: screenWidth * 0.04,
+                      ),
+                      SizedBox(width: screenWidth * 0.02),
+                      GestureDetector(
+                        onTap: () {},
+                        child: Text(
+                          widget.broker["phone"] ?? "01012345678",
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.03,
+                            color: KprimaryColor,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                _currentTabIndex == 0
-                    ? _buildListingsTab()
-                    : _buildReviewsTab(),
-                SizedBox(height: screenWidth * 0.08),
-              ],
-            ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: screenWidth,
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Expanded(
-                    child: InkWell(
-                      onTap: (){},
-                      child: Container(
-                        height: screenWidth * 0.12,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: KprimaryColor,
-                            width: 1.5,
-                          ),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.phone_outlined,
-                                color: KprimaryColor,
-                                size: screenWidth * 0.06,
-                              ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Text(
-                                S.of(context).CallUs,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  color: KprimaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: screenWidth * 0.02),
-                  Expanded(
-                    child: InkWell(
-                      onTap: (){},
-                      child: Container(
-                        height: screenWidth * 0.12,
-                        decoration: BoxDecoration(
-                          color: Color(0xff06cd46e),
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                        child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'Assets/logos_whatsapp-icon.png',
-                                height: screenWidth * 0.12,
-                                width: screenWidth * 0.12,
-
-                              ),
-                              Text(
-                                S.of(context).WhatsApp,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
                 ],
               ),
             ),
-          )
-        ],
+            SizedBox(height: screenHeight * 0.02),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              child: Text(
+                S.of(context).Listing,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.04,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.start,
+              ),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            _buildListingsTab(),
+            SizedBox(height: screenWidth * 0.02),
+          ],
+        ),
       ),
     );
   }

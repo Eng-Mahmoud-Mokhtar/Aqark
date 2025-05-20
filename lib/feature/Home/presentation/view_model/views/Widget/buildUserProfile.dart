@@ -17,8 +17,8 @@ Widget buildUserProfile(BuildContext context) {
         child: FadeInImage(
           placeholder: const AssetImage('Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG'),
           image: userImage,
-          width: screenWidth * 0.12,
-          height: screenWidth * 0.12,
+          width: screenWidth * 0.13,
+          height: screenWidth * 0.13,
           fit: BoxFit.cover,
           fadeInDuration: const Duration(milliseconds: 300),
           fadeInCurve: Curves.easeIn,

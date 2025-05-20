@@ -35,6 +35,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'El-Madina Cement',
       type: 'Cement',
+      phone: "+20 106 321 6789",
       description: 'Specialized in all types of construction cement',
       address: 'Nasr City, Cairo',
       image:
@@ -53,6 +54,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Sanitary Hub',
       type: 'Plumbing',
+      phone: "+20 106 321 6789",
       description:
       'Specialized in all types of plumbing materials and accessories',
       address: 'Nasr City, Cairo',
@@ -73,6 +75,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Egypt Bricks / طوب مصر',
       type: 'Bricks',
+      phone: "+20 106 321 6789",
       description: 'High quality red and white bricks',
       address: '6th October City',
       image: 'Assets/brick-piles-placed-factory-floor.jpg',
@@ -90,6 +93,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Ezz Steel / حديد عز',
       type: 'Steel',
+      phone: "+20 106 321 6789",
       description: 'Construction steel of all diameters',
       address: 'Downtown, Cairo',
       image: 'Assets/arc-welding-steel-construction-site.jpg',
@@ -107,6 +111,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Jotun Paints / جوتن للدهانات',
       type: 'Paints',
+      phone: "+20 106 321 6789",
       description: 'Premium interior and exterior paints',
       address: 'Heliopolis, Cairo',
       image: 'Assets/top-view-paint-can.jpg',
@@ -124,6 +129,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Electro World',
       type: 'Electrical',
+      phone: "+20 106 321 6789",
       description: 'High-quality electrical supplies for homes and businesses',
       address: 'El-Matarya, Cairo',
       image:
@@ -144,6 +150,7 @@ class _MaterialsScreenState extends State<Materials> {
     MaterialShop(
       name: 'Cleopatra Tiles / كليوباترا للسيراميك',
       type: 'Tiles',
+      phone: "+20 106 321 6789",
       description: 'Ceramic and porcelain tiles',
       address: 'Mohandessin, Giza',
       image: 'Assets/still-life-putting-up-decorative-vinyls.jpg',
@@ -614,6 +621,7 @@ class _MaterialsScreenState extends State<Materials> {
                     getCategoryDisplayName(context, shop.type),
                     style: TextStyle(
                       color: KprimaryColor,
+                      fontSize: screenWidth * 0.03,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -1019,8 +1027,6 @@ class _MaterialsScreenState extends State<Materials> {
   String? _selectedGovernorate;
   String? _selectedCity;
   String _selectedFilter = "none";
-
-  // Show advanced filter
   void _showAdvancedFilter() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -1028,6 +1034,10 @@ class _MaterialsScreenState extends State<Materials> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
@@ -1390,7 +1400,6 @@ class _MaterialsScreenState extends State<Materials> {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1477,6 +1486,7 @@ class _MaterialsScreenState extends State<Materials> {
 class MaterialShop {
   final String name;
   final String type;
+  final String phone;
   final String description;
   final String address;
   final String image;
@@ -1489,6 +1499,7 @@ class MaterialShop {
   MaterialShop({
     required this.name,
     required this.type,
+    required this.phone,
     required this.description,
     required this.address,
     required this.image,

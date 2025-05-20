@@ -14,6 +14,8 @@ class DotsIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double screenWeight = MediaQuery.of(context).size.width;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
@@ -21,8 +23,8 @@ class DotsIndicator extends StatelessWidget {
             (index) => AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           margin: EdgeInsets.symmetric(horizontal: 3.w),
-          width: currentPage == index ? 26.w : 8.w,
-          height: currentPage == index ? 8.h : 8.h,
+          width: currentPage == index ? screenWeight*0.06 : screenWeight*0.02,
+          height: currentPage == index ? screenWeight*0.02 : screenWeight*0.02,
           decoration: BoxDecoration(
             color: currentPage == index ? SecondaryColor: Colors.grey[300],
             borderRadius: BorderRadius.circular(18.w),

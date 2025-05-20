@@ -45,7 +45,7 @@ class Code extends StatelessWidget {
                             ),
                           SizedBox(
                             width: fieldSize,
-                            height: fieldSize,
+                            height: fieldSize * 0.8,
                             child: TextField(
                               textAlign: TextAlign.center,
                               keyboardType: TextInputType.number,

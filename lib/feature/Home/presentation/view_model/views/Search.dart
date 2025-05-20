@@ -69,9 +69,9 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
       backgroundColor: backgroundColor,
       body: Column(
         children: [
-          SizedBox(height: 20),
+          SizedBox(height:screenWidth * 0.15),
           Padding(
-            padding: EdgeInsets.all(screenWidth * 0.04),
+            padding: EdgeInsets.symmetric(horizontal:screenWidth * 0.04),
             child: Row(
               children: [
                 IconButton(
@@ -85,11 +85,6 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                   flex: 5,
                   child: Container(
                     height: screenWidth * 0.12,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffFAFAFA),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xffE9E9E9)),
-                    ),
                     child: TextField(
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
@@ -106,12 +101,22 @@ class _SearchState extends State<Search> with SingleTickerProviderStateMixin {
                           color: Colors.grey,
                         ),
                         border: InputBorder.none,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(
+                              color: Colors.grey.shade200,
+                              width: 1.0),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: BorderSide(color: Colors.grey.shade200, width: 1.0),
+                        ),
                         contentPadding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.035,
-                          horizontal: screenWidth * 0.02,
+                          vertical: screenWidth * 0.03,
+                          horizontal: screenWidth * 0.01,
                         ),
                         prefixIcon: Padding(
-                          padding: EdgeInsets.only(left: screenWidth * 0.01),
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
                           child: Icon(
                             Icons.search_outlined,
                             color: Colors.grey,

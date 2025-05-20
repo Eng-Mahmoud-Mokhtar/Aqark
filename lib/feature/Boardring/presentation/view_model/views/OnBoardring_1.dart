@@ -8,7 +8,7 @@ class OnBoarding1 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return KeepAliveOnBoardingPage(
-      imagePath: 'Assets/30d6e5a3-9774-4ba7-a03f-3c2f32b99d24.jpeg',
+      imagePath: 'Assets/6f2b343f-53cd-4d5f-9b4b-fb72bddc2f8a.jpeg',
       title: S.of(context).OnBoarding1title,
       description: S.of(context).OnBoarding1description,
     );

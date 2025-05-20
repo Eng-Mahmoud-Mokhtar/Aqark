@@ -37,7 +37,16 @@ class Home extends StatelessWidget {
               index: selectedIndex,
               children: pages,
             ),
-            bottomNavigationBar: BottomNavigationBar(
+
+            bottomNavigationBar: Container(
+          decoration: BoxDecoration(
+          border: Border(
+          top: BorderSide(
+          color: Colors.grey.shade100, // Grey[300] for the top edge
+          width: 1.5, // Border thickness
+          ),
+          ),
+          ),child:BottomNavigationBar(
               selectedLabelStyle: TextStyle(fontSize: screenHeight * 0.018, fontWeight: FontWeight.bold),
               unselectedLabelStyle: TextStyle(fontSize: screenHeight * 0.018, fontWeight: FontWeight.bold),
               type: BottomNavigationBarType.fixed,
@@ -86,6 +95,7 @@ class Home extends StatelessWidget {
               selectedFontSize: screenWidth * 0.03,
               unselectedFontSize: screenWidth * 0.03,
             ),
+            )
           );
         },
       ),

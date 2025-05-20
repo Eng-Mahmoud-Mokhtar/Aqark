@@ -19,7 +19,7 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController(keepPage: true);
-    double screenHeight = MediaQuery.of(context).size.height;
+    double screenWeight = MediaQuery.of(context).size.width;
 
     return BlocProvider(
       create: (context) => OnBoardingCubit(),
@@ -41,7 +41,7 @@ class OnBoardingScreen extends StatelessWidget {
             Align(
               alignment: Alignment.bottomCenter,
               child: Padding(
-                padding: EdgeInsets.only(bottom: screenHeight * 0.0125),
+                padding: EdgeInsets.symmetric(vertical: screenWeight * 0.1),
                 child: BlocBuilder<OnBoardingCubit, int>(
                   builder: (context, currentPage) {
                     return Column(
@@ -49,7 +49,7 @@ class OnBoardingScreen extends StatelessWidget {
                       children: [
                         DotsIndicator(
                             currentPage: currentPage.toDouble(), totalDots: 3),
-                        SizedBox(height: screenHeight * 0.25),
+                        SizedBox(height: screenWeight * 0.4),
                         NavigationButton(
                           controller: controller,
                           onLastPage: currentPage == 2,

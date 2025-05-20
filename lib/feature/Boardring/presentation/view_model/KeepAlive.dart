@@ -42,16 +42,16 @@ class KeepAliveOnBoardingPage extends StatelessWidget {
           ),
           Align(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05, vertical: screenWidth * 0.2),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.2),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   Text(
                     title,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.05,
+                      fontSize: screenWidth * 0.04,
                       color: SecondaryColor,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   SizedBox(height: screenWidth * 0.03),

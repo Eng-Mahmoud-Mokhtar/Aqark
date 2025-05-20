@@ -88,9 +88,10 @@ class _SplashViewContentState extends State<_SplashViewContent>
                     child: FadeTransition(
                       opacity: _fadeInAnimation,
                       child: Image.asset(
-                        AssetsData.splash,
+                        AssetsData.Logo,
                         width: 200.w,
                         height: 200.h,
+                        color: Colors.white,
                         fit: BoxFit.contain,
                       ),
                     ),

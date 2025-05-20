@@ -39,7 +39,7 @@ class NavigationButton extends StatelessWidget {
                     child: Text(
                       S.of(context).Skip,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.03,
+                        fontSize: screenWidth * 0.035,
                         color: KprimaryColor,
                         fontWeight: FontWeight.bold,
                       ),
@@ -78,7 +78,7 @@ class NavigationButton extends StatelessWidget {
                   child: Text(
                     onLastPage ? S.of(context).GetStarted : S.of(context).Next,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.03,
+                      fontSize: screenWidth * 0.035,
                       fontWeight: FontWeight.bold,
                       color: backgroundColor,
                     ),

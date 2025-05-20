@@ -1,10 +1,650 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/utiles/AppBar.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../Home/presentation/view_model/views/BottomHome.dart';
 import 'BrokerDetailsPage.dart';
+
+class Broker {
+  final String name;
+  final String phone;
+  final String location;
+  final String city;
+  final String details;
+  final String image;
+  final bool isFeatured;
+
+  Broker({
+    required this.name,
+    required this.phone,
+    required this.location,
+    required this.city,
+    required this.details,
+    required this.image,
+    required this.isFeatured,
+  });
+}
+
+class SubscriptionPage extends StatelessWidget {
+  final Broker broker;
+
+  const SubscriptionPage({Key? key, required this.broker}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: CustomAppBar(
+        title: "Subscription",
+        onBack: () => Navigator.pop(context),
+        showSearch: false,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: screenWidth * 0.2,
+                  height: screenWidth * 0.2,
+                  decoration: BoxDecoration(
+                    color: KprimaryColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  padding: EdgeInsets.all(screenWidth * 0.02),
+                  child: Image.asset(
+                    'Assets/freepik__logo-design-for-a-real-estate-app-featuring-the-le__89841.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.03),
+              Text(
+                "Choose Your Plan",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              _buildPlanCard(
+                context,
+                title: "Monthly Subscription",
+                price: "\$19.99 / month",
+                description:
+                "Ideal for short-term needs. Get instant access to premium listings, verified brokers, and top property opportunities — with the flexibility to cancel anytime.",
+                onSubscribe: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PaymentPage(
+                        broker: broker,
+                        selectedPlan: "Monthly Subscription - \$19.99 / month",
+                      ),
+                    ),
+                  );
+                },
+              ),
+              SizedBox(height: screenHeight * 0.02),
+              _buildPlanCard(
+                context,
+                title: "Yearly Subscription",
+                price: "\$199.99 / year",
+                description:
+                "Best value! Save over 15% by subscribing yearly. Enjoy uninterrupted access to all premium features, early listings, and exclusive broker deals for a full year.",
+                isPopular: true,
+                onSubscribe: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PaymentPage(
+                        broker: broker,
+                        selectedPlan: "Yearly Subscription - \$199.99 / year",
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildPlanCard(
+      BuildContext context, {
+        required String title,
+        required String price,
+        required String description,
+        bool isPopular = false,
+        required VoidCallback onSubscribe,
+      }) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Stack(
+      children: [
+        Container(
+          margin: EdgeInsets.only(bottom: screenWidth * 0.01),
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(8),
+            border: Border.all(color: const Color(0xffE0E0E0), width: 1),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withOpacity(0.08),
+                blurRadius: 20,
+                spreadRadius: 2,
+                offset: const Offset(0, 8),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SizedBox(height: screenWidth * 0.02),
+              Text(
+                title,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.01),
+              Text(
+                price,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: SecondaryColor,
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.01),
+              Text(
+                description,
+                style: TextStyle(
+                  fontSize: screenWidth * 0.03,
+                  color: SubText,
+                  height: 1.5,
+                ),
+                textAlign: TextAlign.center,
+              ),
+              SizedBox(height: screenWidth * 0.02),
+              ElevatedButton(
+                onPressed: onSubscribe,
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, screenWidth * 0.12),
+                  backgroundColor: KprimaryColor,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: EdgeInsets.zero,
+                ),
+                child: Text(
+                  "Subscribe Now",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.035,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              )
+            ],
+          ),
+        ),
+        if (isPopular)
+          Positioned(
+            top: 0,
+            right: 0,
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: screenWidth * 0.025,
+                vertical: screenWidth * 0.012,
+              ),
+              decoration: BoxDecoration(
+                color: SecondaryColor,
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(8),
+                  bottomLeft: Radius.circular(15),
+                ),
+              ),
+              child: Text(
+                "Most Popular",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: screenWidth * 0.03,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ),
+      ],
+    );
+  }
+}
+
+class PaymentPage extends StatefulWidget {
+  final Broker broker;
+  final String selectedPlan;
+
+  const PaymentPage({Key? key, required this.broker, required this.selectedPlan}) : super(key: key);
+
+  @override
+  State<PaymentPage> createState() => _PaymentPageState();
+}
+
+class _PaymentPageState extends State<PaymentPage> {
+  String? selectedMethod;
+  bool showCreditCardDetails = false;
+  bool showPaypalDetails = false;
+
+  final List<Map<String, dynamic>> paymentMethods = [
+    {
+      "label": "Credit Card",
+      "image": "Assets/Mastercard.png",
+    },
+    {
+      "label": "PayPal",
+      "image": "Assets/PayPal.png",
+    },
+  ];
+
+  final Map<String, FocusNode> _focusNodes = {
+    "Card Number": FocusNode(),
+    "Cardholder Name": FocusNode(),
+    "Expiry Date": FocusNode(),
+    "CVV": FocusNode(),
+    "PayPal Email": FocusNode(),
+    "PayPal Password": FocusNode(),
+  };
+
+  @override
+  void dispose() {
+    _focusNodes.values.forEach((node) => node.dispose());
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      appBar: CustomAppBar(
+        title: "Payment method",
+        onBack: () => Navigator.pop(context),
+        showSearch: false,
+      ),
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: EdgeInsets.all(screenWidth * 0.04),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: screenWidth * 0.2,
+                  height: screenWidth * 0.2,
+                  decoration: BoxDecoration(
+                    color: KprimaryColor.withOpacity(0.1),
+                    shape: BoxShape.circle,
+                  ),
+                  padding: EdgeInsets.all(screenWidth * 0.02),
+                  child: Image.asset(
+                    'Assets/freepik__logo-design-for-a-real-estate-app-featuring-the-le__89841.png',
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.03),
+              Text(
+                "Choose Payment Method",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.02),
+              Column(
+                children: paymentMethods.map((method) {
+                  final isSelected = method["label"] == selectedMethod;
+                  final isCreditCard = method["label"] == "Credit Card";
+                  final isPaypal = method["label"] == "PayPal";
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        if (isSelected) {
+                          selectedMethod = null;
+                          showCreditCardDetails = false;
+                          showPaypalDetails = false;
+                        } else {
+                          selectedMethod = method["label"];
+                          showCreditCardDetails = isCreditCard;
+                          showPaypalDetails = isPaypal;
+                        }
+                      });
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      margin: EdgeInsets.only(bottom: screenWidth * 0.04),
+                      padding: EdgeInsets.all(screenWidth * 0.03),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(
+                          color: isSelected
+                              ? KprimaryColor
+                              : Colors.grey.shade300,
+                          width: 1.5,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              Image.asset(
+                                method["image"]!,
+                                width: screenWidth * 0.1,
+                                height: screenWidth * 0.1,
+                              ),
+                              SizedBox(width: screenWidth * 0.04),
+                              Expanded(
+                                child: Text(
+                                  method["label"]!,
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.03,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
+                              Icon(
+                                isSelected
+                                    ? Icons.keyboard_arrow_down
+                                    : Icons.keyboard_arrow_right,
+                                size: screenWidth * 0.05,
+                                color: isSelected
+                                    ? KprimaryColor
+                                    : Colors.grey,
+                              ),
+                            ],
+                          ),
+                          if (isCreditCard && showCreditCardDetails) ...[
+                            SizedBox(height: screenWidth * 0.04),
+                            Divider(color: Colors.grey.withOpacity(0.3), thickness: 1),
+                            SizedBox(height: screenWidth * 0.03),
+                            _creditCardForm(screenWidth),
+                          ],
+                          if (isPaypal && showPaypalDetails) ...[
+                            SizedBox(height: screenWidth * 0.04),
+                            Divider(color: Colors.grey.withOpacity(0.3), thickness: 1),
+                            SizedBox(height: screenWidth * 0.03),
+                            _paypalForm(screenWidth),
+                          ],
+                        ],
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+              SizedBox(height: screenWidth * 0.04), // Replaced Spacer
+              Center(
+                child: ElevatedButton(
+                  onPressed: selectedMethod == null
+                      ? null
+                      : () {
+                    _showProcessingDialog(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity, screenWidth * 0.12),
+                    backgroundColor:
+                    selectedMethod == null ? SubText : KprimaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                  ),
+                  child: Text(
+                    "Pay Now",
+                    style: TextStyle(
+                        fontSize: screenWidth * 0.035,
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.04), // Added bottom padding
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _creditCardForm(double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTextField("Card Number", screenWidth),
+        SizedBox(height: screenWidth * 0.02),
+        _buildTextField("Cardholder Name", screenWidth),
+        SizedBox(height: screenWidth * 0.02),
+        Row(
+          children: [
+            Expanded(child: _buildTextField("Expiry Date", screenWidth)),
+            SizedBox(width: screenWidth * 0.02),
+            Expanded(child: _buildTextField("CVV", screenWidth)),
+          ],
+        ),
+      ],
+    );
+  }
+
+  Widget _paypalForm(double screenWidth) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        _buildTextField("PayPal Email", screenWidth, keyboardType: TextInputType.emailAddress),
+        SizedBox(height: screenWidth * 0.02),
+        _buildTextField("PayPal Password", screenWidth, obscureText: true),
+      ],
+    );
+  }
+
+  Widget _buildTextField(String label, double screenWidth, {TextInputType? keyboardType, bool obscureText = false}) {
+    return Focus(
+      focusNode: _focusNodes[label],
+      child: Builder(
+        builder: (context) {
+          final isFocused = Focus.of(context).hasFocus;
+          return TextField(
+            decoration: InputDecoration(
+              labelText: label,
+              labelStyle: TextStyle(
+                color: isFocused ? KprimaryColor : Colors.grey,
+                fontSize: screenWidth * 0.03,
+                fontWeight: FontWeight.bold,
+              ),
+              filled: true,
+              fillColor: Colors.grey.shade100,
+              contentPadding: EdgeInsets.symmetric(
+                  horizontal: screenWidth * 0.04,
+                  vertical: screenWidth * 0.04),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1.5),
+              ),
+              enabledBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(
+                    color: Colors.grey.shade300,
+                    width: 1.5),
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8),
+                borderSide: BorderSide(color: KprimaryColor, width: 1.5),
+              ),
+            ),
+            style: TextStyle(
+              fontSize: screenWidth * 0.03,
+              color: Colors.black,
+              fontWeight: FontWeight.bold,
+            ),
+            keyboardType: keyboardType ?? (label == "CVV" || label == "Card Number"
+                ? TextInputType.number
+                : TextInputType.text),
+            obscureText: obscureText || label == "CVV",
+          );
+        },
+      ),
+    );
+  }
+
+  void _showProcessingDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return ProcessingPaymentDialog(broker: widget.broker);
+      },
+    );
+  }
+}
+
+class ProcessingPaymentDialog extends StatefulWidget {
+  final Broker broker;
+
+  const ProcessingPaymentDialog({Key? key, required this.broker}) : super(key: key);
+
+  @override
+  State<ProcessingPaymentDialog> createState() => _ProcessingPaymentDialogState();
+}
+
+class _ProcessingPaymentDialogState extends State<ProcessingPaymentDialog> {
+  bool isProcessing = true;
+
+  @override
+  void initState() {
+    super.initState();
+    Future.delayed(const Duration(seconds: 3), () {
+      if (mounted) {
+        setState(() {
+          isProcessing = false;
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    return AlertDialog(
+      backgroundColor: backgroundColor,
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      contentPadding: EdgeInsets.all(screenWidth * 0.04),
+      content: SizedBox(
+        width: screenWidth,
+        height: screenWidth * 0.7,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (isProcessing) ...[
+              Text(
+                "Payment Processing",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: KprimaryColor,
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.2),
+              const CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(Color(0xff0c356b)),
+              ),
+              SizedBox(height: screenWidth * 0.2),
+              Text(
+                "Please wait while we process money from your bank account.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey.shade600),
+              ),
+            ] else ...[
+              Icon(
+                Icons.check_circle,
+                color: KprimaryColor,
+                size: screenWidth * 0.15,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                "Payment Successful!",
+                style: TextStyle(
+                  fontSize: screenWidth * 0.035,
+                  fontWeight: FontWeight.bold,
+                  color: Color(0xff0c356b),
+                ),
+              ),
+              SizedBox(height: screenWidth * 0.01),
+              Text(
+                "Your subscription has been placed.\nWe’ll send you an email with your subscription details.",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: screenWidth * 0.03, color: Colors.grey.shade600),
+              ),
+              SizedBox(height: screenWidth * 0.02),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => BrokerDetailsPage(
+                        broker: {
+                          "name": widget.broker.name,
+                          "phone": widget.broker.phone,
+                          "location": widget.broker.location,
+                          "city": widget.broker.city,
+                          "details": widget.broker.details,
+                          "image": widget.broker.image,
+                          "isFeatured": widget.broker.isFeatured,
+                        },
+                      ),
+                    ),
+                  );
+                },
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size(double.infinity, screenWidth * 0.12),
+                  backgroundColor: KprimaryColor,
+                  foregroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                ),
+                child: Text(
+                  "Done",
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.035,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 
 class BrokersScreen extends StatefulWidget {
   const BrokersScreen({Key? key}) : super(key: key);
@@ -15,18 +655,18 @@ class BrokersScreen extends StatefulWidget {
 
 class _BrokersScreenState extends State<BrokersScreen> {
   String searchQuery = '';
-  double minRating = 3.0;
+  String? _selectedGovernorate;
+  String? _selectedCity;
 
   List<Broker> get filteredBrokers {
     return brokers.where((broker) {
       final matchesSearch = broker.name.toLowerCase().contains(searchQuery.toLowerCase()) ||
           broker.location.toLowerCase().contains(searchQuery.toLowerCase()) ||
           broker.city.toLowerCase().contains(searchQuery.toLowerCase());
-      final matchesRating = broker.rating >= minRating;
       final matchesLocation = _selectedGovernorate == null || broker.location == _selectedGovernorate;
       final matchesCity = _selectedCity == null || broker.city == _selectedCity;
 
-      return matchesSearch && matchesRating && matchesLocation && matchesCity;
+      return matchesSearch && matchesLocation && matchesCity;
     }).toList();
   }
 
@@ -43,9 +683,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
       appBar: CustomAppBar(
         title: S.of(context).Brokers,
         onBack: () {
-          Navigator.pop(
-            context,
-          );
+          Navigator.pop(context);
         },
         showSearch: false,
       ),
@@ -78,7 +716,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
             child: Container(
               height: screenWidth * 0.12,
               decoration: BoxDecoration(
-                color: const Color(0xffFAFAFA),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: const Color(0xffE9E9E9)),
               ),
@@ -99,7 +737,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(
                     vertical: screenWidth * 0.035,
-                    horizontal: screenWidth * 0.02,
+                    horizontal: screenWidth * 0.01,
                   ),
                   prefixIcon: Padding(
                     padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
@@ -119,7 +757,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
             child: Container(
               height: screenWidth * 0.12,
               decoration: BoxDecoration(
-                color: const Color(0xffFAFAFA),
+                color: backgroundColor,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: const Color(0xffE9E9E9)),
               ),
@@ -149,7 +787,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          S.of(context).FeaturedBrokers,
+          'Interested',
           style: TextStyle(
             fontSize: screenWidth * 0.035,
             color: Colors.black,
@@ -158,7 +796,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.5,
+          height: MediaQuery.of(context).size.width * 0.45,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -174,91 +812,94 @@ class _BrokersScreenState extends State<BrokersScreen> {
   Widget _buildFeaturedBrokerContainer(Broker broker) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
 
-    return Container(
-      width: screenWidth * 0.4,
-      margin: EdgeInsets.only(
-        left: Localizations.localeOf(context).languageCode == 'ar' ? screenWidth * 0.02 : 0,
-        right: Localizations.localeOf(context).languageCode == 'ar' ? 0 : screenWidth * 0.02,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: () => _showBrokerDetails(broker),
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.02),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: screenWidth * 0.07,
-                backgroundImage: AssetImage(broker.image),
-              ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                broker.name,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: screenHeight * 0.001),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
-                  SizedBox(width: screenWidth * 0.01),
-                  Flexible(
-                    child: Text(
-                      "${broker.city}, ${broker.location}",
+    return GestureDetector(
+      onTap: () => _navigateToSubscription(broker),
+      child: Container(
+        width: screenWidth * 0.4,
+        margin: EdgeInsets.only(
+          left: isArabic ? screenWidth * 0.02 : 0,
+          right: isArabic ? 0 : screenWidth * 0.02,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300),
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: screenWidth * 0.07,
+                      backgroundImage: AssetImage(broker.image),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      broker.name,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: SubText,
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
+                      textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: screenHeight * 0.005),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.location_on_outlined,
+                            size: screenWidth * 0.04, color: SecondaryColor),
+                        SizedBox(width: screenWidth * 0.01),
+                        Flexible(
+                          child: Text(
+                            "${broker.city}, ${broker.location}",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.03,
+                              color: SubText,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: screenWidth * 0.04,
+              left: -screenWidth * 0.07,
+              child: Transform.rotate(
+                angle: -0.785398,
+                child: Container(
+                  width: screenWidth * 0.3,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: SecondaryColor,
+                  ),
+                  child: Text(
+                    'Premium',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenWidth * 0.03,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.002),
-              RatingBarIndicator(
-                rating: broker.rating,
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: SecondaryColor,
                 ),
-                itemCount: 5,
-                itemSize: screenWidth * 0.04,
               ),
-              SizedBox(height: screenHeight * 0.001),
-              Text(
-                '${broker.rating.toStringAsFixed(1)}',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  color: SubText,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -321,7 +962,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
       padding: EdgeInsets.all(screenWidth * 0.03),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(8),
         border: Border.all(color: Colors.grey.shade300),
         boxShadow: [
           BoxShadow(
@@ -370,25 +1011,11 @@ class _BrokersScreenState extends State<BrokersScreen> {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Icon(Icons.star, size: screenWidth * 0.05, color: SecondaryColor),
-                SizedBox(height: screenWidth * 0.01),
-                Text(
-                  '${broker.rating.toStringAsFixed(1)}',
-                  style: TextStyle(
-                    color: SubText,
-                    fontSize: screenWidth * 0.03,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
     );
   }
-
   void _showBrokerDetails(Broker broker) {
     Navigator.push(
       context,
@@ -401,8 +1028,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
             "city": broker.city,
             "details": broker.details,
             "image": broker.image,
-            "rating": broker.rating,
-            "reviews": broker.reviews,
             "isFeatured": broker.isFeatured,
           },
         ),
@@ -410,13 +1035,14 @@ class _BrokersScreenState extends State<BrokersScreen> {
     );
   }
 
-  final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "HighestRating", "value": "rating"},
-  ];
-
-  String? _selectedGovernorate;
-  String? _selectedCity;
-  String _selectedFilter = "none";
+  void _navigateToSubscription(Broker broker) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SubscriptionPage(broker: broker),
+      ),
+    );
+  }
 
   void _showAdvancedFilter() {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -425,12 +1051,16 @@ class _BrokersScreenState extends State<BrokersScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setModalState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.7,
+              height: screenHeight * 0.36,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -451,7 +1081,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -552,50 +1182,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    S.of(context).Rating,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.008),
-                  ..._filterOptions.map((option) {
-                    bool isSelected = _selectedFilter == option['value'];
-                    return GestureDetector(
-                      onTap: () {
-                        setModalState(() {
-                          _selectedFilter = option['value'];
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                        decoration: BoxDecoration(
-                          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                          child: Text(
-                            S.of(context).HighestRating,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.03,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
                   const Spacer(),
                   Row(
                     children: [
@@ -606,7 +1192,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
                             minimumSize: Size(double.infinity, screenWidth * 0.12),
                             backgroundColor: KprimaryColor,
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: KprimaryColor,
                                 width: 3,
                               ),
@@ -614,11 +1200,11 @@ class _BrokersScreenState extends State<BrokersScreen> {
                             ),
                           ),
                           onPressed: () {
-                            setState(() {});
                             Navigator.pop(context);
+                            setState(() {});
                           },
                           child: Text(
-                            '${S.of(context).Show} ${filteredBrokers.length} ${S.of(context).Results}',
+                            "${S.of(context).Show} ${filteredBrokers.length}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -630,27 +1216,43 @@ class _BrokersScreenState extends State<BrokersScreen> {
                       SizedBox(width: screenWidth * 0.02),
                       Expanded(
                         child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, screenWidth * 0.12),
-                            backgroundColor: Colors.white,
-                            foregroundColor: KprimaryColor,
-                            side: BorderSide(
-                              color: KprimaryColor,
-                              width: 1,
+                          style: ButtonStyle(
+                            minimumSize: MaterialStateProperty.all(
+                              Size(double.infinity, screenWidth * 0.12),
                             ),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return Colors.white;
+                              }
+                              return Colors.white;
+                            }),
+                            foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
+                              if (states.contains(MaterialState.disabled)) {
+                                return KprimaryColor.withOpacity(0.3);
+                              }
+                              return KprimaryColor;
+                            }),
+                            side: MaterialStateProperty.resolveWith<BorderSide>((states) {
+                              return BorderSide(
+                                color: states.contains(MaterialState.disabled)
+                                    ? KprimaryColor.withOpacity(0.3)
+                                    : KprimaryColor,
+                                width: 1,
+                              );
+                            }),
+                            shape: MaterialStateProperty.all(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(8),
+                              ),
                             ),
                           ),
-                          onPressed: (_selectedGovernorate == null && _selectedCity == null && _selectedFilter == "none")
+                          onPressed: (_selectedGovernorate == null && _selectedCity == null)
                               ? null
                               : () {
-                            setModalState(() {
-                              _selectedFilter = "none";
+                            setState(() {
                               _selectedCity = null;
                               _selectedGovernorate = null;
                             });
-                            setState(() {});
                             Navigator.pop(context);
                           },
                           child: Text(
@@ -663,7 +1265,7 @@ class _BrokersScreenState extends State<BrokersScreen> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
@@ -684,11 +1286,10 @@ class _BrokersScreenState extends State<BrokersScreen> {
     String selectedGovernorate = "";
     String selectedCity = "";
     String searchText = "";
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
+      backgroundColor: Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
@@ -897,8 +1498,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "New Cairo",
       details: "Luxury real estate expert with 10 years of experience.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 4.2,
-      reviews: 15,
       isFeatured: true,
     ),
     Broker(
@@ -908,8 +1507,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "Smouha",
       details: "Specialist in commercial properties and offices.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 3.8,
-      reviews: 10,
       isFeatured: true,
     ),
     Broker(
@@ -919,8 +1516,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "Dokki",
       details: "Experienced in residential and investment properties.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 4.5,
-      reviews: 7,
       isFeatured: true,
     ),
     Broker(
@@ -930,8 +1525,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "Nasr City",
       details: "Expert in rentals and small property deals.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 4.0,
-      reviews: 5,
       isFeatured: false,
     ),
     Broker(
@@ -941,8 +1534,6 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "Maadi",
       details: "Real estate evaluator and market analyst.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 4.7,
-      reviews: 12,
       isFeatured: true,
     ),
     Broker(
@@ -952,12 +1543,9 @@ class _BrokersScreenState extends State<BrokersScreen> {
       city: "Sheikh Zayed",
       details: "High-end property sales and purchases.",
       image: "Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG",
-      rating: 4.3,
-      reviews: 11,
       isFeatured: false,
     ),
   ];
-
   final Map<String, List<String>> governoratesWithCities = {
     "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
     "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
@@ -998,26 +1586,3 @@ class _BrokersScreenState extends State<BrokersScreen> {
   };
 }
 
-class Broker {
-  final String name;
-  final String phone;
-  final String location;
-  final String city;
-  final String details;
-  final String image;
-  final double rating;
-  final int reviews;
-  final bool isFeatured;
-
-  Broker({
-    required this.name,
-    required this.phone,
-    required this.location,
-    required this.city,
-    required this.details,
-    required this.image,
-    required this.rating,
-    required this.reviews,
-    required this.isFeatured,
-  });
-}

@@ -890,60 +890,60 @@ class S {
     return Intl.message('Skip', name: 'Skip', desc: '', args: []);
   }
 
-  /// `Welcome Home`
+  /// `Find Home`
   String get OnBoarding1title {
     return Intl.message(
-      'Welcome Home',
+      'Find Home',
       name: 'OnBoarding1title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Welcome, your gateway to finding the perfect home sweet home.`
+  /// `Connect instantly with top brokers, developers, and real estate projects across the country.`
   String get OnBoarding1description {
     return Intl.message(
-      'Welcome, your gateway to finding the perfect home sweet home.',
+      'Connect instantly with top brokers, developers, and real estate projects across the country.',
       name: 'OnBoarding1description',
       desc: '',
       args: [],
     );
   }
 
-  /// `Tailor Your Search`
+  /// `Tailored to You`
   String get OnBoarding2title {
     return Intl.message(
-      'Tailor Your Search',
+      'Tailored to You',
       name: 'OnBoarding2title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Preparing comprehensive contracts to secure your investments in real estate and construction projects.`
+  /// `Search based on your needs and location, and easily connect with trusted engineers, designers, and service providers.`
   String get OnBoarding2description {
     return Intl.message(
-      'Preparing comprehensive contracts to secure your investments in real estate and construction projects.',
+      'Search based on your needs and location, and easily connect with trusted engineers, designers, and service providers.',
       name: 'OnBoarding2description',
       desc: '',
       args: [],
     );
   }
 
-  /// `Let's Get Started`
+  /// `Beyond the Property`
   String get OnBoarding3title {
     return Intl.message(
-      'Let\'s Get Started',
+      'Beyond the Property',
       name: 'OnBoarding3title',
       desc: '',
       args: [],
     );
   }
 
-  /// `Let's dive in together and find your perfect home with Building Knowledge.`
+  /// `From legal documents to government services — everything you need is just a tap away with Building Knowledge.`
   String get OnBoarding3description {
     return Intl.message(
-      'Let\'s dive in together and find your perfect home with Building Knowledge.',
+      'From legal documents to government services — everything you need is just a tap away with Building Knowledge.',
       name: 'OnBoarding3description',
       desc: '',
       args: [],
@@ -1310,10 +1310,10 @@ class S {
     return Intl.message('Materials', name: 'Materials', desc: '', args: []);
   }
 
-  /// `Design & Finishing`
+  /// `Design and Finishing`
   String get Design_Finishing {
     return Intl.message(
-      'Design & Finishing',
+      'Design and Finishing',
       name: 'Design_Finishing',
       desc: '',
       args: [],
@@ -1690,14 +1690,9 @@ class S {
     );
   }
 
-  /// `Worker Profile`
+  /// `Profile`
   String get WorkerProfile {
-    return Intl.message(
-      'Worker Profile',
-      name: 'WorkerProfile',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'WorkerProfile', desc: '', args: []);
   }
 
   /// `Details`
@@ -1830,14 +1825,9 @@ class S {
     );
   }
 
-  /// `Broker Profile`
+  /// `Profile`
   String get BrokerProfile {
-    return Intl.message(
-      'Broker Profile',
-      name: 'BrokerProfile',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'BrokerProfile', desc: '', args: []);
   }
 
   /// `Listing`
@@ -2025,14 +2015,9 @@ class S {
     );
   }
 
-  /// `Engineer Profile`
+  /// `Profile`
   String get EngineerProfile {
-    return Intl.message(
-      'Engineer Profile',
-      name: 'EngineerProfile',
-      desc: '',
-      args: [],
-    );
+    return Intl.message('Profile', name: 'EngineerProfile', desc: '', args: []);
   }
 
   /// `Engineer’s specialty`
@@ -2753,6 +2738,16 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `Edit`
+  String get edit {
+    return Intl.message('Edit', name: 'edit', desc: '', args: []);
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
   }
 }
 

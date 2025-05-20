@@ -746,12 +746,16 @@ class _InteriorDesignCompaniesState extends State<InteriorDesignCompanies> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
       builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.6,
+              height: screenHeight * 0.55,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,

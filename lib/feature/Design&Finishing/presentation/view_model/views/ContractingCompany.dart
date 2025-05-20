@@ -8,6 +8,7 @@ import '../../../../../generated/l10n.dart';
 class ContractingCompany {
   final String name;
   final String description;
+  final String phone;
   final String address;
   final String image;
   final double rating;
@@ -23,6 +24,7 @@ class ContractingCompany {
   ContractingCompany({
     required this.name,
     required this.description,
+    required this.phone,
     required this.address,
     required this.image,
     required this.rating,
@@ -69,6 +71,7 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     ContractingCompany(
       name: 'Elite Constructions',
       description: 'Premium construction and contracting solutions',
+      phone: "+20 106 321 6789",
       address: 'Nasr City, Cairo',
       image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
       rating: 4.8,
@@ -105,6 +108,7 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     ContractingCompany(
       name: 'Classic Builders',
       description: 'Timeless and reliable construction services',
+      phone: "+20 106 321 6789",
       address: 'Zamalek, Cairo',
       image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
       rating: 4.7,
@@ -145,6 +149,7 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     ContractingCompany(
       name: 'Minimalist Structures',
       description: 'Efficient and modern construction designs',
+      phone: "+20 106 321 6789",
       address: '6th October City, Giza',
       image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
       rating: 4.5,
@@ -177,6 +182,7 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     ContractingCompany(
       name: 'Industrial Builders',
       description: 'Robust and industrial construction solutions',
+      phone: "+20 106 321 6789",
       address: 'Mohandessin, Giza',
       image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
       rating: 4.3,
@@ -209,6 +215,7 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     ContractingCompany(
       name: 'Eco Constructions',
       description: 'Sustainable and eco-friendly building solutions',
+      phone: "+20 106 321 6789",
       address: 'Heliopolis, Cairo',
       image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
       rating: 4.6,
@@ -750,12 +757,15 @@ class _ContractingCompaniesState extends State<ContractingCompanies> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) {
+      backgroundColor: backgroundColor,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),      builder: (context) {
         return StatefulBuilder(
           builder: (context, setState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.6,
+              height: screenHeight * 0.55,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1247,6 +1257,7 @@ class _ContractingState extends State<Contracting> {
       "date": "1 week ago"
     },
   ];
+
   final List<Map<String, dynamic>> _posts = [
     {
       "image": "Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg",
@@ -1291,10 +1302,29 @@ class _ContractingState extends State<Contracting> {
       "date": "November 2024",
     },
   ];
-
+  final TextEditingController _editReviewController = TextEditingController();
+  int? _editingIndex;
+  final FocusNode _editFocusNode = FocusNode();
+  String getTranslatedProfession(BuildContext context, String professionId) {
+    switch (professionId) {
+      case 'mason':
+        return S.of(context).Mason;
+      case 'plumber':
+        return S.of(context).Plumber;
+      case 'carpenter':
+        return S.of(context).Carpenter;
+      case 'electrician':
+        return S.of(context).Electrician;
+      case 'painter':
+        return S.of(context).Painter;
+      case 'ac_technician':
+        return S.of(context).ACTechnician;
+      default:
+        return professionId;
+    }
+  }
   bool _isReviewComplete = false;
 
-  @override
   void initState() {
     super.initState();
     _reviewController.addListener(_updateReviewStatus);
@@ -1302,7 +1332,10 @@ class _ContractingState extends State<Contracting> {
 
   @override
   void dispose() {
+    _reviewController.removeListener(_updateReviewStatus);
     _reviewController.dispose();
+    _editReviewController.dispose();
+    _editFocusNode.dispose();
     super.dispose();
   }
 
@@ -1316,7 +1349,7 @@ class _ContractingState extends State<Contracting> {
     if (_isReviewComplete) {
       setState(() {
         _reviews.insert(0, {
-          "user": "You",
+          "user": "User",
           "avatar": "Assets/user_avatar.png",
           "rating": _selectedRating,
           "comment": _reviewController.text,
@@ -1327,6 +1360,31 @@ class _ContractingState extends State<Contracting> {
         _isReviewComplete = false;
       });
     }
+  }
+  void _startEditing(int index, Map<String, dynamic> review) {
+    setState(() {
+      _editingIndex = index;
+      _editReviewController.text = review["comment"];
+      _editFocusNode.requestFocus();
+    });
+  }
+
+  void _saveEdit(int index) {
+    if (_editReviewController.text.isNotEmpty) {
+      setState(() {
+        _reviews[index]["comment"] = _editReviewController.text;
+        _editingIndex = null;
+        _editReviewController.clear();
+      });
+    }
+  }
+
+  void _deleteReview(int index) {
+    setState(() {
+      _reviews.removeAt(index);
+      _editingIndex = null;
+      _editReviewController.clear();
+    });
   }
 
   Widget _buildStarRating() {
@@ -1486,10 +1544,10 @@ class _ContractingState extends State<Contracting> {
   Widget _buildReviewsTab() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
+
     return Column(
       children: [
         Container(
-          height: screenHeight * 0.26,
           margin: EdgeInsets.all(screenWidth * 0.04),
           padding: EdgeInsets.all(screenWidth * 0.04),
           decoration: BoxDecoration(
@@ -1503,7 +1561,7 @@ class _ContractingState extends State<Contracting> {
                 S.of(context).AddYourReview,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  fontSize: screenWidth * 0.04,
+                  fontSize: screenWidth * 0.035,
                 ),
               ),
               SizedBox(height: screenHeight * 0.01),
@@ -1553,72 +1611,162 @@ class _ContractingState extends State<Contracting> {
             ],
           ),
         ),
-        Column(
-          children: _reviews.map((review) {
-            return Container(
-              margin: EdgeInsets.symmetric(
-                horizontal: screenWidth * 0.04,
-                vertical: screenWidth * 0.02,
-              ),
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      CircleAvatar(
-                        radius: screenWidth * 0.06,
-                        backgroundImage: AssetImage(review["avatar"]),
-                      ),
-                      SizedBox(width: screenWidth * 0.03),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  review["user"],
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: screenWidth * 0.035,
-                                  ),
-                                ),
-                                Text(
-                                  review["date"],
-                                  style: TextStyle(
-                                    color: SubText,
-                                    fontSize: screenWidth * 0.03,
-                                  ),
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: screenWidth * 0.01),
-                            _buildRatingIndicator(review["rating"]),
-                          ],
+        Padding(
+          padding: EdgeInsets.only(
+            bottom: screenHeight * 0.02,
+            left: screenWidth * 0.04,
+            right: screenWidth * 0.04,
+          ),
+          child: Column(
+            children: _reviews.asMap().entries.map((entry) {
+              final index = entry.key;
+              final review = entry.value;
+              return Container(
+                margin: EdgeInsets.only(bottom: screenWidth * 0.02),
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                  border: Border.all(color: Colors.grey.shade300),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: screenWidth * 0.06,
+                          backgroundImage: AssetImage(review["avatar"]),
                         ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    review["comment"],
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.03,
-                      fontWeight: FontWeight.bold,
+                        SizedBox(width: screenWidth * 0.03),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    review["user"],
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: screenWidth * 0.035,
+                                    ),
+                                  ),
+                                  _buildRatingIndicator(review["rating"]),
+                                ],
+                              ),
+                              PopupMenuButton<String>(
+                                color: Colors.white,
+                                icon: Icon(
+                                  Icons.more_vert,
+                                  color: Colors.grey,
+                                  size: screenWidth * 0.05,
+                                ),
+                                onSelected: (value) {
+                                  if (value == S.of(context).edit) {
+                                    _startEditing(index, review);
+                                  } else if (value == S.of(context).delete) {
+                                    _deleteReview(index);
+                                  }
+                                },
+                                itemBuilder: (BuildContext context) => [
+                                  PopupMenuItem<String>(
+                                    value: S.of(context).edit,
+                                    child: Text(
+                                      S.of(context).edit,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                  PopupMenuItem<String>(
+                                    value: S.of(context).delete,
+                                    child: Text(
+                                      S.of(context).delete,
+                                      style: TextStyle(
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+                    SizedBox(height: screenHeight * 0.02),
+                    _editingIndex == index
+                        ? ValueListenableBuilder(
+                      valueListenable: _editReviewController,
+                      builder: (context, TextEditingValue value, child) {
+                        final isEmpty = value.text.isEmpty;
+                        return Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                height: screenWidth * 0.12,
+                                decoration: BoxDecoration(
+                                  color: const Color(0xffFAFAFA),
+                                  borderRadius: BorderRadius.circular(8),
+                                  border: Border.all(
+                                    color: const Color(0xffE9E9E9),
+                                  ),
+                                ),
+                                child: TextField(
+                                  controller: _editReviewController,
+                                  focusNode: _editFocusNode,
+                                  style: TextStyle(
+                                    fontSize: screenWidth * 0.03,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    contentPadding: EdgeInsets.symmetric(
+                                      vertical: screenWidth * 0.032,
+                                      horizontal: screenWidth * 0.02,
+                                    ),
+                                    hintText: S.of(context).WriteYourReview,
+                                    hintStyle: TextStyle(
+                                      fontSize: screenWidth * 0.03,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.grey,
+                                    ),
+                                  ),
+                                  maxLines: null,
+                                ),
+                              ),
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                Icons.send,
+                                color: isEmpty ? Colors.grey : KprimaryColor,
+                                size: screenWidth * 0.06,
+                              ),
+                              onPressed: isEmpty ? null : () => _saveEdit(index),
+                            ),
+                          ],
+                        );
+                      },
+                    )
+                        : Text(
+                      review["comment"],
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }).toList(),
+          ),
         ),
       ],
     );
@@ -1636,101 +1784,57 @@ class _ContractingState extends State<Contracting> {
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            SizedBox(height: screenHeight * 0.04),
+            CircleAvatar(
+              radius: screenWidth * 0.15,
+              backgroundImage: AssetImage(widget.company.image),
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: screenHeight * 0.04),
-                CircleAvatar(
-                  radius: screenWidth * 0.15,
-                  backgroundImage: AssetImage(widget.company.image),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      widget.company.name,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.05,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(height: screenHeight * 0.005),
-                    // Category removed as per request
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                Container(
-                  width: screenWidth,
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                  padding: EdgeInsets.all(screenWidth * 0.04),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    border: Border.all(color: Colors.grey.shade300),
+                Text(
+                  widget.company.name,
+                  style: TextStyle(
+                    fontSize: screenWidth * 0.05,
+                    fontWeight: FontWeight.bold,
                   ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                ),
+                SizedBox(height: screenHeight * 0.005),
+                // Category removed as per request
+              ],
+            ),
+            SizedBox(height: screenHeight * 0.02),
+            Container(
+              width: screenWidth,
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    S.of(context).Details,
+                    style: TextStyle(
+                      fontSize: screenWidth * 0.035,
+                      color: Colors.black,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
                     children: [
+                      Icon(Icons.work_outline, size: screenWidth * 0.04),
+                      SizedBox(width: screenWidth * 0.02),
                       Text(
-                        S.of(context).Details,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      Row(
-                        children: [
-                          Icon(Icons.work_outline, size: screenWidth * 0.04),
-                          SizedBox(width: screenWidth * 0.02),
-                          Text(
-                            "${widget.company.experience} ${S.of(context).yearsExperience}",
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.03,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.01),
-                      Row(
-                        children: [
-                          Icon(Icons.location_on_outlined,
-                              size: screenWidth * 0.04),
-                          SizedBox(width: screenWidth * 0.02),
-                          Text(
-                            widget.company.address,
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.03,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.01),
-                      Row(
-                        children: [
-                          Icon(Icons.star_outline, size: screenWidth * 0.04),
-                          SizedBox(width: screenWidth * 0.02),
-                          Text(
-                            '${S.of(context).Rating} : ${widget.company.rating}',
-                            style: TextStyle(
-                              fontSize: screenWidth * 0.03,
-                              color: Colors.black,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(height: screenHeight * 0.02),
-                      Text(
-                        widget.company.description,
+                        "${widget.company.experience} ${S.of(context).yearsExperience}",
                         style: TextStyle(
                           fontSize: screenWidth * 0.03,
                           color: Colors.black,
@@ -1739,166 +1843,129 @@ class _ContractingState extends State<Contracting> {
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                // Tabs
-                Container(
-                  height: screenWidth * 0.12,
-                  margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-                  decoration: BoxDecoration(
-                    color: KprimaryColor.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(screenWidth * 0.02),
-                  ),
-                  child: Row(
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
                     children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _currentTabIndex = 0;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: _currentTabIndex == 0
-                                  ? KprimaryColor
-                                  : Colors.transparent,
-                              borderRadius:
-                              BorderRadius.circular(screenWidth * 0.02),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${S.of(context).Posts} (${_posts.length})",
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 0
-                                      ? Colors.white
-                                      : KprimaryColor,
-                                ),
-                              ),
-                            ),
-                          ),
+                      Icon(Icons.location_on_outlined,
+                          size: screenWidth * 0.04),
+                      SizedBox(width: screenWidth * 0.02),
+                      Text(
+                        widget.company.address,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              _currentTabIndex = 1;
-                            });
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              color: _currentTabIndex == 1
-                                  ? KprimaryColor
-                                  : Colors.transparent,
-                              borderRadius:
-                              BorderRadius.circular(screenWidth * 0.02),
-                            ),
-                            child: Center(
-                              child: Text(
-                                "${S.of(context).Reviews} (${_reviews.length})",
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  fontWeight: FontWeight.bold,
-                                  color: _currentTabIndex == 1
-                                      ? Colors.white
-                                      : KprimaryColor,
-                                ),
-                              ),
-                            ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.phone_outlined,
+                        size: screenWidth * 0.04,
+                      ),
+                      SizedBox(width: screenWidth * 0.02),
+                      GestureDetector(
+                        onTap: () {
+                        },
+                        child: Text(
+                          widget.company.phone,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.03,
+                            color: KprimaryColor,
+                            fontWeight: FontWeight.w600,
+                            decoration: TextDecoration.underline,
                           ),
                         ),
                       ),
                     ],
                   ),
-                ),
-                SizedBox(height: screenHeight * 0.02),
-                _currentTabIndex == 0 ? _buildPostsTab() : _buildReviewsTab(),
-                SizedBox(height: screenWidth * 0.15),
-              ],
+                  SizedBox(height: screenHeight * 0.01),
+                  Row(
+                    children: [
+                      Icon(Icons.star_outline, size: screenWidth * 0.04),
+                      SizedBox(width: screenWidth * 0.02),
+                      Text(
+                        '${S.of(context).Rating} : (${widget.company.rating})',
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.03,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          Positioned(
-            bottom: 20,
-            left: 0,
-            right: 0,
-            child: Container(
-              width: screenWidth,
-              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+            SizedBox(height: screenHeight * 0.02),
+            // Tabs
+            Container(
+              height: screenWidth * 0.12,
+              margin: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+              decoration: BoxDecoration(
+                color: KprimaryColor.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(screenWidth * 0.02),
+              ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Expanded(
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
-                        // Add call functionality
+                        setState(() {
+                          _currentTabIndex = 0;
+                        });
                       },
                       child: Container(
-                        height: screenWidth * 0.12,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: KprimaryColor,
-                            width: 1.5,
-                          ),
+                          color: _currentTabIndex == 0
+                              ? KprimaryColor
+                              : Colors.transparent,
+                          borderRadius:
+                          BorderRadius.circular(screenWidth * 0.02),
                         ),
                         child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Icon(
-                                Icons.phone_outlined,
-                                color: KprimaryColor,
-                                size: screenWidth * 0.06,
-                              ),
-                              SizedBox(width: screenWidth * 0.02),
-                              Text(
-                                S.of(context).CallUs,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  color: KprimaryColor,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            "${S.of(context).Posts} (${_posts.length})",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              fontWeight: FontWeight.bold,
+                              color: _currentTabIndex == 0
+                                  ? Colors.white
+                                  : KprimaryColor,
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(width: screenWidth * 0.02),
                   Expanded(
-                    child: InkWell(
+                    child: GestureDetector(
                       onTap: () {
-                        // Add WhatsApp functionality
+                        setState(() {
+                          _currentTabIndex = 1;
+                        });
                       },
                       child: Container(
-                        height: screenWidth * 0.12,
                         decoration: BoxDecoration(
-                          color: const Color(0xff06cd46e),
-                          borderRadius: BorderRadius.circular(8),
+                          color: _currentTabIndex == 1
+                              ? KprimaryColor
+                              : Colors.transparent,
+                          borderRadius:
+                          BorderRadius.circular(screenWidth * 0.02),
                         ),
                         child: Center(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Image.asset(
-                                'Assets/logos_whatsapp-icon.png',
-                                height: screenWidth * 0.12,
-                                width: screenWidth * 0.12,
-                              ),
-                              Text(
-                                S.of(context).WhatsApp,
-                                style: TextStyle(
-                                  fontSize: screenWidth * 0.035,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ],
+                          child: Text(
+                            "${S.of(context).Reviews} (${_reviews.length})",
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              fontWeight: FontWeight.bold,
+                              color: _currentTabIndex == 1
+                                  ? Colors.white
+                                  : KprimaryColor,
+                            ),
                           ),
                         ),
                       ),
@@ -1907,8 +1974,11 @@ class _ContractingState extends State<Contracting> {
                 ],
               ),
             ),
-          ),
-        ],
+            SizedBox(height: screenHeight * 0.02),
+            _currentTabIndex == 0 ? _buildPostsTab() : _buildReviewsTab(),
+            SizedBox(height: screenWidth * 0.15),
+          ],
+        ),
       ),
     );
   }

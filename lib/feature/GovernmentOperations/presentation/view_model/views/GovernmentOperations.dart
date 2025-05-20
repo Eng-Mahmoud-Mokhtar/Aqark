@@ -536,7 +536,7 @@ class GovernmentDetails extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.all(Radius.circular(8)),
-          border: Border.all(color: SubText, width: 1),
+            border: Border.all(color: const Color(0xffE9E9E9))
         ),
         child: Row(
           children: [
@@ -622,9 +622,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
-    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
-    final textAlign = isArabic ? TextAlign.right : TextAlign.left;
-
     return BlocProvider(
       create: (context) => CountryCubit(),
       child: Scaffold(
@@ -672,10 +669,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   ),
                 ),
                 SizedBox(height: screenWidth * 0.01),
-                _buildTextField(
-                  controller: _nameController,
-                  label: S.of(context).fullNameLabel,
-                  icon: Icons.person_outline_sharp,
+                SizedBox(
+                  height: screenWidth * 0.12,
+                  child: _buildTextField(
+                    controller: _nameController,
+                    label: S.of(context).fullNameLabel,
+                  ),
                 ),
                 if (_nameError != null)
                   Padding(
@@ -684,6 +683,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       _nameError!,
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
+                        fontWeight: FontWeight.w500,
                         color: Colors.red[500],
                       ),
                     ),
@@ -691,7 +691,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 SizedBox(height: screenWidth * 0.04),
                 PhoneNumber(
                   controller: _phoneController,
-                  validator: null, // Validator handled in _validateForm
+                  validator: null
                 ),
                 if (_phoneError != null)
                   Padding(
@@ -700,7 +700,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       _phoneError!,
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
-                        color: Colors.red[900],
+                        fontWeight: FontWeight.w500,
+                        color: Colors.red[500],
                       ),
                     ),
                   ),
@@ -717,7 +718,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                 _buildTextField(
                   controller: _detailsController,
                   label: S.of(context).requestDetailsLabel,
-                  icon: null,
                   maxLines: null,
                   minLines: 4,
                 ),
@@ -728,7 +728,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       _detailsError!,
                       style: TextStyle(
                         fontSize: screenWidth * 0.03,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w500,
                         color: Colors.red[500],
                       ),
                     ),
@@ -849,7 +849,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   Widget _buildTextField({
     required TextEditingController controller,
     required String label,
-    IconData? icon,
     TextInputType? keyboardType,
     int? maxLines,
     int? minLines,
@@ -880,16 +879,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
             vertical: screenWidth * 0.035,
             horizontal: screenWidth * 0.02,
           ),
-          prefixIcon: icon != null
-              ? Padding(
-            padding: EdgeInsets.only(left: screenWidth * 0.01,right: screenWidth * 0.01),
-            child: Icon(
-              icon,
-              color: SubText,
-              size: screenWidth * 0.05,
-            ),
-          )
-              : null,
         ),
         keyboardType: keyboardType,
         maxLines: maxLines,

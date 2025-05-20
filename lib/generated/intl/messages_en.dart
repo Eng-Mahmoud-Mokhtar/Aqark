@@ -52,7 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "BedsAndBaths": MessageLookupByLibrary.simpleMessage("Beds And Baths"),
     "Bohemian": MessageLookupByLibrary.simpleMessage("Bohemian"),
     "Bricks": MessageLookupByLibrary.simpleMessage("Bricks"),
-    "BrokerProfile": MessageLookupByLibrary.simpleMessage("Broker Profile"),
+    "BrokerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "Brokers": MessageLookupByLibrary.simpleMessage("Brokers"),
     "ByContinuingYouAgree": MessageLookupByLibrary.simpleMessage(
       "By continuing you agree to our",
@@ -83,7 +83,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Decoration Engineer",
     ),
     "Design_Finishing": MessageLookupByLibrary.simpleMessage(
-      "Design & Finishing",
+      "Design and Finishing",
     ),
     "Details": MessageLookupByLibrary.simpleMessage("Details"),
     "DeveloperSale": MessageLookupByLibrary.simpleMessage("Developer Sale"),
@@ -94,7 +94,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "EGP": MessageLookupByLibrary.simpleMessage("EGP"),
     "Electrical": MessageLookupByLibrary.simpleMessage("Electrical"),
     "Electrician": MessageLookupByLibrary.simpleMessage("Electrician"),
-    "EngineerProfile": MessageLookupByLibrary.simpleMessage("Engineer Profile"),
+    "EngineerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "EngineerSpecialty": MessageLookupByLibrary.simpleMessage(
       "Engineer’s specialty",
     ),
@@ -167,20 +167,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "Office": MessageLookupByLibrary.simpleMessage("Office"),
     "OldestFirst": MessageLookupByLibrary.simpleMessage("Oldest First"),
     "OnBoarding1description": MessageLookupByLibrary.simpleMessage(
-      "Welcome, your gateway to finding the perfect home sweet home.",
+      "Connect instantly with top brokers, developers, and real estate projects across the country.",
     ),
-    "OnBoarding1title": MessageLookupByLibrary.simpleMessage("Welcome Home"),
+    "OnBoarding1title": MessageLookupByLibrary.simpleMessage("Find Home"),
     "OnBoarding2description": MessageLookupByLibrary.simpleMessage(
-      "Preparing comprehensive contracts to secure your investments in real estate and construction projects.",
+      "Search based on your needs and location, and easily connect with trusted engineers, designers, and service providers.",
     ),
-    "OnBoarding2title": MessageLookupByLibrary.simpleMessage(
-      "Tailor Your Search",
-    ),
+    "OnBoarding2title": MessageLookupByLibrary.simpleMessage("Tailored to You"),
     "OnBoarding3description": MessageLookupByLibrary.simpleMessage(
-      "Let\'s dive in together and find your perfect home with Building Knowledge.",
+      "From legal documents to government services — everything you need is just a tap away with Building Knowledge.",
     ),
     "OnBoarding3title": MessageLookupByLibrary.simpleMessage(
-      "Let\'s Get Started",
+      "Beyond the Property",
     ),
     "OurMission": MessageLookupByLibrary.simpleMessage("Our Mission"),
     "Painter": MessageLookupByLibrary.simpleMessage("Painter"),
@@ -272,7 +270,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "Villa": MessageLookupByLibrary.simpleMessage("Villa"),
     "WhatsApp": MessageLookupByLibrary.simpleMessage("WhatsApp"),
-    "WorkerProfile": MessageLookupByLibrary.simpleMessage("Worker Profile"),
+    "WorkerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "Workers": MessageLookupByLibrary.simpleMessage("Workers"),
     "WriteMessage": MessageLookupByLibrary.simpleMessage("Write your message"),
     "WriteYourReview": MessageLookupByLibrary.simpleMessage(
@@ -307,8 +305,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "choose_category": MessageLookupByLibrary.simpleMessage("Choose Category"),
     "companies": MessageLookupByLibrary.simpleMessage("Companies"),
     "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deliveryType": MessageLookupByLibrary.simpleMessage("Delivery In"),
     "design_features": MessageLookupByLibrary.simpleMessage("Design Features"),
+    "edit": MessageLookupByLibrary.simpleMessage("Edit"),
     "editProfile": MessageLookupByLibrary.simpleMessage("Edit Profile"),
     "egyptianRealEstateBankDescription": MessageLookupByLibrary.simpleMessage(
       "One of the most prominent banks specialized in real estate financing in Egypt",

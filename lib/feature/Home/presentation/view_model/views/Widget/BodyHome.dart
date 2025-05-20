@@ -2,45 +2,30 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:bk/core/utiles/constans.dart';
+import '../../../../../../core/utiles/Assets_Data.dart';
 import '../../../../../../generated/l10n.dart';
 import '../../../../../Design&Finishing/presentation/view_model/views/Design&Finishing.dart';
 import '../../../../../GovernmentOperations/presentation/view_model/views/GovernmentOperations.dart';
 import '../../../../../Materials/presentation/view_model/views/Materials.dart';
 import '../../../../../Real estates/presentation/view_model/views/RealEstateCategories.dart';
-import 'FeatureContainer.dart';
-import 'buildBrandsRow.dart';
 import 'buildImages.dart';
-import 'buildSearchBar.dart';
 import 'buildUserProfile.dart';
 
 abstract class BodyHomeState {}
-
 class BodyHomeInitial extends BodyHomeState {}
-
 class BodyHomeLoading extends BodyHomeState {}
 
 class BodyHomeLoaded extends BodyHomeState {
   final List<String> homeImages;
-  final List<String> serviceImages;
-  BodyHomeLoaded({required this.homeImages, required this.serviceImages});
+  BodyHomeLoaded({required this.homeImages});
 }
 
 class BodyHomeCubit extends Cubit<BodyHomeState> {
   BodyHomeCubit() : super(BodyHomeInitial());
-
   void loadData() async {
     emit(BodyHomeLoading());
     await Future.delayed(const Duration(seconds: 2));
-
-
-    final List<String> serviceImages = [
-      'Assets/property.png',
-      'Assets/wheel-barrow.png',
-      'Assets/stationery.png',
-          'Assets/feature (1).png',
-    ];
-
-    emit(BodyHomeLoaded(homeImages: homeImages, serviceImages: serviceImages));
+    emit(BodyHomeLoaded(homeImages: homeImages));
   }
 }
 
@@ -49,7 +34,6 @@ class BodyHome extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     return BlocProvider(
       create: (context) => BodyHomeCubit()..loadData(),
       child: BlocBuilder<BodyHomeCubit, BodyHomeState>(
@@ -64,80 +48,80 @@ class BodyHome extends StatelessWidget {
               ),
             );
           } else if (state is BodyHomeLoaded) {
-            return Scaffold(
-              backgroundColor: backgroundColor,
-              body: SingleChildScrollView(
-                physics: BouncingScrollPhysics(),
-                child: Padding(
-                  padding: EdgeInsets.all(screenWidth * 0.04),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const SizedBox(height: 15),
-                      buildUserProfile(context),
-                      const SizedBox(height: 12),
-                      Divider(color: KprimaryColor.withOpacity(0.1), thickness: 1, height: 1),
-                      const SizedBox(height: 12),
-                      buildBrandsRow(context),
-                      buildSearchBar(context),
-                      const SizedBox(height: 12),
-                      AnimatedImageSlider(images: state.homeImages),
-                      const SizedBox(height: 12),
-                      Text(
-                        S.of(context).Services,
-                        style: TextStyle(
-                          fontSize: MediaQuery.of(context).size.width * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: KprimaryColor,
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                      GridView.builder(
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        padding: EdgeInsets.zero,
-                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          crossAxisSpacing: 10,
-                          mainAxisSpacing: 10,
-                          childAspectRatio: 1,
-                        ),
-                        itemCount: 4,
-                        itemBuilder: (context, index) {
-                          return GestureDetector(
-                            onTap: () {
-                              switch (index) {
-                                case 0:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => RealEstateCategories()));
-                                  break;
-                                case 1:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => Materials()));
-                                  break;
-                                case 2:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => DesignFinishing()));
-                                  break;
-                                case 3:
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => GovernmentOperations()));
-                                  break;
-                              }
-                            },
-                            child: FeatureContainer(
-                              label: index == 0
-                                  ? S.of(context).RealEstate
-                                  : index == 1
-                                  ? S.of(context).Materials
-                                  : index == 2
-                                  ? S.of(context).Design_Finishing
-                                  : S.of(context).Government_Services,
-                              imagePath: state.serviceImages[index],
+            return LayoutBuilder(
+              builder: (context, constraints) {
+                final screenWidth = constraints.maxWidth;
+                final screenHeight = constraints.maxHeight;
+                final padding = screenWidth * 0.04;
+                final containerWidth = (screenWidth - padding * 2 - screenWidth * 0.035) / 2;
+
+                return Scaffold(
+                  backgroundColor: backgroundColor,
+                  body: SingleChildScrollView(
+                    padding: EdgeInsets.symmetric(horizontal: padding),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(height: screenHeight * 0.065),
+                        buildUserProfile(context),
+                        SizedBox(height: screenHeight * 0.02),
+                        AnimatedImageSlider(images: state.homeImages),
+                        SizedBox(height: screenHeight * 0.02),
+                        Padding(
+                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                          child: Text(
+                            S.of(context).Services,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              fontWeight: FontWeight.bold,
+                              color: KprimaryColor,
                             ),
-                          );
-                        },
-                      ),
-                    ],
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.02),
+                        Wrap(
+                          spacing: screenWidth * 0.035,
+                          runSpacing: screenHeight * 0.025,
+                          children: List.generate(4, (index) {
+                            return GestureDetector(
+                              onTap: () {
+                                switch (index) {
+                                  case 0:
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => RealEstateCategories()));
+                                    break;
+                                  case 1:
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => Materials()));
+                                    break;
+                                  case 2:
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => DesignFinishing()));
+                                    break;
+                                  case 3:
+                                    Navigator.push(context, MaterialPageRoute(builder: (context) => GovernmentOperations()));
+                                    break;
+                                }
+                              },
+                              child: SizedBox(
+                                width: containerWidth,
+                                child: FeatureContainer(
+                                  label: index == 0
+                                      ? S.of(context).RealEstate
+                                      : index == 1
+                                      ? S.of(context).Materials
+                                      : index == 2
+                                      ? S.of(context).Design_Finishing
+                                      : S.of(context).Government_Services,
+                                  screenWidth: screenWidth,
+                                ),
+                              ),
+                            );
+                          }),
+                        ),
+                        SizedBox(height: screenHeight * 0.05),
+                      ],
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             );
           } else {
             return Container();
@@ -147,4 +131,76 @@ class BodyHome extends StatelessWidget {
     );
   }
 }
+class FeatureContainer extends StatelessWidget {
+  final String label;
+  final double screenWidth;
 
+  const FeatureContainer({
+    required this.label,
+    required this.screenWidth,
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final double containerWidth = screenWidth * 0.42;
+    final double iconSize = containerWidth * 0.35;
+    final double fontSize = screenWidth * 0.03;
+    final double innerPadding = screenWidth * 0.04;
+
+    return Container(
+      width: containerWidth,
+      padding: EdgeInsets.all(innerPadding),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(8),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.1),
+            blurRadius: 12,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Container(
+            width: iconSize,
+            height: iconSize,
+            decoration: BoxDecoration(
+              color: KprimaryColor,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Image.asset(
+                AssetsData.Logo,
+                width: iconSize * 0.8,
+                height: iconSize * 0.8,
+                color: Colors.white,
+                fit: BoxFit.contain,
+              ),
+            ),
+          ),
+          SizedBox(
+            height: fontSize * 4,
+            child: Center(
+              child: Text(
+                label,
+                style: TextStyle(
+                  fontSize: fontSize,
+                  fontWeight: FontWeight.bold,
+                  color: KprimaryColor,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
