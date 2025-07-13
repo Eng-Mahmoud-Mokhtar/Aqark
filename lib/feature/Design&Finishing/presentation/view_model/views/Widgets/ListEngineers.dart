@@ -1,0 +1,60 @@
+import 'EngineerObjects.dart';
+
+final List<Engineer> engineers = [
+  Engineer(
+    name: 'Ahmed Mohamed',
+    phone: '+20 106 321 6789',
+    experience: '8',
+    address: 'Nasr City, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: true,
+  ),
+  Engineer(
+    name: 'Mahmoud Ali',
+    phone: '+20 106 321 6789',
+    experience: '6',
+    address: 'Maadi, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: true,
+  ),
+  Engineer(
+    name: 'Ibrahim Samy',
+    phone: '+20 106 321 6789',
+    experience: '7',
+    address: 'Heliopolis, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: true,
+  ),
+  Engineer(
+    name: 'Khaled Hussein',
+    phone: '+20 106 321 6789',
+    experience: '5',
+    address: 'Zamalek, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: false,
+  ),
+  Engineer(
+    name: 'Mostafa Ahmed',
+    phone: '+20 106 321 6789',
+    experience: '4',
+    address: 'Dokki, Giza',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: false,
+  ),
+  Engineer(
+    name: 'Yasser Abdullah',
+    phone: '+20 106 321 6789',
+    experience: '9',
+    address: 'Sheikh Zayed, Giza',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: true,
+  ),
+  Engineer(
+    name: 'Emad El-Sayed',
+    phone: '+20 106 321 6789',
+    experience: '10',
+    address: 'Mokattam, Cairo',
+    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
+    isFeatured: false,
+  ),
+];

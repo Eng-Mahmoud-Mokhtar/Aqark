@@ -2,8 +2,8 @@ import 'package:bk/core/utiles/constans.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utiles/AppBar.dart';
-import '../../../../../core/utiles/DetailesProperty.dart';
-import '../../../../../core/utiles/buildFilters.dart';
+import '../../../../../core/Widgets/DetailesProperty.dart';
+import '../../../../../core/Widgets/buildFilters.dart';
 import '../../../../../generated/l10n.dart';
 import 'Widget/ImageSlider.dart';
 import 'Widget/ProjectObjects.dart';
@@ -13,7 +13,6 @@ class ApartmentsCubit extends Cubit<String> {
 
   void selectType(String type) => emit(type);
 }
-
 class HomeDeveloper extends StatelessWidget {
   final Project project;
   final String developerLogo;
@@ -647,7 +646,6 @@ class HomeDeveloper extends StatelessWidget {
     );
   }
 }
-
 final List<RealStateObjects> defaultApartments = [
   RealStateObjects(
     type: 'Apartment',
@@ -986,7 +984,6 @@ class RealStateObjects {
     this.isFavorite = false,
   });
 }
-
 class Broker {
   final String name;
   final String phone;
@@ -1006,7 +1003,6 @@ class Broker {
     required this.isFeatured,
   });
 }
-
 class SubscriptionPage extends StatelessWidget {
   final Broker broker;
   final RealStateObjects apartment;
@@ -1216,7 +1212,6 @@ class SubscriptionPage extends StatelessWidget {
     );
   }
 }
-
 class PaymentPage extends StatefulWidget {
   final Broker broker;
   final String selectedPlan;
@@ -1227,7 +1222,6 @@ class PaymentPage extends StatefulWidget {
   @override
   State<PaymentPage> createState() => _PaymentPageState();
 }
-
 class _PaymentPageState extends State<PaymentPage> {
   String? selectedMethod;
   bool showCreditCardDetails = false;
@@ -1508,7 +1502,6 @@ class _PaymentPageState extends State<PaymentPage> {
     );
   }
 }
-
 class ProcessingPaymentDialog extends StatefulWidget {
   final Broker broker;
   final RealStateObjects apartment;
@@ -1518,7 +1511,6 @@ class ProcessingPaymentDialog extends StatefulWidget {
   @override
   State<ProcessingPaymentDialog> createState() => _ProcessingPaymentDialogState();
 }
-
 class _ProcessingPaymentDialogState extends State<ProcessingPaymentDialog> {
   bool isProcessing = true;
 

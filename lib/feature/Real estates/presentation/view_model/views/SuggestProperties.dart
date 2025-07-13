@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../../../../core/utiles/DetailesProperty.dart';
+import '../../../../../core/Widgets/DetailesProperty.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
 import 'AllRealEstates.dart';

@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:intl/intl.dart';
 import '../../../../../core/utiles/AppBar.dart';
-import '../../../../../core/utiles/DetailesProperty.dart';
+import '../../../../../core/Widgets/DetailesProperty.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../Home/presentation/view_model/views/BottomHome.dart';
+import '../../../../Home/presentation/view_model/views/Widget/BottomHome.dart';
 
 // Cubit for managing filter and sort state
 class ExploreCubit extends Cubit<Map<String, dynamic>> {
@@ -1307,11 +1307,7 @@ class _ExplorePageState extends State<ExplorePage> {
               ? S.of(context).CompoundsEgypt
               : S.of(context).Properties,
           onBack: () {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => Home()),
-                  (route) => false,
-            );
+            context.read<BottomNavCubit>().setIndex(0);
           },
           showSearch: true,
         ),

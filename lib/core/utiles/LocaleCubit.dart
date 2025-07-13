@@ -4,7 +4,9 @@ import 'package:flutter/material.dart';
 class LocaleCubit extends Cubit<Locale> {
   LocaleCubit() : super(const Locale('en'));
 
-  void changeLanguage(Locale locale) {
-    emit(locale);
+  void changeLanguage(Locale newLocale) {
+    if (state.languageCode != newLocale.languageCode) {
+      emit(newLocale);
+    }
   }
 }

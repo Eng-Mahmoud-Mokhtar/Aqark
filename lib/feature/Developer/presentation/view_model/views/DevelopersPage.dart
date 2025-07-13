@@ -6,22 +6,28 @@ import 'HomeDeveloper.dart';
 import 'Widget/ProjectObjects.dart';
 
 class DevelopersPage extends StatelessWidget {
+  const DevelopersPage({super.key});
+
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double padding = screenWidth * 0.04;
+    double spacing = screenWidth * 0.04;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title:S.of(context).Developers,
+        title: S.of(context).Developers,
         onBack: () => Navigator.pop(context),
         showSearch: false,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(padding),
         child: GridView.count(
           crossAxisCount: 2,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-          childAspectRatio: 0.80,
+          crossAxisSpacing: spacing,
+          mainAxisSpacing: spacing,
+          childAspectRatio: 0.75, // تناسب بين العرض والارتفاع لضبط الشكل
           children: [
             buildDeveloperCard(
               context: context,
@@ -60,10 +66,17 @@ class DevelopersPage extends StatelessWidget {
     required String label,
   }) {
     double screenWidth = MediaQuery.of(context).size.width;
+    double containerWidth = (screenWidth - (screenWidth * 0.08 + screenWidth * 0.04)) / 2;
+    double containerHeight = containerWidth / 0.75; // حسب الـ childAspectRatio
+    double imageSize = screenWidth * 0.18;
+    double fontSize = screenWidth * 0.035;
+
     return GestureDetector(
       onTap: () => _navigateToDeveloperDetails(context, imagePath, label),
       child: Container(
-        width: screenWidth * 0.4,
+        width: containerWidth,
+        height: containerHeight,
+        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -73,8 +86,8 @@ class DevelopersPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Container(
-              width: screenWidth * 0.18,
-              height: screenWidth * 0.18,
+              width: imageSize,
+              height: imageSize,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 border: Border.all(color: KprimaryColor.withOpacity(0.1), width: 1.5),
@@ -82,19 +95,19 @@ class DevelopersPage extends StatelessWidget {
               child: ClipOval(
                 child: Image.asset(
                   imagePath,
-                  width: screenWidth * 0.16,
-                  height: screenWidth * 0.16,
+                  width: imageSize * 0.9,
+                  height: imageSize * 0.9,
                   fit: BoxFit.cover,
                 ),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: screenWidth * 0.04),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
               child: Text(
                 label,
                 style: TextStyle(
-                  fontSize: screenWidth * 0.035,
+                  fontSize: fontSize,
                   fontWeight: FontWeight.bold,
                 ),
                 maxLines: 1,
@@ -122,7 +135,6 @@ class DevelopersPage extends StatelessWidget {
     );
   }
 }
-
 final List<Project> projects = [
   Project(
     name: "ZED East",
@@ -132,7 +144,7 @@ final List<Project> projects = [
     image: "Assets/beautiful-aerial-view-futuristic-city-landscape-with-roads-cars-skyscrapers-dubai-uae.jpg",
     developerLogo: "Assets/ora_logo.png",
     developerName: "ORA Developers",
-    details: "Starting from 13M EGP",
+    details: "8,000,000",
     images: [
       "Assets/beautiful-aerial-view-futuristic-city-landscape-with-roads-cars-skyscrapers-dubai-uae.jpg",
       "Assets/cityscape-wuxi.jpg",
@@ -148,7 +160,7 @@ final List<Project> projects = [
     image: "Assets/movie-night-by-pool-whole-family.jpg",
     developerLogo: "Assets/ora_logo.png",
     developerName: "ORA Developers",
-    details: "Starting from 14.5M EGP",
+    details: "9,200,000 ",
     images: [
       "Assets/cityscape-wuxi.jpg",
       "Assets/city-sunset.jpg",
@@ -164,7 +176,7 @@ final List<Project> projects = [
     image: "Assets/chinese-city.jpg",
     developerLogo: "Assets/ora_logo.png",
     developerName: "ORA Developers",
-    details: "Starting from 11.2M EGP",
+    details: "7,000,000",
     images: [
       "Assets/beautiful-aerial-view-futuristic-city-landscape-with-roads-cars-skyscrapers-dubai-uae.jpg",
        "Assets/cityscape-wuxi.jpg",
@@ -180,7 +192,7 @@ final List<Project> projects = [
     image: "Assets/cityscape-wuxi.jpg",
     developerLogo: "Assets/city-sunset.jpg",
     developerName: "ORA Developers",
-    details: "Starting from 18M EGP",
+    details: "12,000,000",
     images: [
       "Assets/cityscape-wuxi.jpg",
       "Assets/city-sunset.jpg",
@@ -212,6 +224,7 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
   late List<String> areas;
   late String selectedArea;
 
+  @override
   void didChangeDependencies() {
     super.didChangeDependencies();
     areas = [S.of(context).all, 'New Cairo', 'Sheikh Zayed', 'Giza', 'New Zayed'];
@@ -221,6 +234,8 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
   @override
   Widget build(BuildContext context) {
     screenWidth = MediaQuery.of(context).size.width;
+    final double screenHeight = MediaQuery.of(context).size.height;
+
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
@@ -231,9 +246,11 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            SizedBox(height: screenWidth * 0.05),
             _buildMainContainer(),
+            SizedBox(height: screenWidth * 0.05),
             Padding(
-              padding: const EdgeInsets.only(top: 20, left: 16, right: 16),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -248,8 +265,10 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
                 ],
               ),
             ),
-            _buildAreaFilter(),
+            _buildAreaFilter(screenWidth, screenHeight),
+            SizedBox(height: screenWidth * 0.03),
             _buildProjectList(),
+            SizedBox(height: screenWidth * 0.05),
           ],
         ),
       ),
@@ -260,13 +279,12 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
     return Container(
       width: screenWidth * 0.4,
       height: screenWidth * 0.5,
-      margin: const EdgeInsets.only(top: 20),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
         border: Border.all(
-            color: KprimaryColor.withOpacity(0.1),
-            width: 1.5
+          color: KprimaryColor.withOpacity(0.1),
+          width: 1.5,
         ),
       ),
       child: Column(
@@ -278,8 +296,8 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               border: Border.all(
-                  color: KprimaryColor.withOpacity(0.1),
-                  width: 1.5
+                color: KprimaryColor.withOpacity(0.1),
+                width: 1.5,
               ),
             ),
             child: ClipOval(
@@ -291,9 +309,9 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
               ),
             ),
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: screenWidth * 0.04),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
             child: Text(
               widget.developerName,
               style: TextStyle(
@@ -311,13 +329,11 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
     );
   }
 
-  Widget _buildAreaFilter() {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
+  Widget _buildAreaFilter(double screenWidth, double screenHeight) {
     return Padding(
       padding: EdgeInsets.symmetric(
-          horizontal: screenWidth * 0.04,
-          vertical: screenHeight * 0.02
+        horizontal: screenWidth * 0.04,
+        vertical: screenWidth * 0.03,
       ),
       child: SizedBox(
         height: screenWidth * 0.1,
@@ -368,7 +384,7 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
 
   Widget _buildProjectList() {
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
       child: Column(
         children: projects
             .where((project) => selectedArea == S.of(context).all || project.location == selectedArea)
@@ -398,7 +414,7 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
       },
       child: Container(
         width: double.infinity,
-        margin: const EdgeInsets.only(bottom: 16),
+        margin: EdgeInsets.only(bottom: screenWidth * 0.04),
         color: Colors.transparent,
         child: Row(
           children: [
@@ -411,11 +427,10 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
                 fit: BoxFit.cover,
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: screenWidth * 0.03),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     project.name,
@@ -440,7 +455,7 @@ class _DeveloperDetailsPageState extends State<DeveloperDetailsPage> {
                   ),
                   SizedBox(height: screenWidth * 0.009),
                   Text(
-                    project.details,
+                    "${S.of(context).Startingfrom} ${project.details} ${S.of(context).EGP}",
                     style: TextStyle(
                       fontSize: screenWidth * 0.025,
                       fontWeight: FontWeight.bold,

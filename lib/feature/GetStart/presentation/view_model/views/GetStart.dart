@@ -3,7 +3,7 @@ import 'package:bk/feature/GetStart/presentation/view_model/views/widgets/Contit
 import 'package:flutter/material.dart';
 import '../../../../../core/utiles/Assets_Data.dart';
 import '../../../../../core/utiles/constans.dart';
-import '../../../../Home/presentation/view_model/views/BottomHome.dart';
+import '../../../../Home/presentation/view_model/views/Widget/BottomHome.dart';
 
 class Welcome extends StatelessWidget {
   const Welcome({Key? key}) : super(key: key);

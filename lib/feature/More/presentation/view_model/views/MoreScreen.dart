@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:bk/core/utiles/constans.dart';
 import 'package:bk/core/utiles/LocaleCubit.dart';
 import 'package:bk/feature/Favorites/presentation/view_model/views/Favorites.dart';
 import 'package:bk/feature/Privacy/presentation/view_model/views/Privacy.dart';
@@ -10,60 +8,13 @@ import 'package:bk/feature/TermsAndCondition/presentation/view_model/views/Terms
 import '../../../../../generated/l10n.dart';
 import '../../../../ContectUs/presentation/view_model/views/ContectUs.dart';
 import '../../../../EditProfile/presentation/view_model/views/EditProfile.dart';
-import '../../../../Workers/presentation/view_model/views/Workers.dart';
+import 'Widgets/MySubscriptions.dart';
 import 'Widgets/buildCategories.dart';
 import 'Widgets/buildHeader.dart';
 import 'Widgets/buildLanguageOption.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({Key? key}) : super(key: key);
-  void _showLanguageBottomSheet(BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(12)),
-      ),
-      builder: (context) {
-        final screenWidth = MediaQuery.of(context).size.width;
-        final screenHeight = MediaQuery.of(context).size.height;
-
-        return Container(
-          width: screenWidth,
-          constraints: BoxConstraints(
-            minHeight: screenHeight * 0.4,
-            maxHeight: screenHeight * 0.8,
-          ),
-          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              SizedBox(height: 10.h),
-              Image.asset(
-                'Assets/icons8-globe-48.png',
-                width: 70.w,
-                height: 70.h,
-                color: KprimaryColor.withOpacity(0.1),
-              ),
-              Text(
-                S.of(context).selectAppLanguage,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black87,
-                ),
-              ),
-              SizedBox(height: 10.h),
-              buildLanguageOption(context, 'العربية', const Locale('ar')),
-              buildLanguageOption(context, 'English', const Locale('en')),
-              SizedBox(height: 10.h),
-            ],
-          ),
-        );
-      },
-    );
-  }
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -98,12 +49,12 @@ class MoreScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.03),
               buildCategories(
                 context: context,
-                label: S.of(context).Workers,
-                iconPath: 'Assets/icons8-bag-96.png',
+                label: translations.contactUs,
+                iconPath: 'Assets/icons8-ringer-volume-50.png',
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => WorkersScreen(),
+                      builder: (context) => ContactUsScreen(),
                     ),
                   );
                 },
@@ -111,12 +62,12 @@ class MoreScreen extends StatelessWidget {
               SizedBox(height: screenHeight * 0.025),
               buildCategories(
                 context: context,
-                label: translations.contactUs,
-                iconPath: 'Assets/icons8-ringer-volume-50.png',
+                label: S.of(context).MySubscription,
+                iconPath: 'Assets/icons8-warranty-50.png',
                 onPressed: () {
                   Navigator.of(context).push(
                     MaterialPageRoute(
-                      builder: (context) => ContactUsScreen(),
+                      builder: (context) => MySubscriptions(),
                     ),
                   );
                 },
@@ -166,7 +117,7 @@ class MoreScreen extends StatelessWidget {
                 label: translations.language,
                 iconPath: 'Assets/icons8-globe-48.png',
                 onPressed: () {
-                  _showLanguageBottomSheet(context);
+                  showLanguageBottomSheet(context);
                 },
                 trailing: Text(
                   context.read<LocaleCubit>().state.languageCode == 'ar'
@@ -213,4 +164,6 @@ class MoreScreen extends StatelessWidget {
     );
   }
 }
+
+
 

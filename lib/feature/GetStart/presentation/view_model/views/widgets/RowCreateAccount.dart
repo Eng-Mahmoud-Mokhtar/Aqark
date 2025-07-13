@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/utiles/constans.dart';
 import '../../../../../../generated/l10n.dart';
-import '../../../../../SignUp/presentation/viewModel/views/SignUp.dart';
+import '../../../../../Auth/presentation/view_model/views/SignUp.dart';
 
 class RowCreateAccount extends StatelessWidget {
   const RowCreateAccount({super.key});

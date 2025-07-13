@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../core/utiles/AppBar.dart';
+import '../../../../../core/utiles/ListGovernoratesWithCities.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../Home/presentation/view_model/views/BottomHome.dart';
+import '../../../../Home/presentation/view_model/views/Widget/BottomHome.dart';
+import 'Widgets/ListWorker.dart';
+import 'Widgets/WorkerObjects.dart';
+import 'Widgets/getTranslatedProfession.dart';
 import 'WorkerDetailes.dart';
 
 class WorkersScreen extends StatefulWidget {
@@ -16,26 +20,6 @@ class WorkersScreen extends StatefulWidget {
 class _WorkersScreenState extends State<WorkersScreen> {
   String searchQuery = '';
   String? selectedWorkers;
-  double minRating = 3.0;
-
-  String getTranslatedProfession(BuildContext context, String professionId) {
-    switch (professionId) {
-      case 'mason':
-        return S.of(context).Mason;
-      case 'plumber':
-        return S.of(context).Plumber;
-      case 'carpenter':
-        return S.of(context).Carpenter;
-      case 'electrician':
-        return S.of(context).Electrician;
-      case 'painter':
-        return S.of(context).Painter;
-      case 'ac_technician':
-        return S.of(context).ACTechnician;
-      default:
-        return professionId;
-    }
-  }
 
   List<Map<String, String>> getAllworkers(BuildContext context) => [
     {'id': 'all', 'name': S.of(context).all},
@@ -61,9 +45,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
               .contains(searchQuery.toLowerCase()) ||
           worker.address.toLowerCase().contains(searchQuery.toLowerCase());
       final matchesCategory = selectedWorkers == 'all' || worker.category == selectedWorkers;
-      final matchesRating = worker.rating >= minRating;
-
-      return matchesSearch && matchesCategory && matchesRating;
+      return matchesSearch && matchesCategory;
     }).toList();
   }
 
@@ -85,11 +67,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
       appBar: CustomAppBar(
         title: S.of(context).Workers,
         onBack: () {
-          Navigator.pushAndRemoveUntil(
-            context,
-            MaterialPageRoute(builder: (context) => Home()),
-                (route) => false,
-          );
+          context.read<BottomNavCubit>().setIndex(0);
         },
         showSearch: false,
       ),
@@ -127,6 +105,14 @@ class _WorkersScreenState extends State<WorkersScreen> {
                 color: const Color(0xffFAFAFA),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: const Color(0xffE9E9E9)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: TextField(
                 onChanged: (value) => setState(() => searchQuery = value),
@@ -148,7 +134,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                     horizontal: screenWidth * 0.02,
                   ),
                   prefixIcon: Padding(
-                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                    padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
                     child: Icon(
                       Icons.search_outlined,
                       color: Colors.grey,
@@ -168,6 +154,14 @@ class _WorkersScreenState extends State<WorkersScreen> {
                 color: const Color(0xffFAFAFA),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: const Color(0xffE9E9E9)),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 1,
+                    blurRadius: 5,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
               ),
               child: IconButton(
                 icon: Image.asset(
@@ -234,7 +228,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
 
   Widget _buildFeaturedSection() {
     final screenWidth = MediaQuery.of(context).size.width;
-    if (selectedWorkers != 'all') return const SizedBox.shrink();
     final featured = featuredWorkers;
     if (featured.isEmpty) return const SizedBox.shrink();
 
@@ -251,7 +244,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.55,
+          height: MediaQuery.of(context).size.width * 0.45,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -263,109 +256,117 @@ class _WorkersScreenState extends State<WorkersScreen> {
       ],
     );
   }
-
   Widget _buildFeaturedWorkerContainer(Worker worker) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    return Container(
-      width: screenWidth * 0.4,
-      margin: EdgeInsets.only(
-        left: Localizations.localeOf(context).languageCode == 'ar' ? screenWidth * 0.02 : 0,
-        right: Localizations.localeOf(context).languageCode == 'ar' ? 0 : screenWidth * 0.02,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: () => _showWorkerDetails(worker),
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.02),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: screenWidth * 0.07,
-                backgroundImage: AssetImage(worker.image),
-              ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                worker.name,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: screenHeight * 0.001),
-              Text(
-                getTranslatedProfession(context, worker.profession),
-                style: TextStyle(
-                  color: KprimaryColor,
-                  fontSize: screenWidth * 0.03,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: screenHeight * 0.001),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
-                  SizedBox(width: screenWidth * 0.01),
-                  Flexible(
-                    child: Text(
-                      worker.address,
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    return GestureDetector(
+      onTap: () => _showWorkerDetails(worker),
+      child: Container(
+        width: screenWidth * 0.4,
+        margin: EdgeInsets.only(
+          left: isArabic ? screenWidth * 0.02 : 0,
+          right: isArabic ? 0 : screenWidth * 0.02,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: screenWidth * 0.07,
+                      backgroundImage: AssetImage(worker.image),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      worker.name,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: SubText,
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
+                      textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: screenHeight * 0.001),
+                    Text(
+                      getTranslatedProfession(context, worker.profession),
+                      style: TextStyle(
+                        color: KprimaryColor,
+                        fontSize: screenWidth * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: screenHeight * 0.001),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
+                        SizedBox(width: screenWidth * 0.01),
+                        Flexible(
+                          child: Text(
+                            worker.address,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.03,
+                              color: SubText,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: screenWidth * 0.04,
+              left: -screenWidth * 0.07,
+              child: Transform.rotate(
+                angle: -0.785398,
+                child: Container(
+                  width: screenWidth * 0.3,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: SecondaryColor,
+                  ),
+                  child: Text(
+                    S.of(context).Premium,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenWidth * 0.03,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.002),
-              RatingBarIndicator(
-                rating: worker.rating,
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: SecondaryColor,
                 ),
-                itemCount: 5,
-                itemSize: screenWidth * 0.04,
               ),
-              SizedBox(height: screenHeight * 0.001),
-              Text(
-                '${worker.rating.toStringAsFixed(1)}',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  color: SubText,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
   }
+
   Widget _buildAllWorkersSection() {
     final screenWidth = MediaQuery.of(context).size.width;
     final workersList = workersByCategory;
@@ -478,23 +479,11 @@ class _WorkersScreenState extends State<WorkersScreen> {
               ],
             ),
           ),
-          Column(
-            children: [
-              Icon(Icons.star, size: screenWidth * 0.05, color: SecondaryColor),
-              SizedBox(height: screenWidth * 0.01),
-              Text(
-                '${worker.rating.toStringAsFixed(1)}',
-                style: TextStyle(
-                  color: SubText,
-                  fontSize: screenWidth * 0.03,
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
   }
+
   void _showWorkerDetails(Worker worker) {
     Navigator.push(
       context,
@@ -503,12 +492,9 @@ class _WorkersScreenState extends State<WorkersScreen> {
       ),
     );
   }
-  final List<Map<String, dynamic>> _filterOptions = [
-    {"title": "HighestRating", "value": "rating"},
-  ];
   String? _selectedGovernorate;
   String? _selectedCity;
-  String _selectedFilter = "none";
+
   void _showAdvancedFilter() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -730,50 +716,6 @@ class _WorkersScreenState extends State<WorkersScreen> {
                       ),
                     ],
                   ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    S.of(context).Rating,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.008),
-                  ..._filterOptions.map((option) {
-                    bool isSelected = _selectedFilter == option['value'];
-                    return GestureDetector(
-                      onTap: () {
-                        setModalState(() {
-                          _selectedFilter = option['value'];
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                        decoration: BoxDecoration(
-                          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                          child: Text(
-                            S.of(context).HighestRating,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.03,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
                   const Spacer(),
                   Row(
                     children: [
@@ -837,13 +779,10 @@ class _WorkersScreenState extends State<WorkersScreen> {
                               ),
                             ),
                           ),
-                          onPressed: (_selectedGovernorate == null &&
-                              _selectedCity == null &&
-                              _selectedFilter == "none")
+                          onPressed: (_selectedGovernorate == null && _selectedCity == null)
                               ? null
                               : () {
                             setState(() {
-                              _selectedFilter = "none";
                               _selectedCity = null;
                               _selectedGovernorate = null;
                             });
@@ -859,7 +798,7 @@ class _WorkersScreenState extends State<WorkersScreen> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
@@ -1187,142 +1126,3 @@ class _WorkersScreenState extends State<WorkersScreen> {
   }
 }
 
-final List<Worker> workers = [
-  Worker(
-    name: 'Ahmed Mohamed',
-    profession: 'mason',
-    phone: "+20 106 321 6789",
-    experience: '8',
-    address: 'Nasr City, Cairo',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 4.8,
-    reviewCount: 56,
-    category: 'construction',
-    isFeatured: true,
-  ),
-  Worker(
-    name: 'Mahmoud Ali',
-    profession: 'plumber',
-    phone: "+20 106 321 6789",
-    experience: '6',
-    address: 'Maadi, Cairo',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 4.7,
-    reviewCount: 42,
-    category: 'plumbing',
-    isFeatured: true,
-  ),
-  Worker(
-    name: 'Ibrahim Samy',
-    profession: 'carpenter',
-    phone: "+20 106 321 6789",
-    experience: '7',
-    address: 'Heliopolis, Cairo',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 4.5,
-    reviewCount: 38,
-    category: 'carpentry',
-    isFeatured: true,
-  ),
-  Worker(
-    name: 'Khaled Hussein',
-    profession: 'electrician',
-    phone: "+20 106 321 6789",
-    experience: '5',
-    address: 'Zamalek, Cairo',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 4.3,
-    reviewCount: 31,
-    category: 'electrical',
-    isFeatured: false,
-  ),
-  Worker(
-    name: 'Mostafa Ahmed',
-    profession: 'painter',
-    phone: "+20 106 321 6789",
-    experience: '4',
-    address: 'Dokki, Giza',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 4.2,
-    reviewCount: 24,
-    category: 'painting',
-    isFeatured: false,
-  ),
-  Worker(
-    name: 'Yasser Abdullah',
-    profession: 'ac_technician',
-    phone: "+20 106 321 6789",
-    experience: '9',
-    address: 'Sheikh Zayed, Giza',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 3.9,
-    reviewCount: 68,
-    category: 'ac_repair',
-    isFeatured: true,
-  ),
-  Worker(
-    name: 'Emad El-Sayed',
-    profession: 'mason',
-    experience: '10',
-    phone: "+20 106 321 6789",
-    address: 'Mokattam, Cairo',
-    image: 'Assets/٢٠٢٣_٠٧_١١_٠٠_٥١_IMG_2476.JPG',
-    rating: 2.6,
-    reviewCount: 26,
-    category: 'construction',
-    isFeatured: false,
-  ),
-];
-final Map<String, List<String>> governoratesWithCities = {
-  "Cairo": ["Maadi", "Mokattam", "Nasr City", "Zamalek", "Dokki", "Heliopolis", "Shubra", "New Cairo", "El Marg"],
-  "Giza": ["Dokki", "Mohandessin", "Haram", "6th October", "Sheikh Zayed", "Faisal", "Bulaq Dakrour", "Imbaba"],
-  "Alexandria": ["Smouha", "Sidi Gaber", "Asafra", "Mandara", "Montaza", "Gleem", "Stanley", "Miami", "San Stefano"],
-  "Minya": ["New Minya", "Mallawi", "Deir Mawas", "Maghagha", "Abu Qurqas", "Samalout", "Beni Mazar"],
-  "Assiut": ["New Assiut", "Dayrout", "Sadfa", "El Badari", "Abnoub", "El Quseyya", "Manfalut"],
-  "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
-  "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
-  "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
-  "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
-  "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
-  "South Sinai": ["Sharm El-Sheikh", "Dahab", "Nuweiba", "Saint Catherine", "Taba"],
-  "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
-  "Ismailia": ["Ismailia City", "Fayed", "Qantara West", "Tell El Kebir"],
-  "Port Said": ["Port Said City", "Port Fouad"],
-  "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
-  "Beheira": ["Damanhour", "Kafr El Dawwar", "Edku", "Rashid", "Abu Hummus"],
-  "Dakahlia": ["Mansoura", "Talkha", "Mit Ghamr", "Sherbin", "Belqas"],
-  "Sharqia": ["Zagazig", "10th of Ramadan", "Bilbeis", "Minya El Qamh", "Fakous"],
-  "Gharbia": ["Tanta", "El Mahalla El Kubra", "Kafr El Zayat", "Zifta", "Samanoud"],
-  "Monufia": ["Shibin El Kom", "Sadat City", "Ashmoun", "Quesna", "Menouf"],
-  "Fayoum": ["Fayoum City", "Senoures", "Etsa", "Tamiya", "Youssef El Seddik"],
-  "Beni Suef": ["Beni Suef City", "Nasser", "Biba", "El Wasta", "Ihnasya"],
-  "Kafr El Sheikh": ["Kafr El Sheikh City", "Desouk", "Baltim", "Motobas", "Fuwwah"],
-  "Damietta": ["Damietta City", "New Damietta", "Ras El Bar", "Ezbet El Borg", "Kafr Saad"],
-  "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
-  "Matrouh": ["Marsa Matrouh", "Siwa", "El Alamein", "Sidi Barrani", "Al Negila"],
-};
-class Worker {
-  final String name;
-  final String profession;
-  final String experience;
-  final String phone;
-  final String address;
-  final String image;
-  final double rating;
-  final int reviewCount;
-  final String category;
-  final bool isFeatured;
-
-  Worker({
-    required this.name,
-    required this.profession,
-    required this.experience,
-    required this.phone,
-    required this.address,
-    required this.image,
-    required this.rating,
-    required this.reviewCount,
-    required this.category,
-    required this.isFeatured,
-  });
-}

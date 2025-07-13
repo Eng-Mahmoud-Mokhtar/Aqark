@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import '../../../../../core/utiles/AppBar.dart';
+import '../../../../../core/utiles/ListGovernoratesWithCities.dart';
 import '../../../../../core/utiles/constans.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../../generated/l10n.dart';
-import 'Widgets/ShopMaterial.dart';
-
+import 'ShopDetails.dart';
+import 'Widgets/MaterialShopObjects.dart';
+import 'Widgets/ShopProductObjects.dart';
 class Materials extends StatefulWidget {
-  const Materials({Key? key}) : super(key: key);
+  final String sectionType;
+
+  const Materials({Key? key, required this.sectionType}) : super(key: key);
 
   @override
   _MaterialsScreenState createState() => _MaterialsScreenState();
@@ -16,21 +18,58 @@ class Materials extends StatefulWidget {
 class _MaterialsScreenState extends State<Materials> {
   String searchQuery = '';
   String selectedCategory = 'All';
-  double minRating = 3.0;
+  String? _selectedGovernorate;
+  String? _selectedCity;
 
-  // Categories
-  final List<String> categories = [
-    'All',
-    'Cement',
-    'Bricks',
-    'Steel',
-    'Paints',
-    'Tiles',
-    'Plumbing',
-    'Electrical',
-  ];
+  List<String> get categories {
+    switch (widget.sectionType) {
+      case 'ConstructionMaterials':
+        return [
+          'All',
+          'Cement',
+          'Bricks',
+          'Steel',
+          'Plumbing',
+          'Electrical',
+          'Sand',
+          'Gravel',
+          'Concrete',
+          'Timber',
+          'Glass',
+        ];
+      case 'FinishingMaterials':
+        return [
+          'All',
+          'Paints',
+          'Tiles',
+          'Wallpaper',
+          'Flooring',
+          'Gypsum',
+          'Marble',
+        ];
+      case 'FurnitureMaterials':
+        return [
+          'All',
+          'Furniture',
+          'Sofas',
+          'Tables',
+          'Beds',
+          'Cabinets',
+        ];
+      case 'EquipmentMaterials':
+        return [
+          'All',
+          'Equipment',
+          'Drills',
+          'Mixers',
+          'Scaffolding',
+          'Cranes',
+        ];
+      default:
+        return ['All'];
+    }
+  }
 
-  // Materials list
   final List<MaterialShop> shops = [
     MaterialShop(
       name: 'El-Madina Cement',
@@ -38,38 +77,29 @@ class _MaterialsScreenState extends State<Materials> {
       phone: "+20 106 321 6789",
       description: 'Specialized in all types of construction cement',
       address: 'Nasr City, Cairo',
-      image:
-      'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg',
-      rating: 4.8,
-      reviewCount: 56,
+      image: 'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg',
       category: 'Cement',
       isFeatured: true,
+      sectionType: 'ConstructionMaterials',
       products: [
-        ShopProduct('Portland Cement', '50 EGP/bag',
-            'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg'),
-        ShopProduct('White Cement', '75 EGP/bag',
-            'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg'),
+        ShopProduct('Portland Cement', '50 EGP/bag', 'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg'),
+        ShopProduct('White Cement', '75 EGP/bag', 'Assets/construction-technicians-are-mixing-cement-stone-sand-construction.jpg'),
       ],
     ),
     MaterialShop(
       name: 'Sanitary Hub',
       type: 'Plumbing',
       phone: "+20 106 321 6789",
-      description:
-      'Specialized in all types of plumbing materials and accessories',
+      description: 'Specialized in all types of plumbing materials and accessories',
       address: 'Nasr City, Cairo',
       image: 'Assets/side-view-man-working-as-plumber.jpg',
-      rating: 4.7,
-      reviewCount: 42,
       category: 'Plumbing',
       isFeatured: true,
+      sectionType: 'ConstructionMaterials',
       products: [
-        ShopProduct('PPR Pipe 1 inch', '90 EGP/meter',
-            'Assets/side-view-man-working-as-plumber.jpg'),
-        ShopProduct('Brass Basin Mixer', '450 EGP',
-            'Assets/side-view-man-working-as-plumber.jpg'),
-        ShopProduct('Stainless Steel Floor Drain', '120 EGP',
-            'Assets/side-view-man-working-as-plumber.jpg'),
+        ShopProduct('PPR Pipe 1 inch', '90 EGP/meter', 'Assets/side-view-man-working-as-plumber.jpg'),
+        ShopProduct('Brass Basin Mixer', '450 EGP', 'Assets/side-view-man-working-as-plumber.jpg'),
+        ShopProduct('Stainless Steel Floor Drain', '120 EGP', 'Assets/side-view-man-working-as-plumber.jpg'),
       ],
     ),
     MaterialShop(
@@ -79,15 +109,12 @@ class _MaterialsScreenState extends State<Materials> {
       description: 'High quality red and white bricks',
       address: '6th October City',
       image: 'Assets/brick-piles-placed-factory-floor.jpg',
-      rating: 4.7,
-      reviewCount: 42,
       category: 'Bricks',
       isFeatured: true,
+      sectionType: 'ConstructionMaterials',
       products: [
-        ShopProduct('Red Clay Bricks', '1.2 EGP/brick',
-            'Assets/brick-piles-placed-factory-floor.jpg'),
-        ShopProduct('White Bricks', '1.5 EGP/brick',
-            'Assets/brick-piles-placed-factory-floor.jpg'),
+        ShopProduct('Red Clay Bricks', '1.2 EGP/brick', 'Assets/brick-piles-placed-factory-floor.jpg'),
+        ShopProduct('White Bricks', '1.5 EGP/brick', 'Assets/brick-piles-placed-factory-floor.jpg'),
       ],
     ),
     MaterialShop(
@@ -97,15 +124,28 @@ class _MaterialsScreenState extends State<Materials> {
       description: 'Construction steel of all diameters',
       address: 'Downtown, Cairo',
       image: 'Assets/arc-welding-steel-construction-site.jpg',
-      rating: 4.5,
-      reviewCount: 38,
       category: 'Steel',
       isFeatured: true,
+      sectionType: 'ConstructionMaterials',
       products: [
-        ShopProduct('8mm Rebar', '15,000 EGP/ton',
-            'Assets/arc-welding-steel-construction-site.jpg'),
-        ShopProduct('12mm Rebar', '16,000 EGP/ton',
-            'Assets/arc-welding-steel-construction-site.jpg'),
+        ShopProduct('8mm Rebar', '15,000 EGP/ton', 'Assets/arc-welding-steel-construction-site.jpg'),
+        ShopProduct('12mm Rebar', '16,000 EGP/ton', 'Assets/arc-welding-steel-construction-site.jpg'),
+      ],
+    ),
+    MaterialShop(
+      name: 'Electro World',
+      type: 'Electrical',
+      phone: "+20 106 321 6789",
+      description: 'High-quality electrical supplies for homes and businesses',
+      address: 'El-Matarya, Cairo',
+      image: 'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg',
+      category: 'Electrical',
+      isFeatured: true,
+      sectionType: 'ConstructionMaterials',
+      products: [
+        ShopProduct('LED Ceiling Light', '120 EGP/pc', 'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
+        ShopProduct('Electrical Cable 100m', '950 EGP/roll', 'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
+        ShopProduct('Wall Switch Set', '200 EGP/set', 'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
       ],
     ),
     MaterialShop(
@@ -115,36 +155,12 @@ class _MaterialsScreenState extends State<Materials> {
       description: 'Premium interior and exterior paints',
       address: 'Heliopolis, Cairo',
       image: 'Assets/top-view-paint-can.jpg',
-      rating: 4.3,
-      reviewCount: 33,
       category: 'Paints',
-      isFeatured: false,
-      products: [
-        ShopProduct(
-            'Jotun Majesty', '650 EGP/gallon', 'Assets/top-view-paint-can.jpg'),
-        ShopProduct('Jotun Weatherguard', '700 EGP/gallon',
-            'Assets/top-view-paint-can.jpg'),
-      ],
-    ),
-    MaterialShop(
-      name: 'Electro World',
-      type: 'Electrical',
-      phone: "+20 106 321 6789",
-      description: 'High-quality electrical supplies for homes and businesses',
-      address: 'El-Matarya, Cairo',
-      image:
-      'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg',
-      rating: 4.6,
-      reviewCount: 48,
-      category: 'Electrical',
       isFeatured: true,
+      sectionType: 'FinishingMaterials',
       products: [
-        ShopProduct('LED Ceiling Light', '120 EGP/pc',
-            'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
-        ShopProduct('Electrical Cable 100m', '950 EGP/roll',
-            'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
-        ShopProduct('Wall Switch Set', '200 EGP/set',
-            'Assets/man-electrical-technician-working-switchboard-with-fuses.jpg'),
+        ShopProduct('Jotun Majesty', '650 EGP/gallon', 'Assets/top-view-paint-can.jpg'),
+        ShopProduct('Jotun Weatherguard', '700 EGP/gallon', 'Assets/top-view-paint-can.jpg'),
       ],
     ),
     MaterialShop(
@@ -154,20 +170,46 @@ class _MaterialsScreenState extends State<Materials> {
       description: 'Ceramic and porcelain tiles',
       address: 'Mohandessin, Giza',
       image: 'Assets/still-life-putting-up-decorative-vinyls.jpg',
-      rating: 4.2,
-      reviewCount: 24,
       category: 'Tiles',
-      isFeatured: false,
+      isFeatured: true,
+      sectionType: 'FinishingMaterials',
       products: [
-        ShopProduct('60x60cm Ceramic', '120 EGP/m2',
-            'Assets/still-life-putting-up-decorative-vinyls.jpg'),
-        ShopProduct('80x80cm Porcelain', '180 EGP/m2',
-            'Assets/still-life-putting-up-decorative-vinyls.jpg'),
+        ShopProduct('60x60cm Ceramic', '120 EGP/m2', 'Assets/still-life-putting-up-decorative-vinyls.jpg'),
+        ShopProduct('80x80cm Porcelain', '180 EGP/m2', 'Assets/still-life-putting-up-decorative-vinyls.jpg'),
+      ],
+    ),
+    MaterialShop(
+      name: 'Modern Furniture',
+      type: 'Furniture',
+      phone: "+20 106 321 6789",
+      description: 'High-quality modern furniture for homes',
+      address: 'Maadi, Cairo',
+      image: 'Assets/3d-rendering-luxury-business-meeting-working-room-executive-office.jpg',
+      category: 'Furniture',
+      isFeatured: true,
+      sectionType: 'FurnitureMaterials',
+      products: [
+        ShopProduct('Sofa Set', '15,000 EGP', 'Assets/furniture.jpg'),
+        ShopProduct('Dining Table', '8,000 EGP', 'Assets/furniture.jpg'),
+      ],
+    ),
+    MaterialShop(
+      name: 'Construction Equipment',
+      type: 'Equipment',
+      phone: "+20 106 321 6789",
+      description: 'Heavy-duty construction equipment',
+      address: 'New Cairo, Cairo',
+      image: 'Assets/ce7f31c1-49f4-4a53-82c2-7ff1572f73b2.jpeg',
+      category: 'Equipment',
+      isFeatured: true,
+      sectionType: 'EquipmentMaterials',
+      products: [
+        ShopProduct('Concrete Mixer', '25,000 EGP', 'Assets/equipment.jpg'),
+        ShopProduct('Power Drill', '1,500 EGP', 'Assets/equipment.jpg'),
       ],
     ),
   ];
 
-  // Filter shops based on search, category, and rating
   List<MaterialShop> get filteredShops {
     return shops.where((shop) {
       final matchesSearch =
@@ -176,18 +218,20 @@ class _MaterialsScreenState extends State<Materials> {
               shop.address.toLowerCase().contains(searchQuery.toLowerCase());
       final matchesCategory =
           selectedCategory == 'All' || shop.category == selectedCategory;
-      final matchesRating = shop.rating >= minRating;
-
-      return matchesSearch && matchesCategory && matchesRating;
+      final matchesSectionType = shop.sectionType == widget.sectionType;
+      final matchesLocation = _selectedCity == null ||
+          shop.address.contains(_selectedCity!) &&
+              (_selectedGovernorate == null || shop.address.contains(_selectedGovernorate!));
+      return matchesSearch && matchesCategory && matchesSectionType && matchesLocation;
     }).toList();
   }
 
-  // Get featured shops
   List<MaterialShop> get featuredShops {
-    return shops.where((shop) => shop.isFeatured).toList();
+    return shops
+        .where((shop) => shop.isFeatured && shop.sectionType == widget.sectionType)
+        .toList();
   }
 
-  // Get shops by selected category
   List<MaterialShop> get shopsByCategory {
     if (selectedCategory == 'All') return filteredShops;
     return filteredShops
@@ -195,7 +239,6 @@ class _MaterialsScreenState extends State<Materials> {
         .toList();
   }
 
-  // Helper method to get localized category name
   String getCategoryDisplayName(BuildContext context, String category) {
     switch (category) {
       case 'All':
@@ -206,33 +249,44 @@ class _MaterialsScreenState extends State<Materials> {
         return S.of(context).Bricks;
       case 'Steel':
         return S.of(context).Steel;
-      case 'Paints':
-        return S.of(context).Paints;
-      case 'Tiles':
-        return S.of(context).Tiles;
       case 'Plumbing':
         return S.of(context).Plumbing;
       case 'Electrical':
         return S.of(context).Electrical;
+      case 'Paints':
+        return S.of(context).Paints;
+      case 'Tiles':
+        return S.of(context).Tiles;
       default:
         return category;
     }
   }
 
-  List<Map<String, dynamic>> _getFilterOptions(BuildContext context) {
-    return [
-      {"title": S.of(context).HighestRating, "value": "rating"},
-    ];
+  String getLocalizedString(BuildContext context, String key) {
+    final s = S.of(context);
+    switch (key) {
+      case "ConstructionMaterials":
+        return s.ConstructionMaterials;
+      case "FinishingMaterials":
+        return s.FinishingMaterials;
+      case "FurnitureMaterials":
+        return s.FurnitureMaterials;
+      case "EquipmentMaterials":
+        return s.EquipmentMaterials;
+      default:
+        return key;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
+    print('Categories for ${widget.sectionType}: ${categories.join(', ')}');
 
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
-        title: S.of(context).Materials,
+        title: getLocalizedString(context, widget.sectionType),
         onBack: () {
           Navigator.pop(context);
         },
@@ -258,7 +312,6 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  // Search bar
   Widget _buildSearchBar() {
     final screenWidth = MediaQuery.of(context).size.width;
     return SizedBox(
@@ -332,10 +385,8 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  // Categories row
   Widget _buildCategoriesRow() {
     final screenWidth = MediaQuery.of(context).size.width;
-
     return SizedBox(
       height: screenWidth * 0.1,
       child: ListView.builder(
@@ -363,8 +414,7 @@ class _MaterialsScreenState extends State<Materials> {
                 vertical: screenWidth * 0.02,
               ),
               decoration: BoxDecoration(
-                color:
-                isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
+                color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.1),
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Center(
@@ -384,7 +434,6 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  // Featured shops section
   Widget _buildFeaturedSection() {
     final screenWidth = MediaQuery.of(context).size.width;
     if (selectedCategory != 'All') return const SizedBox.shrink();
@@ -404,7 +453,7 @@ class _MaterialsScreenState extends State<Materials> {
         ),
         SizedBox(height: screenWidth * 0.02),
         SizedBox(
-          height: MediaQuery.of(context).size.width * 0.55,
+          height: MediaQuery.of(context).size.width * 0.45,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: featured.length,
@@ -417,110 +466,113 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  // Featured shop container
   Widget _buildFeaturedShopContainer(MaterialShop shop) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
-    return Container(
-      width: screenWidth * 0.4,
-      margin: EdgeInsets.only(
-        left: Localizations.localeOf(context).languageCode == 'ar'
-            ? screenWidth * 0.02
-            : 0,
-        right: Localizations.localeOf(context).languageCode == 'ar'
-            ? 0
-            : screenWidth * 0.02,
-      ),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(8),
-        border: Border.all(color: Colors.grey.shade300),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(8),
-        onTap: () => _showShopDetails(shop),
-        child: Padding(
-          padding: EdgeInsets.all(screenWidth * 0.02),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              CircleAvatar(
-                radius: screenWidth * 0.07,
-                backgroundImage: AssetImage(shop.image),
-              ),
-              SizedBox(height: screenHeight * 0.01),
-              Text(
-                shop.name,
-                style: TextStyle(
-                  fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
-              ),
-              SizedBox(height: screenHeight * 0.001),
-              Text(
-                getCategoryDisplayName(context, shop.type),
-                style: TextStyle(
-                  color: KprimaryColor,
-                  fontSize: screenWidth * 0.03,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: screenHeight * 0.001),
-              Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Icon(Icons.location_on_outlined,
-                      size: screenWidth * 0.04, color: SecondaryColor),
-                  SizedBox(width: screenWidth * 0.01),
-                  Flexible(
-                    child: Text(
-                      shop.address,
+    final isArabic = Localizations.localeOf(context).languageCode == 'ar';
+    return GestureDetector(
+      onTap: () => _showShopDetails(shop),
+      child: Container(
+        width: screenWidth * 0.4,
+        margin: EdgeInsets.only(
+          left: isArabic ? screenWidth * 0.02 : 0,
+          right: isArabic ? 0 : screenWidth * 0.02,
+        ),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: Colors.grey.shade300),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2),
+              spreadRadius: 2,
+              blurRadius: 6,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Stack(
+          children: [
+            Padding(
+              padding: EdgeInsets.all(screenWidth * 0.04),
+              child: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircleAvatar(
+                      radius: screenWidth * 0.07,
+                      backgroundImage: AssetImage(shop.image),
+                    ),
+                    SizedBox(height: screenHeight * 0.01),
+                    Text(
+                      shop.name,
                       style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: SubText,
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
                       ),
+                      textAlign: TextAlign.center,
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
-                      textAlign: TextAlign.start,
+                    ),
+                    SizedBox(height: screenHeight * 0.001),
+                    Text(
+                      getCategoryDisplayName(context, shop.type),
+                      style: TextStyle(
+                        color: KprimaryColor,
+                        fontSize: screenWidth * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(height: screenHeight * 0.001),
+                    SizedBox(height: screenHeight * 0.005),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(Icons.location_on_outlined, size: screenWidth * 0.04, color: SecondaryColor),
+                        SizedBox(width: screenWidth * 0.01),
+                        Flexible(
+                          child: Text(
+                            shop.address,
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.03,
+                              color: SubText,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            textAlign: TextAlign.start,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Positioned(
+              top: screenWidth * 0.04,
+              left: -screenWidth * 0.07,
+              child: Transform.rotate(
+                angle: -0.785398,
+                child: Container(
+                  width: screenWidth * 0.3,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    color: SecondaryColor,
+                  ),
+                  child: Text(
+                    S.of(context).Premium,
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: screenWidth * 0.03,
                     ),
                   ),
-                ],
-              ),
-              SizedBox(height: screenHeight * 0.002),
-              RatingBarIndicator(
-                rating: shop.rating,
-                itemBuilder: (context, _) => Icon(
-                  Icons.star,
-                  color: SecondaryColor,
                 ),
-                itemCount: 5,
-                itemSize: screenWidth * 0.04,
               ),
-              SizedBox(height: screenHeight * 0.001),
-              Text(
-                '${shop.rating.toStringAsFixed(1)}',
-                style: TextStyle(
-                  fontSize: screenWidth * 0.03,
-                  color: SubText,
-                ),
-                textAlign: TextAlign.center,
-              ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
@@ -575,7 +627,6 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  // Shop container
   Widget _buildShopContainer(MaterialShop shop) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
@@ -643,20 +694,6 @@ class _MaterialsScreenState extends State<Materials> {
                 ],
               ),
             ),
-            Column(
-              children: [
-                Icon(Icons.star,
-                    size: screenWidth * 0.05, color: SecondaryColor),
-                SizedBox(height: screenWidth * 0.01),
-                Text(
-                  '${shop.rating.toStringAsFixed(1)}',
-                  style: TextStyle(
-                    color: SubText,
-                    fontSize: screenWidth * 0.03,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
       ),
@@ -679,16 +716,14 @@ class _MaterialsScreenState extends State<Materials> {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     String selectedGovernorate = "";
     String selectedCity = "";
     String searchText = "";
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      shape: RoundedRectangleBorder(
+      shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
       builder: (context) {
@@ -696,7 +731,7 @@ class _MaterialsScreenState extends State<Materials> {
           builder: (context, setState) {
             return Container(
               height: screenHeight * 0.7,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 color: Colors.white,
                 borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
               ),
@@ -732,7 +767,7 @@ class _MaterialsScreenState extends State<Materials> {
                           size: screenWidth * 0.045,
                         ),
                         padding: EdgeInsets.zero,
-                        constraints: BoxConstraints(),
+                        constraints: const BoxConstraints(),
                         onPressed: () {
                           if (selectedGovernorate.isNotEmpty) {
                             setState(() {
@@ -797,7 +832,8 @@ class _MaterialsScreenState extends State<Materials> {
                         children: [
                           if (selectedGovernorate.isEmpty)
                             ...governoratesWithCities.keys
-                                .where((gov) => searchText.isEmpty ||
+                                .where((gov) =>
+                            searchText.isEmpty ||
                                 gov.toLowerCase().contains(searchText.toLowerCase()))
                                 .map((governorate) => Column(
                               children: [
@@ -832,7 +868,8 @@ class _MaterialsScreenState extends State<Materials> {
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: governoratesWithCities[selectedGovernorate]!
-                                  .where((city) => searchText.isEmpty ||
+                                  .where((city) =>
+                              searchText.isEmpty ||
                                   city.toLowerCase().contains(searchText.toLowerCase()))
                                   .map((city) => Column(
                                 children: [
@@ -879,158 +916,9 @@ class _MaterialsScreenState extends State<Materials> {
     );
   }
 
-  final Map<String, List<String>> governoratesWithCities = {
-    "Cairo": [
-      "Maadi",
-      "Mokattam",
-      "Nasr City",
-      "Zamalek",
-      "Dokki",
-      "Heliopolis",
-      "Shubra",
-      "New Cairo",
-      "El Marg"
-    ],
-    "Giza": [
-      "Dokki",
-      "Mohandessin",
-      "Haram",
-      "6th October",
-      "Sheikh Zayed",
-      "Faisal",
-      "Bulaq Dakrour",
-      "Imbaba"
-    ],
-    "Alexandria": [
-      "Smouha",
-      "Sidi Gaber",
-      "Asafra",
-      "Mandara",
-      "Montaza",
-      "Gleem",
-      "Stanley",
-      "Miami",
-      "San Stefano"
-    ],
-    "Minya": [
-      "New Minya",
-      "Mallawi",
-      "Deir Mawas",
-      "Maghagha",
-      "Abu Qurqas",
-      "Samalout",
-      "Beni Mazar"
-    ],
-    "Assiut": [
-      "New Assiut",
-      "Dayrout",
-      "Sadfa",
-      "El Badari",
-      "Abnoub",
-      "El Quseyya",
-      "Manfalut"
-    ],
-    "Sohag": ["Akhmim", "Gerga", "El Maragha", "Tahta", "Sohag City", "Tama"],
-    "Qena": ["Qena City", "Nag Hammadi", "Qift", "Farshout", "Deshna"],
-    "Luxor": ["Luxor City", "Esna", "Armant", "El-Toud", "New Tiba"],
-    "Aswan": ["Aswan City", "Kom Ombo", "Edfu", "Daraw", "New Aswan"],
-    "Red Sea": ["Hurghada", "Safaga", "Quseir", "Marsa Alam", "Shalateen"],
-    "South Sinai": [
-      "Sharm El-Sheikh",
-      "Dahab",
-      "Nuweiba",
-      "Saint Catherine",
-      "Taba"
-    ],
-    "North Sinai": ["Arish", "Bir al-Abd", "Sheikh Zuweid", "Rafah"],
-    "Ismailia": [
-      "Ismailia City",
-      "Fayed",
-      "Qantara West",
-      "Tell El Kebir"
-    ],
-    "Port Said": ["Port Said City", "Port Fouad"],
-    "Suez": ["Suez City", "Ain Sokhna", "Ataqa"],
-    "Beheira": [
-      "Damanhour",
-      "Kafr El Dawwar",
-      "Edku",
-      "Rashid",
-      "Abu Hummus"
-    ],
-    "Dakahlia": [
-      "Mansoura",
-      "Talkha",
-      "Mit Ghamr",
-      "Sherbin",
-      "Belqas"
-    ],
-    "Sharqia": [
-      "Zagazig",
-      "10th of Ramadan",
-      "Bilbeis",
-      "Minya El Qamh",
-      "Fakous"
-    ],
-    "Gharbia": [
-      "Tanta",
-      "El Mahalla El Kubra",
-      "Kafr El Zayat",
-      "Zifta",
-      "Samanoud"
-    ],
-    "Monufia": [
-      "Shibin El Kom",
-      "Sadat City",
-      "Ashmoun",
-      "Quesna",
-      "Menouf"
-    ],
-    "Fayoum": [
-      "Fayoum City",
-      "Senoures",
-      "Etsa",
-      "Tamiya",
-      "Youssef El Seddik"
-    ],
-    "Beni Suef": [
-      "Beni Suef City",
-      "Nasser",
-      "Biba",
-      "El Wasta",
-      "Ihnasya"
-    ],
-    "Kafr El Sheikh": [
-      "Kafr El Sheikh City",
-      "Desouk",
-      "Baltim",
-      "Motobas",
-      "Fuwwah"
-    ],
-    "Damietta": [
-      "Damietta City",
-      "New Damietta",
-      "Ras El Bar",
-      "Ezbet El Borg",
-      "Kafr Saad"
-    ],
-    "New Valley": ["Kharga", "Dakhla", "Baris", "Farafra"],
-    "Matrouh": [
-      "Marsa Matrouh",
-      "Siwa",
-      "El Alamein",
-      "Sidi Barrani",
-      "Al Negila"
-    ],
-  };
-
-  String? _selectedGovernorate;
-  String? _selectedCity;
-  String _selectedFilter = "none";
   void _showAdvancedFilter() {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -1043,7 +931,7 @@ class _MaterialsScreenState extends State<Materials> {
           builder: (context, setState) {
             return Container(
               padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.7,
+              height: screenHeight * 0.37,
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -1064,7 +952,7 @@ class _MaterialsScreenState extends State<Materials> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Spacer(),
+                      const Spacer(),
                       GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
@@ -1148,7 +1036,8 @@ class _MaterialsScreenState extends State<Materials> {
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
+                                Icon(Icons.add,
+                                    color: KprimaryColor, size: screenWidth * 0.05),
                                 SizedBox(width: screenWidth * 0.02),
                                 Text(
                                   S.of(context).ChooseLocation,
@@ -1166,137 +1055,6 @@ class _MaterialsScreenState extends State<Materials> {
                     ],
                   ),
                   SizedBox(height: screenHeight * 0.02),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).category,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.008),
-                      GestureDetector(
-                        onTap: () {
-                          _showAddCategorySheet(
-                            context: context,
-                            categories: categories,
-                            onCategorySelected: (category) {
-                              setState(() {
-                                selectedCategory = category;
-                              });
-                            },
-                          );
-                        },
-                        child: Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                          padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                          decoration: BoxDecoration(
-                            color: (selectedCategory != 'All')
-                                ? KprimaryColor.withOpacity(0.1)
-                                : KprimaryColor.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: (selectedCategory != 'All')
-                                  ? KprimaryColor
-                                  : KprimaryColor.withOpacity(0.3),
-                              width: 1.0,
-                            ),
-                          ),
-                          child: (selectedCategory != 'All')
-                              ? Padding(
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                            child: Row(
-                              children: [
-                                Icon(Icons.category_outlined,
-                                    color: KprimaryColor, size: screenWidth * 0.045),
-                                SizedBox(width: screenWidth * 0.02),
-                                Expanded(
-                                  child: Text(
-                                    getCategoryDisplayName(context, selectedCategory),
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: screenWidth * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                              : Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
-                                SizedBox(width: screenWidth * 0.02),
-                                Text(
-                                  S.of(context).choose_category,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: screenWidth * 0.03,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.02),
-                  Text(
-                    S.of(context).Rating,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black,
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.008),
-                  ..._getFilterOptions(context).map((option) {
-                    bool isSelected = _selectedFilter == option['value'];
-                    return GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          _selectedFilter = option['value'];
-                        });
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                        padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
-                        decoration: BoxDecoration(
-                          color: isSelected
-                              ? KprimaryColor.withOpacity(0.1)
-                              : KprimaryColor.withOpacity(0.05),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isSelected
-                                ? KprimaryColor
-                                : KprimaryColor.withOpacity(0.3),
-                            width: 1.0,
-                          ),
-                        ),
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: screenWidth * 0.03, vertical: screenWidth * 0.02),
-                          child: Text(
-                            option['title'],
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.03,
-                            ),
-                          ),
-                        ),
-                      ),
-                    );
-                  }).toList(),
                   const Spacer(),
                   Row(
                     children: [
@@ -1307,7 +1065,7 @@ class _MaterialsScreenState extends State<Materials> {
                             minimumSize: Size(double.infinity, screenWidth * 0.12),
                             backgroundColor: KprimaryColor,
                             shape: RoundedRectangleBorder(
-                              side: BorderSide(
+                              side: const BorderSide(
                                 color: KprimaryColor,
                                 width: 3,
                               ),
@@ -1318,7 +1076,7 @@ class _MaterialsScreenState extends State<Materials> {
                             Navigator.pop(context);
                           },
                           child: Text(
-                            "${S.of(context).Show} 52",
+                            "${S.of(context).Show} ${filteredShops.length}",
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
@@ -1334,42 +1092,44 @@ class _MaterialsScreenState extends State<Materials> {
                             minimumSize: MaterialStateProperty.all(
                               Size(double.infinity, screenWidth * 0.12),
                             ),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
+                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return Colors.white;
+                                }
                                 return Colors.white;
-                              }
-                              return Colors.white;
-                            }),
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>((states) {
-                              if (states.contains(MaterialState.disabled)) {
-                                return KprimaryColor.withOpacity(0.3);
-                              }
-                              return KprimaryColor;
-                            }),
-                            side: MaterialStateProperty.resolveWith<BorderSide>((states) {
-                              return BorderSide(
-                                color: (states.contains(MaterialState.disabled))
-                                    ? KprimaryColor.withOpacity(0.3)
-                                    : KprimaryColor,
-                                width: 1,
-                              );
-                            }),
+                              },
+                            ),
+                            foregroundColor: MaterialStateProperty.resolveWith<Color>(
+                                  (states) {
+                                if (states.contains(MaterialState.disabled)) {
+                                  return KprimaryColor.withOpacity(0.3);
+                                }
+                                return KprimaryColor;
+                              },
+                            ),
+                            side: MaterialStateProperty.resolveWith<BorderSide>(
+                                  (states) {
+                                return BorderSide(
+                                  color: (states.contains(MaterialState.disabled))
+                                      ? KprimaryColor.withOpacity(0.3)
+                                      : KprimaryColor,
+                                  width: 1,
+                                );
+                              },
+                            ),
                             shape: MaterialStateProperty.all(
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(8),
                               ),
                             ),
                           ),
-                          onPressed: (_selectedGovernorate == null &&
-                              _selectedCity == null &&
-                              _selectedFilter == "none")
+                          onPressed: (_selectedGovernorate == null && _selectedCity == null)
                               ? null
                               : () {
                             setState(() {
-                              _selectedFilter = "none";
                               _selectedCity = null;
                               _selectedGovernorate = null;
-                              selectedCategory = 'All';
                             });
                             Navigator.pop(context);
                           },
@@ -1383,7 +1143,7 @@ class _MaterialsScreenState extends State<Materials> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ],
               ),
             );
@@ -1392,137 +1152,7 @@ class _MaterialsScreenState extends State<Materials> {
       },
     );
   }
-
-  void _showAddCategorySheet({
-    required BuildContext context,
-    required List<String> categories,
-    required Function(String) onCategorySelected,
-  }) {
-    final screenWidth = MediaQuery.of(context).size.width;
-    final screenHeight = MediaQuery.of(context).size.height;
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (context) {
-        return Container(
-          height: screenHeight * 0.7,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
-          ),
-          padding: EdgeInsets.all(screenWidth * 0.04),
-          child: Column(
-            children: [
-              Container(
-                width: 40,
-                height: 4,
-                margin: EdgeInsets.only(bottom: 16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[300],
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    S.of(context).select_category,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      size: screenWidth * 0.045,
-                    ),
-                    onPressed: () => Navigator.pop(context),
-                  ),
-                ],
-              ),
-              SizedBox(height: 8),
-              Expanded(
-                child: ListView.builder(
-                  itemCount: categories.length,
-                  itemBuilder: (context, index) {
-                    final category = categories[index];
-                    return Column(
-                      children: [
-                        ListTile(
-                          title: Text(
-                            getCategoryDisplayName(context, category),
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                              fontSize: screenWidth * 0.03,
-                            ),
-                          ),
-                          onTap: () {
-                            onCategorySelected(category);
-                            Navigator.pop(context);
-                          },
-                        ),
-                        Divider(
-                          color: Colors.grey.withOpacity(0.3),
-                          thickness: 1,
-                          indent: screenWidth * 0.01,
-                          endIndent: screenWidth * 0.01,
-                        ),
-                      ],
-                    );
-                  },
-                ),
-              ),
-            ],
-          ),
-        );
-      },
-    );
-  }
 }
 
-class MaterialShop {
-  final String name;
-  final String type;
-  final String phone;
-  final String description;
-  final String address;
-  final String image;
-  final double rating;
-  final int reviewCount;
-  final String category;
-  final bool isFeatured;
-  final List<ShopProduct> products;
 
-  MaterialShop({
-    required this.name,
-    required this.type,
-    required this.phone,
-    required this.description,
-    required this.address,
-    required this.image,
-    required this.rating,
-    required this.reviewCount,
-    required this.category,
-    required this.isFeatured,
-    required this.products,
-  });
-}
 
-class ShopProduct {
-  final String name;
-  final String price;
-  final String image;
-
-  ShopProduct(this.name, this.price, this.image);
-}
-
-class FavoriteCubit extends Cubit<bool> {
-  FavoriteCubit() : super(false);
-
-  void toggleFavorite() {
-    emit(!state);
-  }
-}

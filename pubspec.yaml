@@ -41,10 +41,14 @@ dependencies:
   dotted_border:
   flutter_screenutil:
   flutter_launcher_icons: ^0.14.3
-  animations:
   flutter_bloc:
+  dio:
   flutter_intl: ^0.0.1
-  flutter_rating_bar:
+  url_launcher: ^6.1.14
+  file_picker:
+  device_preview:
+  modal_bottom_sheet:
+
 
 flutter_launcher_icons:
   adaptive_icon_background: "#FFFFFF"

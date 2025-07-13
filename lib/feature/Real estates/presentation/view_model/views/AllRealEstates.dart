@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../../../../core/utiles/AppBar.dart';
-import '../../../../../core/utiles/DetailesProperty.dart';
+import '../../../../../core/Widgets/DetailesProperty.dart';
 import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../core/utiles/buildFilters.dart';
+import '../../../../../core/Widgets/buildFilters.dart';
 
 class AllApartments extends StatelessWidget {
   final List<RealStateObjects> apartments;

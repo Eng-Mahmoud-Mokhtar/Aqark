@@ -29,12 +29,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "AboutCompany": MessageLookupByLibrary.simpleMessage("About Company"),
     "AboutProperty": MessageLookupByLibrary.simpleMessage("About Property"),
     "About_Us": MessageLookupByLibrary.simpleMessage("About Us"),
+    "Active": MessageLookupByLibrary.simpleMessage("Active"),
     "AddYourReview": MessageLookupByLibrary.simpleMessage("Add Your Review"),
     "AllWorkers": MessageLookupByLibrary.simpleMessage("All Workers"),
     "AlreadyHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
     "Apartment": MessageLookupByLibrary.simpleMessage("Apartment"),
+    "Arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
     "Architect": MessageLookupByLibrary.simpleMessage("Architect"),
     "AvailableCompounds": MessageLookupByLibrary.simpleMessage(
       "Available Compounds",
@@ -54,9 +56,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bricks": MessageLookupByLibrary.simpleMessage("Bricks"),
     "BrokerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "Brokers": MessageLookupByLibrary.simpleMessage("Brokers"),
+    "BuildingArea": MessageLookupByLibrary.simpleMessage("Building Area"),
+    "Buy": MessageLookupByLibrary.simpleMessage("Buy"),
+    "ByApplication": MessageLookupByLibrary.simpleMessage("By Application"),
     "ByContinuingYouAgree": MessageLookupByLibrary.simpleMessage(
       "By continuing you agree to our",
     ),
+    "ByEngineers": MessageLookupByLibrary.simpleMessage("By Engineers"),
     "CallUs": MessageLookupByLibrary.simpleMessage("Call Us"),
     "Carpenter": MessageLookupByLibrary.simpleMessage("Carpenter"),
     "Carpentry": MessageLookupByLibrary.simpleMessage("Carpentry"),
@@ -65,23 +71,36 @@ class MessageLookup extends MessageLookupByLibrary {
       "Choose Country Code",
     ),
     "ChooseLocation": MessageLookupByLibrary.simpleMessage("Choose Location"),
+    "ChoosePaymentMethod": MessageLookupByLibrary.simpleMessage(
+      "Choose Payment Method",
+    ),
     "ChooseWorkerRole": MessageLookupByLibrary.simpleMessage(
       "Choose Worker Role",
     ),
+    "ChooseYourPlan": MessageLookupByLibrary.simpleMessage("Choose Your Plan"),
     "Classic": MessageLookupByLibrary.simpleMessage("Classic"),
+    "CommercialInteriors": MessageLookupByLibrary.simpleMessage(
+      "Commercial Interiors",
+    ),
     "Compounds": MessageLookupByLibrary.simpleMessage("Compounds"),
     "CompoundsEgypt": MessageLookupByLibrary.simpleMessage("Compounds Egypt"),
     "Construction": MessageLookupByLibrary.simpleMessage("Construction"),
     "ConstructionEngineer": MessageLookupByLibrary.simpleMessage(
       "Construction Engineer",
     ),
+    "ConstructionMaterials": MessageLookupByLibrary.simpleMessage(
+      "Construction Materials",
+    ),
     "Contracting": MessageLookupByLibrary.simpleMessage("Contracting"),
     "ContractingCompanies": MessageLookupByLibrary.simpleMessage(
       "Contracting Companies",
     ),
+    "CurrentPlan": MessageLookupByLibrary.simpleMessage("Current Plan"),
     "DecorationEngineer": MessageLookupByLibrary.simpleMessage(
       "Decoration Engineer",
     ),
+    "Description": MessageLookupByLibrary.simpleMessage("Description"),
+    "Design": MessageLookupByLibrary.simpleMessage("Design"),
     "Design_Finishing": MessageLookupByLibrary.simpleMessage(
       "Design and Finishing",
     ),
@@ -91,14 +110,22 @@ class MessageLookup extends MessageLookupByLibrary {
       "Developer Start Price",
     ),
     "Developers": MessageLookupByLibrary.simpleMessage("Developers"),
+    "Done": MessageLookupByLibrary.simpleMessage("Done"),
     "EGP": MessageLookupByLibrary.simpleMessage("EGP"),
     "Electrical": MessageLookupByLibrary.simpleMessage("Electrical"),
     "Electrician": MessageLookupByLibrary.simpleMessage("Electrician"),
+    "EndDate": MessageLookupByLibrary.simpleMessage("End Date"),
     "EngineerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "EngineerSpecialty": MessageLookupByLibrary.simpleMessage(
       "Engineer’s specialty",
     ),
     "Engineers": MessageLookupByLibrary.simpleMessage("Engineers"),
+    "English": MessageLookupByLibrary.simpleMessage("English"),
+    "EnterYourName": MessageLookupByLibrary.simpleMessage("Enter your name"),
+    "EquipmentMaterials": MessageLookupByLibrary.simpleMessage(
+      "Equipment Materials",
+    ),
+    "Expired": MessageLookupByLibrary.simpleMessage("Expired"),
     "FeaturedBrokers": MessageLookupByLibrary.simpleMessage("Featured Brokers"),
     "FeaturedEngineers": MessageLookupByLibrary.simpleMessage(
       "Featured Engineers",
@@ -108,12 +135,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "FinishingEngineer": MessageLookupByLibrary.simpleMessage(
       "Finishing Engineer",
     ),
+    "FinishingMaterials": MessageLookupByLibrary.simpleMessage(
+      "Finishing Materials",
+    ),
     "FirstandLastName": MessageLookupByLibrary.simpleMessage(
       "First and Last Name",
     ),
+    "FullDesign": MessageLookupByLibrary.simpleMessage("Full Design"),
     "FullName": MessageLookupByLibrary.simpleMessage("Full Name"),
     "FullyFinished": MessageLookupByLibrary.simpleMessage("Fully Finished"),
     "FullyPaid": MessageLookupByLibrary.simpleMessage("Cash"),
+    "FurnitureMaterials": MessageLookupByLibrary.simpleMessage(
+      "Furniture Materials",
+    ),
     "GetStarted": MessageLookupByLibrary.simpleMessage("Get started"),
     "Government_Services": MessageLookupByLibrary.simpleMessage(
       "Government Services",
@@ -134,6 +168,19 @@ class MessageLookup extends MessageLookupByLibrary {
     "InteriorDesigner": MessageLookupByLibrary.simpleMessage(
       "Interior Designer",
     ),
+    "InvalidBuildingArea": MessageLookupByLibrary.simpleMessage(
+      "Invalid Building Area",
+    ),
+    "InvalidLandArea": MessageLookupByLibrary.simpleMessage(
+      "Invalid Land Area",
+    ),
+    "InvalidPhoneNumber": MessageLookupByLibrary.simpleMessage(
+      "Invalid phone number",
+    ),
+    "InvalidTotalArea": MessageLookupByLibrary.simpleMessage(
+      "Invalid Total Area",
+    ),
+    "LandArea": MessageLookupByLibrary.simpleMessage("Land Area"),
     "Less": MessageLookupByLibrary.simpleMessage("Less"),
     "Listing": MessageLookupByLibrary.simpleMessage("Listing"),
     "ListingDate": MessageLookupByLibrary.simpleMessage("Listing Date"),
@@ -146,7 +193,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minimum": MessageLookupByLibrary.simpleMessage("Minimum"),
     "MinimumPrice": MessageLookupByLibrary.simpleMessage("Minimum Price"),
     "Modern": MessageLookupByLibrary.simpleMessage("Modern"),
+    "MonthlySubscription": MessageLookupByLibrary.simpleMessage(
+      "Monthly Subscription",
+    ),
     "More": MessageLookupByLibrary.simpleMessage("More"),
+    "MostPopular": MessageLookupByLibrary.simpleMessage("Most Popular"),
+    "MySubscription": MessageLookupByLibrary.simpleMessage("My subscription"),
+    "MySubscriptions": MessageLookupByLibrary.simpleMessage("My Subscriptions"),
     "Newest": MessageLookupByLibrary.simpleMessage("Newest"),
     "NewestFirst": MessageLookupByLibrary.simpleMessage("Newest First"),
     "Next": MessageLookupByLibrary.simpleMessage("Next"),
@@ -163,6 +216,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "NoWorkersAvailable": MessageLookupByLibrary.simpleMessage("No Workers"),
     "NotAMember": MessageLookupByLibrary.simpleMessage("Not a member?"),
+    "NotSubscribed": MessageLookupByLibrary.simpleMessage(
+      "You are not subscribed to any plan.",
+    ),
     "Notification": MessageLookupByLibrary.simpleMessage("Notification"),
     "Office": MessageLookupByLibrary.simpleMessage("Office"),
     "OldestFirst": MessageLookupByLibrary.simpleMessage("Oldest First"),
@@ -184,13 +240,47 @@ class MessageLookup extends MessageLookupByLibrary {
     "Painter": MessageLookupByLibrary.simpleMessage("Painter"),
     "Painting": MessageLookupByLibrary.simpleMessage("Painting"),
     "Paints": MessageLookupByLibrary.simpleMessage("Paints"),
+    "PayNow": MessageLookupByLibrary.simpleMessage("Pay Now"),
     "PaymentDetails": MessageLookupByLibrary.simpleMessage("Payment Details"),
+    "PaymentMethod": MessageLookupByLibrary.simpleMessage("Payment Method"),
+    "PaymentProcessing": MessageLookupByLibrary.simpleMessage(
+      "Payment Processing",
+    ),
+    "PaymentSuccessful": MessageLookupByLibrary.simpleMessage(
+      "Payment Successful",
+    ),
     "PhoneNumber": MessageLookupByLibrary.simpleMessage("Phone Number"),
+    "PlaceType": MessageLookupByLibrary.simpleMessage("Place Type"),
+    "PleaseEnterADescription": MessageLookupByLibrary.simpleMessage(
+      "Please enter a description",
+    ),
+    "PleaseEnterBuildingArea": MessageLookupByLibrary.simpleMessage(
+      "Please enter Building Area",
+    ),
+    "PleaseEnterLandArea": MessageLookupByLibrary.simpleMessage(
+      "Please enter Land Area",
+    ),
+    "PleaseEnterTotalArea": MessageLookupByLibrary.simpleMessage(
+      "Please enter Total Area",
+    ),
+    "PleaseEnterYourName": MessageLookupByLibrary.simpleMessage(
+      "Please enter your name",
+    ),
+    "PleaseEnterYourPhoneNumber": MessageLookupByLibrary.simpleMessage(
+      "Please enter your phone number",
+    ),
+    "PleaseSelectAPlaceType": MessageLookupByLibrary.simpleMessage(
+      "Please select a place type",
+    ),
     "Plumber": MessageLookupByLibrary.simpleMessage("Plumber"),
     "Plumbing": MessageLookupByLibrary.simpleMessage("Plumbing"),
     "PopularSearches": MessageLookupByLibrary.simpleMessage("Popular Searches"),
     "Posts": MessageLookupByLibrary.simpleMessage("Posts"),
+    "Premium": MessageLookupByLibrary.simpleMessage("Premium"),
     "PriceRange": MessageLookupByLibrary.simpleMessage("Price Range"),
+    "ProcessingBankPayment": MessageLookupByLibrary.simpleMessage(
+      "Please wait while we process money from your bank account",
+    ),
     "Products": MessageLookupByLibrary.simpleMessage("Products"),
     "Properties": MessageLookupByLibrary.simpleMessage("Properties"),
     "PropertyStatus": MessageLookupByLibrary.simpleMessage("Property Status"),
@@ -198,6 +288,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "Rating": MessageLookupByLibrary.simpleMessage("Rating"),
     "RealEstate": MessageLookupByLibrary.simpleMessage("Real Estate"),
     "RecentSearches": MessageLookupByLibrary.simpleMessage("Recent Searches"),
+    "Remaining": MessageLookupByLibrary.simpleMessage("Remaining"),
+    "RenewPlan": MessageLookupByLibrary.simpleMessage("Renew Plan"),
+    "Rent": MessageLookupByLibrary.simpleMessage("Rent"),
+    "RequestSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "Request Submitted Successfully",
+    ),
     "Resale": MessageLookupByLibrary.simpleMessage("Resale"),
     "ResaleStartPrice": MessageLookupByLibrary.simpleMessage(
       "Resale Start Price",
@@ -206,6 +302,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Resend Code After 00:59",
     ),
     "Reset": MessageLookupByLibrary.simpleMessage("Reset"),
+    "ResidentialInteriors": MessageLookupByLibrary.simpleMessage(
+      "Residential Interiors",
+    ),
     "Results": MessageLookupByLibrary.simpleMessage("Results"),
     "Reviews": MessageLookupByLibrary.simpleMessage("Reviews"),
     "Scandinavian": MessageLookupByLibrary.simpleMessage("Scandinavian"),
@@ -229,6 +328,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "SearchOptions": MessageLookupByLibrary.simpleMessage("Search Options"),
     "SelectLocation": MessageLookupByLibrary.simpleMessage("Select Location"),
     "SelectRole": MessageLookupByLibrary.simpleMessage("Select Role"),
+    "SelectType": MessageLookupByLibrary.simpleMessage("Select type"),
     "SemiFinished": MessageLookupByLibrary.simpleMessage("Semi Finished"),
     "Send": MessageLookupByLibrary.simpleMessage("Send"),
     "SendMessage": MessageLookupByLibrary.simpleMessage("Send a Message"),
@@ -247,12 +347,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Skip": MessageLookupByLibrary.simpleMessage("Skip"),
     "Sort": MessageLookupByLibrary.simpleMessage("Sort"),
     "Specialties": MessageLookupByLibrary.simpleMessage("Specialties"),
+    "StartDate": MessageLookupByLibrary.simpleMessage("Start Date"),
+    "Startingfrom": MessageLookupByLibrary.simpleMessage("Starting from"),
     "Steel": MessageLookupByLibrary.simpleMessage("Steel"),
     "SubAboutCompany": MessageLookupByLibrary.simpleMessage(
       "Welcome to Building Knowledge. We\'re here to simplify your real estate journey. Our team offers personalized solutions and exceptional service to help you find your dream property. Contact us today to get started!",
-    ),
-    "SubNoNotification": MessageLookupByLibrary.simpleMessage(
-      "No Notification Yet",
     ),
     "SubOurMission": MessageLookupByLibrary.simpleMessage(
       "At Building Knowledge, we\'re committed to simplifying the real estate process. Our mission is to empower individuals and families to find their perfect home or investment property by providing intuitive tools, expert guidance, and exceptional service. We strive to make the journey of buying, selling, or renting real estate as seamless and rewarding as possible for our users.",
@@ -260,10 +359,18 @@ class MessageLookup extends MessageLookupByLibrary {
     "SubVerifyPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "Enter the verification code sent to +201017900067",
     ),
+    "SubscribeNow": MessageLookupByLibrary.simpleMessage("Subscribe Now"),
+    "Subscription": MessageLookupByLibrary.simpleMessage("Subscription"),
+    "SubscriptionPlaced": MessageLookupByLibrary.simpleMessage(
+      "Your subscription has been placed.\nWe’ll send you an email with your subscription details.",
+    ),
     "Suggested": MessageLookupByLibrary.simpleMessage("Suggested for You"),
     "Tiles": MessageLookupByLibrary.simpleMessage("Tiles"),
+    "TotalArea": MessageLookupByLibrary.simpleMessage("Total Area"),
     "Traditional": MessageLookupByLibrary.simpleMessage("Traditional"),
+    "TryAgain": MessageLookupByLibrary.simpleMessage("Try Again"),
     "Unfinished": MessageLookupByLibrary.simpleMessage("Unfinished"),
+    "UploadFile": MessageLookupByLibrary.simpleMessage("Upload File"),
     "Verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "VerifyPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "Verify Phone Number",
@@ -272,16 +379,34 @@ class MessageLookup extends MessageLookupByLibrary {
     "WhatsApp": MessageLookupByLibrary.simpleMessage("WhatsApp"),
     "WorkerProfile": MessageLookupByLibrary.simpleMessage("Profile"),
     "Workers": MessageLookupByLibrary.simpleMessage("Workers"),
+    "WriteDescription": MessageLookupByLibrary.simpleMessage(
+      "Write Description",
+    ),
     "WriteMessage": MessageLookupByLibrary.simpleMessage("Write your message"),
     "WriteYourReview": MessageLookupByLibrary.simpleMessage(
       "Write your review",
+    ),
+    "YearlySubscription": MessageLookupByLibrary.simpleMessage(
+      "Yearly Subscription",
+    ),
+    "YouAreNotSubscribed": MessageLookupByLibrary.simpleMessage(
+      "You are not subscribed to any plan yet .",
+    ),
+    "YourCurrentPackage": MessageLookupByLibrary.simpleMessage(
+      "Your Current Package",
     ),
     "aboutUs": MessageLookupByLibrary.simpleMessage("About us"),
     "all": MessageLookupByLibrary.simpleMessage("All"),
     "and": MessageLookupByLibrary.simpleMessage(" and "),
     "apartment": MessageLookupByLibrary.simpleMessage("Apartment"),
     "apartments": MessageLookupByLibrary.simpleMessage("Apartments"),
-    "best": MessageLookupByLibrary.simpleMessage("Find the best place!"),
+    "bankOfAlexandriaDescription": MessageLookupByLibrary.simpleMessage(
+      "Financing up to 85% with flexible terms",
+    ),
+    "bankOfAlexandriaTitle": MessageLookupByLibrary.simpleMessage(
+      "Bank of Alexandria",
+    ),
+    "best": MessageLookupByLibrary.simpleMessage("All in one place!"),
     "bottomExplore": MessageLookupByLibrary.simpleMessage("Explore"),
     "bottomHome": MessageLookupByLibrary.simpleMessage("Home"),
     "bottomMore": MessageLookupByLibrary.simpleMessage("More"),
@@ -303,8 +428,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "category": MessageLookupByLibrary.simpleMessage("Category"),
     "categoryName": MessageLookupByLibrary.simpleMessage("Category Name"),
     "choose_category": MessageLookupByLibrary.simpleMessage("Choose Category"),
+    "cibBankDescription": MessageLookupByLibrary.simpleMessage(
+      "Financing up to 80% with up to 20 years repayment",
+    ),
+    "cibBankTitle": MessageLookupByLibrary.simpleMessage(
+      "CIB - Commercial International Bank",
+    ),
     "companies": MessageLookupByLibrary.simpleMessage("Companies"),
     "contactUs": MessageLookupByLibrary.simpleMessage("Contact Us"),
+    "days": MessageLookupByLibrary.simpleMessage("days"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
     "deliveryType": MessageLookupByLibrary.simpleMessage("Delivery In"),
     "design_features": MessageLookupByLibrary.simpleMessage("Design Features"),
@@ -317,6 +449,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "Egyptian Real Estate Bank",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "faisalIslamicBankDescription": MessageLookupByLibrary.simpleMessage(
+      "Sharia-compliant Murabaha financing",
+    ),
+    "faisalIslamicBankTitle": MessageLookupByLibrary.simpleMessage(
+      "Faisal Islamic Bank",
+    ),
     "favorite": MessageLookupByLibrary.simpleMessage("Favorite"),
     "favorites": MessageLookupByLibrary.simpleMessage("Manage Favorites"),
     "featured_companies": MessageLookupByLibrary.simpleMessage(
@@ -341,8 +479,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("Language"),
     "licensesTitle": MessageLookupByLibrary.simpleMessage("Licenses"),
+    "loadingFailure": MessageLookupByLibrary.simpleMessage("loading Failure"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "m": MessageLookupByLibrary.simpleMessage(" m²"),
+    "month": MessageLookupByLibrary.simpleMessage("month"),
     "mortgageRegistrationDescription": MessageLookupByLibrary.simpleMessage(
       "Procedures for registering mortgages to secure loans",
     ),
@@ -428,6 +568,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "request_design_consultation": MessageLookupByLibrary.simpleMessage(
       "Request Design Consultation",
     ),
+    "retry": MessageLookupByLibrary.simpleMessage("retry"),
     "sale": MessageLookupByLibrary.simpleMessage("Sale"),
     "save": MessageLookupByLibrary.simpleMessage("Save"),
     "search_for_contracting_companies": MessageLookupByLibrary.simpleMessage(
@@ -644,7 +785,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "Value Added Tax",
     ),
     "villas": MessageLookupByLibrary.simpleMessage("Villas"),
-    "welcome": MessageLookupByLibrary.simpleMessage("Welcome, "),
+    "welcome": MessageLookupByLibrary.simpleMessage("Welcome,Mahmoud "),
+    "year": MessageLookupByLibrary.simpleMessage("year"),
     "yearsExperience": MessageLookupByLibrary.simpleMessage("years experience"),
   };
 }

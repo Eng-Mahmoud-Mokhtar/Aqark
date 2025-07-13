@@ -269,11 +269,21 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
           children: [
             SizedBox(height: screenHeight * 0.02),
             Center(
-              child: Hero(
-                tag: 'broker-avatar-${widget.broker["name"] ?? "unknown"}',
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.4),
+                      spreadRadius: 5,
+                      blurRadius: 10,
+                      offset: const Offset(0, 4),
+                    ),
+                  ],
+                ),
                 child: CircleAvatar(
                   radius: screenWidth * 0.15,
-                  backgroundImage: AssetImage(widget.broker["image"] ?? 'Assets/default_broker.png'),
+                  backgroundImage: AssetImage(widget.broker["image"]),
                 ),
               ),
             ),
@@ -295,25 +305,22 @@ class _BrokerDetailsPageState extends State<BrokerDetailsPage> {
                 color: Colors.white,
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(color: Colors.grey.shade300),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.2),
+                    spreadRadius: 2,
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    S.of(context).Details,
-                    style: TextStyle(
-                      fontSize: screenWidth * 0.035,
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
                   SizedBox(height: screenHeight * 0.01),
                   Row(
                     children: [
-                      Icon(
-                        Icons.work_outline,
-                        size: screenWidth * 0.04,
-                      ),
+                      Icon(Icons.access_time, size: screenWidth * 0.04),
                       SizedBox(width: screenWidth * 0.02),
                       Text(
                         "${widget.broker["experience"] ?? "5"} ${S.of(context).yearsExperience}",

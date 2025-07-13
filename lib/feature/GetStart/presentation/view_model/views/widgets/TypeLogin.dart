@@ -39,6 +39,7 @@ class ButtonTypeLogin extends StatelessWidget {
                 imagePath!,
                 width: screenWidth * 0.07,
                 height: screenWidth * 0.07,
+                fit: BoxFit.contain,
               ),
             if (imagePath != null) SizedBox(width: screenWidth * 0.04),
             if (text != null)

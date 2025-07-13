@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/utiles/constans.dart';
 import '../../../../../../generated/l10n.dart';
-import '../../../../../login/presentation/view_model/views/login.dart';
+import '../../../../../Auth/presentation/view_model/views/login.dart';
 import 'RowCreateAccount.dart';
 import 'TypeLogin.dart';
 

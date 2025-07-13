@@ -29,12 +29,14 @@ class MessageLookup extends MessageLookupByLibrary {
     "AboutCompany": MessageLookupByLibrary.simpleMessage("عن الشركة"),
     "AboutProperty": MessageLookupByLibrary.simpleMessage("عن العقار"),
     "About_Us": MessageLookupByLibrary.simpleMessage("من نحن"),
+    "Active": MessageLookupByLibrary.simpleMessage("مفعل"),
     "AddYourReview": MessageLookupByLibrary.simpleMessage("أضف تقييمك"),
     "AllWorkers": MessageLookupByLibrary.simpleMessage("جميع العمال"),
     "AlreadyHaveAnAccount": MessageLookupByLibrary.simpleMessage(
       "هل لديك حساب بالفعل؟",
     ),
     "Apartment": MessageLookupByLibrary.simpleMessage("شقة"),
+    "Arabic": MessageLookupByLibrary.simpleMessage("اللغه العربية"),
     "Architect": MessageLookupByLibrary.simpleMessage("مهندس معماري"),
     "AvailableCompounds": MessageLookupByLibrary.simpleMessage(
       "المشاريع المتاحة",
@@ -52,9 +54,13 @@ class MessageLookup extends MessageLookupByLibrary {
     "Bricks": MessageLookupByLibrary.simpleMessage("طوب"),
     "BrokerProfile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "Brokers": MessageLookupByLibrary.simpleMessage("الوسطاء"),
+    "BuildingArea": MessageLookupByLibrary.simpleMessage("مساحة المبنى"),
+    "Buy": MessageLookupByLibrary.simpleMessage("شراء"),
+    "ByApplication": MessageLookupByLibrary.simpleMessage("بواسطة التطبيق"),
     "ByContinuingYouAgree": MessageLookupByLibrary.simpleMessage(
       "بمتابعتك، فإنك توافق على ",
     ),
+    "ByEngineers": MessageLookupByLibrary.simpleMessage("بواسطة المهندسين"),
     "CallUs": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
     "Carpenter": MessageLookupByLibrary.simpleMessage("نجار"),
     "Carpentry": MessageLookupByLibrary.simpleMessage("النجارة"),
@@ -63,21 +69,34 @@ class MessageLookup extends MessageLookupByLibrary {
       "اختر رمز الدولة",
     ),
     "ChooseLocation": MessageLookupByLibrary.simpleMessage("اختر الموقع"),
+    "ChoosePaymentMethod": MessageLookupByLibrary.simpleMessage(
+      "اختر طريقة الدفع",
+    ),
     "ChooseWorkerRole": MessageLookupByLibrary.simpleMessage(
       "اختر وظيفة العامل",
     ),
+    "ChooseYourPlan": MessageLookupByLibrary.simpleMessage("اختر خطتك"),
     "Classic": MessageLookupByLibrary.simpleMessage("كلاسيكي"),
+    "CommercialInteriors": MessageLookupByLibrary.simpleMessage(
+      "الديكورات الداخلية التجارية",
+    ),
     "Compounds": MessageLookupByLibrary.simpleMessage("الكمبوندات"),
     "CompoundsEgypt": MessageLookupByLibrary.simpleMessage("كمبوندات مصر"),
     "Construction": MessageLookupByLibrary.simpleMessage("الإنشاءات"),
     "ConstructionEngineer": MessageLookupByLibrary.simpleMessage(
       "مهندس إنشاءات",
     ),
+    "ConstructionMaterials": MessageLookupByLibrary.simpleMessage(
+      "مواد البناء",
+    ),
     "Contracting": MessageLookupByLibrary.simpleMessage("المقاولات"),
     "ContractingCompanies": MessageLookupByLibrary.simpleMessage(
       "شركات المقاولات",
     ),
+    "CurrentPlan": MessageLookupByLibrary.simpleMessage("الباقة الحالية"),
     "DecorationEngineer": MessageLookupByLibrary.simpleMessage("مهندس ديكور"),
+    "Description": MessageLookupByLibrary.simpleMessage("الوصف"),
+    "Design": MessageLookupByLibrary.simpleMessage("تصميم"),
     "Design_Finishing": MessageLookupByLibrary.simpleMessage(
       "التصميم والتشطيب",
     ),
@@ -87,12 +106,20 @@ class MessageLookup extends MessageLookupByLibrary {
       "سعر المطور يبدأ من",
     ),
     "Developers": MessageLookupByLibrary.simpleMessage("المطورين"),
+    "Done": MessageLookupByLibrary.simpleMessage("تم"),
     "EGP": MessageLookupByLibrary.simpleMessage("ج م"),
     "Electrical": MessageLookupByLibrary.simpleMessage("الكهرباء"),
     "Electrician": MessageLookupByLibrary.simpleMessage("كهربائي"),
+    "EndDate": MessageLookupByLibrary.simpleMessage("تاريخ الانتهاء"),
     "EngineerProfile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "EngineerSpecialty": MessageLookupByLibrary.simpleMessage("تخصص المهندس"),
     "Engineers": MessageLookupByLibrary.simpleMessage("المهندسين"),
+    "English": MessageLookupByLibrary.simpleMessage("English"),
+    "EnterYourName": MessageLookupByLibrary.simpleMessage("ادخل اسمك"),
+    "EquipmentMaterials": MessageLookupByLibrary.simpleMessage(
+      "المعدات والأدوات",
+    ),
+    "Expired": MessageLookupByLibrary.simpleMessage("منتهي"),
     "FeaturedBrokers": MessageLookupByLibrary.simpleMessage("الوسطاء المميزون"),
     "FeaturedEngineers": MessageLookupByLibrary.simpleMessage(
       "المهندسون المميزون",
@@ -100,12 +127,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "FeaturedWorkers": MessageLookupByLibrary.simpleMessage("العمال المميزون"),
     "Finishing": MessageLookupByLibrary.simpleMessage("التشطيب"),
     "FinishingEngineer": MessageLookupByLibrary.simpleMessage("مهندس تشطيبات"),
+    "FinishingMaterials": MessageLookupByLibrary.simpleMessage("مواد التشطيب"),
     "FirstandLastName": MessageLookupByLibrary.simpleMessage(
       "الاسم الأول والأخير",
     ),
+    "FullDesign": MessageLookupByLibrary.simpleMessage("تصميم كامل"),
     "FullName": MessageLookupByLibrary.simpleMessage("الاسم الكامل"),
     "FullyFinished": MessageLookupByLibrary.simpleMessage("تشطيب كامل"),
     "FullyPaid": MessageLookupByLibrary.simpleMessage("كاش"),
+    "FurnitureMaterials": MessageLookupByLibrary.simpleMessage("مواد الأثاث"),
     "GetStarted": MessageLookupByLibrary.simpleMessage("ابدأ"),
     "Government_Services": MessageLookupByLibrary.simpleMessage(
       "الخدمات الحكومية",
@@ -122,6 +152,19 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "InteriorDesign": MessageLookupByLibrary.simpleMessage("تصميم داخلي"),
     "InteriorDesigner": MessageLookupByLibrary.simpleMessage("مصمم داخلي"),
+    "InvalidBuildingArea": MessageLookupByLibrary.simpleMessage(
+      "مساحة المبنى غير صالحة",
+    ),
+    "InvalidLandArea": MessageLookupByLibrary.simpleMessage(
+      "مساحة الأرض غير صالحة",
+    ),
+    "InvalidPhoneNumber": MessageLookupByLibrary.simpleMessage(
+      "رقم الهاتف غير صالح",
+    ),
+    "InvalidTotalArea": MessageLookupByLibrary.simpleMessage(
+      "المساحة الكلية غير صالحة",
+    ),
+    "LandArea": MessageLookupByLibrary.simpleMessage("مساحة الأرض"),
     "Less": MessageLookupByLibrary.simpleMessage("أقل"),
     "Listing": MessageLookupByLibrary.simpleMessage("اعلانات"),
     "ListingDate": MessageLookupByLibrary.simpleMessage("تاريخ النشر"),
@@ -134,7 +177,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Minimum": MessageLookupByLibrary.simpleMessage("الحد الأدنى"),
     "MinimumPrice": MessageLookupByLibrary.simpleMessage("اقل سعر"),
     "Modern": MessageLookupByLibrary.simpleMessage("حديث"),
+    "MonthlySubscription": MessageLookupByLibrary.simpleMessage("اشتراك شهري"),
     "More": MessageLookupByLibrary.simpleMessage("المزيد"),
+    "MostPopular": MessageLookupByLibrary.simpleMessage("الأكثر شيوعًا"),
+    "MySubscription": MessageLookupByLibrary.simpleMessage("اشتراكاتي"),
+    "MySubscriptions": MessageLookupByLibrary.simpleMessage("اشتراكاتي"),
     "Newest": MessageLookupByLibrary.simpleMessage("الأحدث"),
     "NewestFirst": MessageLookupByLibrary.simpleMessage("الأحدث أولاً"),
     "Next": MessageLookupByLibrary.simpleMessage("التالي"),
@@ -151,6 +198,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "NoWorkersAvailable": MessageLookupByLibrary.simpleMessage("لا يوجد عمال"),
     "NotAMember": MessageLookupByLibrary.simpleMessage("لست عضوًا؟"),
+    "NotSubscribed": MessageLookupByLibrary.simpleMessage(
+      "أنت غير مشترك في أي باقة.",
+    ),
     "Notification": MessageLookupByLibrary.simpleMessage("الاشعارات"),
     "Office": MessageLookupByLibrary.simpleMessage("مكتب"),
     "OldestFirst": MessageLookupByLibrary.simpleMessage("الأقدم أولاً"),
@@ -172,15 +222,47 @@ class MessageLookup extends MessageLookupByLibrary {
     "Painter": MessageLookupByLibrary.simpleMessage("دهان"),
     "Painting": MessageLookupByLibrary.simpleMessage("الدهان"),
     "Paints": MessageLookupByLibrary.simpleMessage("دهانات"),
+    "PayNow": MessageLookupByLibrary.simpleMessage("ادفع الآن"),
     "PaymentDetails": MessageLookupByLibrary.simpleMessage("تفاصيل الدفع"),
+    "PaymentMethod": MessageLookupByLibrary.simpleMessage("طريقة الدفع"),
+    "PaymentProcessing": MessageLookupByLibrary.simpleMessage(
+      "جاري معالجة الدفع",
+    ),
+    "PaymentSuccessful": MessageLookupByLibrary.simpleMessage("تم الدفع بنجاح"),
     "PhoneNumber": MessageLookupByLibrary.simpleMessage("رقم الهاتف"),
+    "PlaceType": MessageLookupByLibrary.simpleMessage("نوع المكان"),
+    "PleaseEnterADescription": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال وصف",
+    ),
+    "PleaseEnterBuildingArea": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال مساحة المبنى",
+    ),
+    "PleaseEnterLandArea": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال مساحة الأرض",
+    ),
+    "PleaseEnterTotalArea": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال المساحة الكلية",
+    ),
+    "PleaseEnterYourName": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال اسمك",
+    ),
+    "PleaseEnterYourPhoneNumber": MessageLookupByLibrary.simpleMessage(
+      "يرجى إدخال رقم الهاتف",
+    ),
+    "PleaseSelectAPlaceType": MessageLookupByLibrary.simpleMessage(
+      "يرجى اختيار نوع المكان",
+    ),
     "Plumber": MessageLookupByLibrary.simpleMessage("سباك"),
     "Plumbing": MessageLookupByLibrary.simpleMessage("السباكة"),
     "PopularSearches": MessageLookupByLibrary.simpleMessage(
       " عمليات البحث الرائجة",
     ),
     "Posts": MessageLookupByLibrary.simpleMessage("المنشورات"),
+    "Premium": MessageLookupByLibrary.simpleMessage("مميز"),
     "PriceRange": MessageLookupByLibrary.simpleMessage("نطاق السعر"),
+    "ProcessingBankPayment": MessageLookupByLibrary.simpleMessage(
+      "يرجى الانتظار أثناء معالجة المبلغ من حسابك البنكي",
+    ),
     "Products": MessageLookupByLibrary.simpleMessage("المنتجات"),
     "Properties": MessageLookupByLibrary.simpleMessage("العقارات"),
     "PropertyStatus": MessageLookupByLibrary.simpleMessage("حالة العقار"),
@@ -190,6 +272,12 @@ class MessageLookup extends MessageLookupByLibrary {
     "RecentSearches": MessageLookupByLibrary.simpleMessage(
       "عمليات البحث الأخيرة",
     ),
+    "Remaining": MessageLookupByLibrary.simpleMessage("المتبقي"),
+    "RenewPlan": MessageLookupByLibrary.simpleMessage("تجديد الاشتراك"),
+    "Rent": MessageLookupByLibrary.simpleMessage("ايجار"),
+    "RequestSubmittedSuccessfully": MessageLookupByLibrary.simpleMessage(
+      "تم إرسال الطلب بنجاح",
+    ),
     "Resale": MessageLookupByLibrary.simpleMessage("اعادة البيع"),
     "ResaleStartPrice": MessageLookupByLibrary.simpleMessage(
       "سعر اعادة البيع يبدأ من",
@@ -198,6 +286,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "أعد إرسال الرمز بعد 00:59",
     ),
     "Reset": MessageLookupByLibrary.simpleMessage("الغاء"),
+    "ResidentialInteriors": MessageLookupByLibrary.simpleMessage(
+      "الديكورات الداخلية السكنية",
+    ),
     "Results": MessageLookupByLibrary.simpleMessage("نتائج"),
     "Reviews": MessageLookupByLibrary.simpleMessage("التقييمات"),
     "Scandinavian": MessageLookupByLibrary.simpleMessage("اسكندنافي"),
@@ -217,6 +308,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "SearchOptions": MessageLookupByLibrary.simpleMessage("خيارات البحث"),
     "SelectLocation": MessageLookupByLibrary.simpleMessage("اختر الموقع"),
     "SelectRole": MessageLookupByLibrary.simpleMessage("اختر الوظيفة"),
+    "SelectType": MessageLookupByLibrary.simpleMessage("اختر النوع"),
     "SemiFinished": MessageLookupByLibrary.simpleMessage("نصف تشطيب"),
     "Send": MessageLookupByLibrary.simpleMessage("ارسال"),
     "SendMessage": MessageLookupByLibrary.simpleMessage("إرسال رسالة"),
@@ -235,12 +327,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "Skip": MessageLookupByLibrary.simpleMessage("تخطَّ"),
     "Sort": MessageLookupByLibrary.simpleMessage("ترتيب"),
     "Specialties": MessageLookupByLibrary.simpleMessage("التخصصات"),
+    "StartDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
+    "Startingfrom": MessageLookupByLibrary.simpleMessage("يبدا من"),
     "Steel": MessageLookupByLibrary.simpleMessage("حديد"),
     "SubAboutCompany": MessageLookupByLibrary.simpleMessage(
       "مرحبًا بك في Building Knowledge. نحن هنا لتبسيط رحلتك العقارية. يقدم فريقنا حلولًا مخصصة وخدمة استثنائية لمساعدتك في العثور على العقار الذي تحلم به. تواصل معنا اليوم للبدء!",
-    ),
-    "SubNoNotification": MessageLookupByLibrary.simpleMessage(
-      "ليس لديك أي إشعارات في الوقت الحالي.\nعد لاحقًا",
     ),
     "SubOurMission": MessageLookupByLibrary.simpleMessage(
       "في Building Knowledge، نحن ملتزمون بتبسيط عملية العقارات. مهمتنا هي تمكين الأفراد والعائلات من العثور على منزلهم المثالي أو عقارهم الاستثماري من خلال توفير أدوات مبتكرة، وإرشاد خبراء، وخدمة استثنائية. نسعى لجعل تجربة شراء، بيع، أو تأجير العقارات سلسة ومجزية قدر الإمكان لمستخدمينا.",
@@ -248,23 +339,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "SubVerifyPhoneNumber": MessageLookupByLibrary.simpleMessage(
       "أدخل رمز التحقق المرسل إلى +201017900067",
     ),
+    "SubscribeNow": MessageLookupByLibrary.simpleMessage("اشترك الآن"),
+    "Subscription": MessageLookupByLibrary.simpleMessage("الاشتراك"),
+    "SubscriptionPlaced": MessageLookupByLibrary.simpleMessage(
+      "تم تفعيل اشتراكك.\nسوف نرسل لك بريدًا إلكترونيًا يحتوي على تفاصيل الاشتراك.",
+    ),
     "Suggested": MessageLookupByLibrary.simpleMessage("اقتراحات لك"),
     "Tiles": MessageLookupByLibrary.simpleMessage("بلاط"),
+    "TotalArea": MessageLookupByLibrary.simpleMessage("المساحة الكلية"),
     "Traditional": MessageLookupByLibrary.simpleMessage("تقليدي"),
+    "TryAgain": MessageLookupByLibrary.simpleMessage("حاول مرة أخرى"),
     "Unfinished": MessageLookupByLibrary.simpleMessage("بدون تشطيب"),
+    "UploadFile": MessageLookupByLibrary.simpleMessage("تحميل ملف"),
     "Verify": MessageLookupByLibrary.simpleMessage("تحقق"),
     "Villa": MessageLookupByLibrary.simpleMessage("فيلا"),
     "WhatsApp": MessageLookupByLibrary.simpleMessage("واتساب"),
     "WorkerProfile": MessageLookupByLibrary.simpleMessage("الملف الشخصي"),
     "Workers": MessageLookupByLibrary.simpleMessage("العمال"),
+    "WriteDescription": MessageLookupByLibrary.simpleMessage("اكتب وصفًا"),
     "WriteMessage": MessageLookupByLibrary.simpleMessage("اكتب رسالتك"),
     "WriteYourReview": MessageLookupByLibrary.simpleMessage("اكتب تقييمك"),
+    "YearlySubscription": MessageLookupByLibrary.simpleMessage("اشتراك سنوي"),
+    "YouAreNotSubscribed": MessageLookupByLibrary.simpleMessage(
+      "أنت غير مشترك في أي باقة حتى الآن.",
+    ),
+    "YourCurrentPackage": MessageLookupByLibrary.simpleMessage("باقتك الحالية"),
     "aboutUs": MessageLookupByLibrary.simpleMessage("من نحن"),
     "all": MessageLookupByLibrary.simpleMessage("الكل"),
     "and": MessageLookupByLibrary.simpleMessage(" و "),
     "apartment": MessageLookupByLibrary.simpleMessage("شقة"),
     "apartments": MessageLookupByLibrary.simpleMessage("شقق"),
-    "best": MessageLookupByLibrary.simpleMessage("ابحث عن أفضل مكان"),
+    "bankOfAlexandriaDescription": MessageLookupByLibrary.simpleMessage(
+      "تمويل يصل إلى 85% بشروط مرنة",
+    ),
+    "bankOfAlexandriaTitle": MessageLookupByLibrary.simpleMessage(
+      "بنك الإسكندرية",
+    ),
+    "best": MessageLookupByLibrary.simpleMessage("كل ما تحتاجه في مكان واحد!"),
     "bottomExplore": MessageLookupByLibrary.simpleMessage("استكشاف"),
     "bottomHome": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "bottomMore": MessageLookupByLibrary.simpleMessage("المزيد"),
@@ -284,8 +395,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "category": MessageLookupByLibrary.simpleMessage("الفئة"),
     "categoryName": MessageLookupByLibrary.simpleMessage("اسم الفئة"),
     "choose_category": MessageLookupByLibrary.simpleMessage("اختر الفئة"),
+    "cibBankDescription": MessageLookupByLibrary.simpleMessage(
+      "تمويل يصل إلى 80% مع سداد يصل إلى 20 عامًا",
+    ),
+    "cibBankTitle": MessageLookupByLibrary.simpleMessage(
+      "البنك التجاري الدولي",
+    ),
     "companies": MessageLookupByLibrary.simpleMessage("الشركات"),
     "contactUs": MessageLookupByLibrary.simpleMessage("اتصل بنا"),
+    "days": MessageLookupByLibrary.simpleMessage("أيام"),
     "delete": MessageLookupByLibrary.simpleMessage("حذف"),
     "deliveryType": MessageLookupByLibrary.simpleMessage("التسليم في"),
     "design_features": MessageLookupByLibrary.simpleMessage("ميزات التصميم"),
@@ -298,6 +416,12 @@ class MessageLookup extends MessageLookupByLibrary {
       "البنك العقاري المصري",
     ),
     "email": MessageLookupByLibrary.simpleMessage("الايميل"),
+    "faisalIslamicBankDescription": MessageLookupByLibrary.simpleMessage(
+      "تمويل مرابحة متوافق مع الشريعة الإسلامية",
+    ),
+    "faisalIslamicBankTitle": MessageLookupByLibrary.simpleMessage(
+      "بنك فيصل الإسلامي",
+    ),
     "favorite": MessageLookupByLibrary.simpleMessage("المفضلة"),
     "favorites": MessageLookupByLibrary.simpleMessage("ادارة المفضلة"),
     "featured_companies": MessageLookupByLibrary.simpleMessage(
@@ -320,14 +444,12 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "licensesTitle": MessageLookupByLibrary.simpleMessage("التراخيص"),
+    "loadingFailure": MessageLookupByLibrary.simpleMessage(
+      "فشل تحميل البيانات",
+    ),
     "login": MessageLookupByLibrary.simpleMessage("تسجيل الدخول"),
     "m": MessageLookupByLibrary.simpleMessage(" م²"),
-    "mortgageRegistrationDescription": MessageLookupByLibrary.simpleMessage(
-      "إجراءات تسجيل الرهون العقارية لتأمين القروض",
-    ),
-    "mortgageRegistrationTitle": MessageLookupByLibrary.simpleMessage(
-      "تسجيل الرهن العقاري",
-    ),
+    "month": MessageLookupByLibrary.simpleMessage("شهر"),
     "name": MessageLookupByLibrary.simpleMessage("الاسم"),
     "nationalIdError": MessageLookupByLibrary.simpleMessage(
       "يرجى إدخال رقم الهوية الوطنية",
@@ -371,12 +493,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "propertyDisputeResolutionTitle": MessageLookupByLibrary.simpleMessage(
       "تسوية نزاعات الملكية",
     ),
-    "propertyRegistrationDescription": MessageLookupByLibrary.simpleMessage(
-      "إجراءات تسجيل العقارات في السجل العقاري",
-    ),
-    "propertyRegistrationTitle": MessageLookupByLibrary.simpleMessage(
-      "تسجيل الملكية",
-    ),
     "propertyTaxDescription": MessageLookupByLibrary.simpleMessage(
       "ضريبة سنوية مفروضة على العقارات المملوكة للأفراد والشركات",
     ),
@@ -387,9 +503,6 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "realEstateReconciliationsTitle": MessageLookupByLibrary.simpleMessage(
       "التسويات العقارية",
-    ),
-    "realEstateRegistrationsTitle": MessageLookupByLibrary.simpleMessage(
-      "تسجيل العقارات",
     ),
     "realEstateTaxesTitle": MessageLookupByLibrary.simpleMessage(
       "الضرائب العقارية",
@@ -407,6 +520,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "request_design_consultation": MessageLookupByLibrary.simpleMessage(
       "طلب استشارة تصميم",
     ),
+    "retry": MessageLookupByLibrary.simpleMessage("إعادة المحاولة"),
     "sale": MessageLookupByLibrary.simpleMessage("البيع"),
     "save": MessageLookupByLibrary.simpleMessage("حفظ"),
     "search_for_contracting_companies": MessageLookupByLibrary.simpleMessage(
@@ -617,7 +731,8 @@ class MessageLookup extends MessageLookupByLibrary {
       "ضريبة القيمة المضافة",
     ),
     "villas": MessageLookupByLibrary.simpleMessage("فيلات"),
-    "welcome": MessageLookupByLibrary.simpleMessage("مرحبا, "),
+    "welcome": MessageLookupByLibrary.simpleMessage("مرحبًا، محمود"),
+    "year": MessageLookupByLibrary.simpleMessage("سنه"),
     "yearsExperience": MessageLookupByLibrary.simpleMessage("سنوات الخبرة"),
   };
 }

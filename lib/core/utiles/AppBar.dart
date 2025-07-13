@@ -24,6 +24,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: backgroundColor,
       elevation: 0,
+      centerTitle: false,
       titleSpacing: 0,
       automaticallyImplyLeading: false,
       leading: IconButton(
@@ -39,45 +40,42 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontWeight: FontWeight.bold,
         ),
       ),
-      actions: showSearch
-          ? [
-        Padding(
-          padding: EdgeInsetsDirectional.only(
-            start: screenWidth * 0.008,
-            end: 0,
-            top: screenWidth * 0.02,
-            bottom: screenWidth * 0.02,
-          ),
-          child: Container(
-            height: screenWidth * 0.1,
-            width: screenWidth * 0.1,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              border: Border.all(color: Colors.grey.shade400),
+      actions: [
+        if (showSearch)
+          Padding(
+            padding: EdgeInsetsDirectional.only(
+              end: onPressed != null ? screenWidth * 0.015 : screenWidth * 0.04,
+              top: screenWidth * 0.02,
+              bottom: screenWidth * 0.02,
             ),
-            child: IconButton(
-              icon: Image.asset(
-                'Assets/icons-search-.png',
-                width: screenWidth * 0.06,
-                height: screenWidth * 0.06,
-                fit: BoxFit.contain,
-                color: Colors.grey.shade600,
+            child: Container(
+              height: screenWidth * 0.1,
+              width: screenWidth * 0.1,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(color: Colors.grey.shade400),
               ),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const Search()),
-                );
-              },
+              child: IconButton(
+                icon: Image.asset(
+                  'Assets/icons-search-.png',
+                  width: screenWidth * 0.06,
+                  height: screenWidth * 0.06,
+                  fit: BoxFit.contain,
+                  color: Colors.grey.shade600,
+                ),
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const Search()),
+                  );
+                },
+              ),
             ),
           ),
-        ),
         if (onPressed != null)
           Padding(
             padding: EdgeInsetsDirectional.only(
-              start: screenWidth * 0.015,
               end: screenWidth * 0.04,
               top: screenWidth * 0.02,
               bottom: screenWidth * 0.02,
@@ -98,12 +96,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   color: Colors.grey.shade600,
                   fit: BoxFit.contain,
                 ),
-                onPressed: onPressed, // فقط لو موجودة
+                onPressed: onPressed,
               ),
             ),
           ),
-      ]
-          : [],
+      ],
       bottom: PreferredSize(
         preferredSize: const Size.fromHeight(1.5),
         child: Container(
