@@ -49,7 +49,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 style: TextStyle(
                   color:  SubText,
                   fontSize: screenWidth * 0.035,
-                  fontWeight: FontWeight.w500,
+                  fontWeight: FontWeight.bold,
                 ),
                 textAlign: TextAlign.center,
               ),
@@ -68,61 +68,96 @@ class _NotificationPageState extends State<NotificationPage> {
   }
 
   Widget _buildNotificationCard(BuildContext context, double screenWidth, int index) {
-    return Card(
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      color: Colors.white,
-      elevation: 6,
-      margin: EdgeInsets.only(bottom: screenWidth * 0.04),
-      child: Padding(
-        padding: EdgeInsets.all(screenWidth * 0.04),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              children: [
-                Expanded(
+    TextDirection direction = Directionality.of(context); // ياخد اتجاه اللغة
+
+    return Container(
+      margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+      padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04, vertical: screenWidth * 0.03),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: Colors.grey.shade300,
+          width: 1.2,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Stack(
+        children: [
+          Row(
+            textDirection: direction,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Container(
+                width: screenWidth * 0.12,
+                height: screenWidth * 0.12,
+                decoration: BoxDecoration(
+                  color: KprimaryColor.withOpacity(0.2),
+                  shape: BoxShape.circle,
+                ),
+                child: Icon(Icons.notifications_none, color: KprimaryColor, size: screenWidth * 0.06),
+              ),
+              SizedBox(width: screenWidth * 0.04),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Your plan is expiring soon!",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.black,
+                      ),
+                    ),
+                    Text(
+                      "1 day left. Renew to keep access.",
+                      style: TextStyle(
+                        fontSize: screenWidth * 0.03,
+                        color: SubText,
+                        height: 1.4,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Positioned(
+            top: - 15,
+            right: Directionality.of(context) == TextDirection.ltr ? -20 : null,
+            left: Directionality.of(context) == TextDirection.rtl ? -20 : null,
+            child: PopupMenuButton<String>(
+              color: backgroundColor,
+              onSelected: (value) {
+                if (value == 'delete') {
+                  setState(() {
+                    notifications.removeAt(index);
+                  });
+                }
+              },
+              itemBuilder: (context) => [
+                PopupMenuItem(
+                  value: 'delete',
                   child: Text(
-                    "Your plan is expiring soon!",
+                    S.of(context).delete,
                     style: TextStyle(
-                      fontSize: screenWidth * 0.035,
+                      fontSize: screenWidth * 0.03,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
                     ),
                   ),
                 ),
-                PopupMenuButton<String>(
-                  color: backgroundColor,
-                  onSelected: (value) {
-                    if (value == 'delete') {
-                      setState(() {
-                        notifications.removeAt(index);
-                      });
-                    }
-                  },
-                  itemBuilder: (context) => [
-                     PopupMenuItem(
-                      value: 'delete',
-                      child: Text(S.of(context).delete,style: TextStyle(
-                        fontSize: screenWidth * 0.035,
-                        fontWeight: FontWeight.bold,
-                      ),),
-                    ),
-                  ],
-                  icon: Icon(Icons.more_vert, color: SubText),
-                ),
               ],
+              icon: Icon(Icons.more_vert, color: SubText, size: screenWidth * 0.05),
             ),
-            SizedBox(height: screenWidth * 0.01),
-            Text(
-              "1 day left. Renew to keep access.",
-              style: TextStyle(
-                fontSize: screenWidth * 0.03,
-                color: SubText,
-                height: 1.5,
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

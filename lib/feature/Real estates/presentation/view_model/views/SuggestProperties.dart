@@ -109,8 +109,8 @@ class _SuggestPropertiesState extends State<SuggestProperties> {
                   right: 10,
                   top: 10,
                   child: Container(
-                    width: screenWidth * 0.1,
-                    height: screenWidth * 0.1,
+                    width: screenWidth * 0.08,
+                    height: screenWidth *  0.08,
                     decoration: BoxDecoration(
                       color: Colors.black.withOpacity(0.4),
                       shape: BoxShape.circle,
@@ -124,7 +124,7 @@ class _SuggestPropertiesState extends State<SuggestProperties> {
                             icon: Icon(
                               apartment.isFavorite ? Icons.favorite : Icons.favorite_border,
                               color: apartment.isFavorite ? Colors.red : SubText,
-                              size:  screenWidth * 0.1,
+                              size: screenWidth * 0.08,
                             ),
                             onPressed: () {
                               setState(() {

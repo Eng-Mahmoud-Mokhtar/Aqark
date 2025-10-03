@@ -55,7 +55,7 @@ class FeatureContainer extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                       color: Colors.black,
                     ),
-                    textAlign: TextAlign.left,
+                    textAlign: TextAlign.start,
                   ),
                 ),
               ],

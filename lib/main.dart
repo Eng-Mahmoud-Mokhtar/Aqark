@@ -1,4 +1,5 @@
 import 'package:bk/feature/Home/presentation/view_model/views/Widget/BottomHome.dart';
+import 'package:bk/feature/splash/presentation/view_model/views/splash_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/services.dart';
@@ -12,7 +13,6 @@ import 'feature/Auth/presentation/view_model/views/widgets/phoneNumber.dart';
 import 'feature/Boardring/presentation/view_model/views/widgets/OnBoardring.dart';
 import 'feature/Home/presentation/view_model/BodyHome_cubit.dart';
 import 'feature/Notification/presentation/view_model/NotificationCubit.dart';
-import 'feature/splash/presentation/view_model/views/splash_view.dart';
 import 'feature/splash/presentation/view_model/views/widgets/splash_viev_body.dart';
 
 void main() async {
@@ -24,7 +24,7 @@ void main() async {
 
   runApp(
     DevicePreview(
-      enabled: false,
+      enabled: true,
       builder: (context) => ScreenUtilInit(
         designSize: const Size(360, 690),
         minTextAdapt: true,
@@ -65,6 +65,9 @@ class MyApp extends StatelessWidget {
             GlobalCupertinoLocalizations.delegate,
           ],
           debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            fontFamily: 'Almarai',
+          ),
           home: SplashScreen(),
         );
       },

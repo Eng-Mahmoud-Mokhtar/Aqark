@@ -163,156 +163,162 @@ class HomeDeveloper extends StatelessWidget {
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
+      constraints: BoxConstraints(
+        maxWidth: screenWidth,
+        maxHeight: screenHeight * 0.9,
+      ),
       builder: (context) {
         final isRtl = Localizations.localeOf(context).languageCode == 'ar';
         return Directionality(
           textDirection: isRtl ? TextDirection.rtl : TextDirection.ltr,
-          child: StatefulBuilder(
-            builder: (context, setState) {
-              return Container(
-                padding: EdgeInsets.all(screenWidth * 0.04),
-                height: screenHeight * 0.5,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Row(
-                          children: [
-                            Icon(
-                              Icons.sort,
-                              color: KprimaryColor,
+          child: FractionallySizedBox(
+            heightFactor: 0.7,
+            child: StatefulBuilder(
+              builder: (context, setState) {
+                return Container(
+                  padding: EdgeInsets.all(screenWidth * 0.04),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Icon(
+                                Icons.sort,
+                                color: KprimaryColor,
+                                size: screenWidth * 0.05,
+                              ),
+                              SizedBox(width: screenWidth * 0.02),
+                              Text(
+                                S.of(context).Sort,
+                                style: TextStyle(
+                                  fontSize: screenWidth * 0.035,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                          GestureDetector(
+                            onTap: () => Navigator.pop(context),
+                            child: Icon(
+                              Icons.close,
+                              color: Colors.black,
                               size: screenWidth * 0.05,
                             ),
-                            SizedBox(width: screenWidth * 0.02),
-                            Text(
-                              S.of(context).Sort,
-                              style: TextStyle(
-                                fontSize: screenWidth * 0.035,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: Icon(
-                            Icons.close,
-                            color: Colors.black,
-                            size: screenWidth * 0.05,
                           ),
-                        ),
-                      ],
-                    ),
-                    SizedBox(height: screenWidth * 0.01),
-                    Divider(
-                      color: Colors.grey.withOpacity(0.3),
-                      thickness: 1,
-                    ),
-                    SizedBox(height: screenWidth * 0.01),
-                    _buildSortOption(
-                      context,
-                      S.of(context).MinimumPrice,
-                      selectedSort.contains(S.of(context).MinimumPrice),
-                          () => setState(() {
-                        if (selectedSort.contains(S.of(context).MinimumPrice)) {
-                          selectedSort.remove(S.of(context).MinimumPrice);
-                        } else {
-                          selectedSort.add(S.of(context).MinimumPrice);
-                        }
-                      }),
-                    ),
-                    _buildSortOption(
-                      context,
-                      S.of(context).MaximumPrice,
-                      selectedSort.contains(S.of(context).MaximumPrice),
-                          () => setState(() {
-                        if (selectedSort.contains(S.of(context).MaximumPrice)) {
-                          selectedSort.remove(S.of(context).MaximumPrice);
-                        } else {
-                          selectedSort.add(S.of(context).MaximumPrice);
-                        }
-                      }),
-                    ),
-                    _buildSortOption(
-                      context,
-                      S.of(context).Newest,
-                      selectedSort.contains(S.of(context).Newest),
-                          () => setState(() {
-                        if (selectedSort.contains(S.of(context).Newest)) {
-                          selectedSort.remove(S.of(context).Newest);
-                        } else {
-                          selectedSort.add(S.of(context).Newest);
-                        }
-                      }),
-                    ),
-                    const Spacer(),
-                    Row(
-                      children: [
-                        Expanded(
-                          flex: 2,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(double.infinity, screenWidth * 0.12),
-                              backgroundColor: KprimaryColor,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
-                                  color: KprimaryColor,
-                                  width: 3,
+                        ],
+                      ),
+                      SizedBox(height: screenWidth * 0.01),
+                      Divider(
+                        color: Colors.grey.withOpacity(0.3),
+                        thickness: 1,
+                      ),
+                      SizedBox(height: screenWidth * 0.01),
+                      _buildSortOption(
+                        context,
+                        S.of(context).MinimumPrice,
+                        selectedSort.contains(S.of(context).MinimumPrice),
+                            () => setState(() {
+                          if (selectedSort.contains(S.of(context).MinimumPrice)) {
+                            selectedSort.remove(S.of(context).MinimumPrice);
+                          } else {
+                            selectedSort.add(S.of(context).MinimumPrice);
+                          }
+                        }),
+                      ),
+                      _buildSortOption(
+                        context,
+                        S.of(context).MaximumPrice,
+                        selectedSort.contains(S.of(context).MaximumPrice),
+                            () => setState(() {
+                          if (selectedSort.contains(S.of(context).MaximumPrice)) {
+                            selectedSort.remove(S.of(context).MaximumPrice);
+                          } else {
+                            selectedSort.add(S.of(context).MaximumPrice);
+                          }
+                        }),
+                      ),
+                      _buildSortOption(
+                        context,
+                        S.of(context).Newest,
+                        selectedSort.contains(S.of(context).Newest),
+                            () => setState(() {
+                          if (selectedSort.contains(S.of(context).Newest)) {
+                            selectedSort.remove(S.of(context).Newest);
+                          } else {
+                            selectedSort.add(S.of(context).Newest);
+                          }
+                        }),
+                      ),
+                      const Spacer(),
+                      Row(
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(double.infinity, screenWidth * 0.12),
+                                backgroundColor: KprimaryColor,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: KprimaryColor,
+                                    width: 3,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
                                 ),
-                                borderRadius: BorderRadius.circular(8),
                               ),
-                            ),
-                            onPressed: () => Navigator.pop(context),
-                            child: Text(
-                              '${S.of(context).Show} 52 ${S.of(context).Results}',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white,
-                                fontSize: screenWidth * 0.03,
+                              onPressed: () => Navigator.pop(context),
+                              child: Text(
+                                '${S.of(context).Show} 52 ${S.of(context).Results}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                  fontSize: screenWidth * 0.03,
+                                ),
                               ),
                             ),
                           ),
-                        ),
-                        SizedBox(width: screenWidth * 0.02),
-                        Expanded(
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                              minimumSize: Size(double.infinity, screenWidth * 0.12),
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                side: BorderSide(
+                          SizedBox(width: screenWidth * 0.02),
+                          Expanded(
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                minimumSize: Size(double.infinity, screenWidth * 0.12),
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  side: BorderSide(
+                                    color: selectedSort.isEmpty
+                                        ? KprimaryColor.withOpacity(0.3)
+                                        : KprimaryColor,
+                                    width: 1,
+                                  ),
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() => selectedSort.clear());
+                                Navigator.pop(context);
+                              },
+                              child: Text(
+                                S.of(context).Reset,
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
                                   color: selectedSort.isEmpty
                                       ? KprimaryColor.withOpacity(0.3)
                                       : KprimaryColor,
-                                  width: 1,
+                                  fontSize: screenWidth * 0.03,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            onPressed: () {
-                              setState(() => selectedSort.clear());
-                              Navigator.pop(context);
-                            },
-                            child: Text(
-                              S.of(context).Reset,
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: selectedSort.isEmpty
-                                    ? KprimaryColor.withOpacity(0.3)
-                                    : KprimaryColor,
-                                fontSize: screenWidth * 0.03,
                               ),
                             ),
                           ),
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              );
-            },
+                        ],
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
           ),
         );
       },
@@ -332,10 +338,12 @@ class HomeDeveloper extends StatelessWidget {
       onTap: onTap,
       child: Container(
         width: double.infinity,
-        height: 55,
+        height: screenWidth * 0.12,
         margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
         decoration: BoxDecoration(
-          color: isSelected ? KprimaryColor.withOpacity(0.1) : KprimaryColor.withOpacity(0.05),
+          color: isSelected
+              ? KprimaryColor.withOpacity(0.1)
+              : KprimaryColor.withOpacity(0.05),
           borderRadius: BorderRadius.circular(8),
           border: Border.all(
             color: isSelected ? KprimaryColor : KprimaryColor.withOpacity(0.3),

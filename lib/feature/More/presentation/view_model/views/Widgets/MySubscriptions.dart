@@ -11,7 +11,7 @@ class MySubscriptions extends StatelessWidget {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final int remainingDays = 6;
+    final int remainingDays = 0;
     final bool isSubscribed = remainingDays > 0;
 
     return Scaffold(

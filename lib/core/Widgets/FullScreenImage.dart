@@ -20,15 +20,16 @@ class FullScreenProperty extends StatelessWidget {
     final screenHeight = screenSize.height;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
+        toolbarHeight: screenHeight * 0.1, // تأكيد ارتفاع مناسب
         title: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             GestureDetector(
-              onTap: () {
-                Navigator.pop(context);
-              },
+              onTap: () => Navigator.pop(context),
               child: Icon(
                 Icons.close,
                 color: Colors.white,
@@ -36,32 +37,39 @@ class FullScreenProperty extends StatelessWidget {
               ),
             ),
             SizedBox(width: screenWidth * 0.04),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  name,
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: screenWidth * 0.035,
-                    fontWeight: FontWeight.bold,
-                  ),
+            Expanded(
+              child: Padding(
+                padding: EdgeInsets.only(top: screenHeight * 0.01),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      name,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: screenWidth * 0.035,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(height: screenHeight * 0.005),
+                    Text(
+                      '${images.length} Photos',
+                      style: TextStyle(
+                        color: SubText,
+                        fontSize: screenWidth * 0.03,
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
                 ),
-                SizedBox(height: screenHeight * 0.005),
-                Text(
-                  '${images.length} Photos',
-                  style: TextStyle(
-                    color: SubText,
-                    fontSize: screenWidth * 0.03,
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-              ],
+              ),
             ),
           ],
         ),
       ),
-      backgroundColor: Colors.black,
       body: LayoutBuilder(
         builder: (context, constraints) {
           return PageView.builder(

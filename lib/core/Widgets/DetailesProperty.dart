@@ -248,8 +248,8 @@ class DetailesProperty extends StatelessWidget {
                                   InkWell(
                                     onTap: () {},
                                     child: Container(
-                                      width: screenWidth * 0.12,
-                                      height: screenWidth * 0.12,
+                                      width: screenWidth * 0.1,
+                                      height: screenWidth * 0.1,
                                       decoration: BoxDecoration(
                                         color: KprimaryColor.withOpacity(0.1),
                                         shape: BoxShape.circle,
@@ -258,7 +258,7 @@ class DetailesProperty extends StatelessWidget {
                                         child: Icon(
                                           Icons.phone_outlined,
                                           color: KprimaryColor,
-                                          size: screenWidth * 0.06,
+                                          size: screenWidth * 0.05,
                                         ),
                                       ),
                                     ),
@@ -267,8 +267,8 @@ class DetailesProperty extends StatelessWidget {
                                   InkWell(
                                     onTap: () {},
                                     child: Container(
-                                      width: screenWidth * 0.12,
-                                      height: screenWidth * 0.12,
+                                      width: screenWidth * 0.1,
+                                      height: screenWidth * 0.1,
                                       decoration: BoxDecoration(
                                         color: Color(0xff06cd46e),
                                         shape: BoxShape.circle,
@@ -276,8 +276,9 @@ class DetailesProperty extends StatelessWidget {
                                       child: Center(
                                         child: Image.asset(
                                           'Assets/logos_whatsapp-icon.png',
-                                          width: screenWidth * 0.06,
-                                          height: screenWidth * 0.06,
+                                          fit: BoxFit.contain,
+                                          width: screenWidth * 0.05,
+                                          height: screenWidth * 0.05,
                                         ),
                                       ),
                                     ),

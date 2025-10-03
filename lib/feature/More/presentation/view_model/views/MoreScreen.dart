@@ -5,16 +5,17 @@ import 'package:bk/feature/Favorites/presentation/view_model/views/Favorites.dar
 import 'package:bk/feature/Privacy/presentation/view_model/views/Privacy.dart';
 import 'package:bk/feature/AboutUs/presentation/view_model/views/AboutUs.dart';
 import 'package:bk/feature/TermsAndCondition/presentation/view_model/views/TermsOfCondition.dart';
+import '../../../../../core/utiles/constans.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../ContectUs/presentation/view_model/views/ContectUs.dart';
 import '../../../../EditProfile/presentation/view_model/views/EditProfile.dart';
 import 'Widgets/MySubscriptions.dart';
-import 'Widgets/buildCategories.dart';
+import 'Widgets/buildCategoriesMore.dart';
 import 'Widgets/buildHeader.dart';
-import 'Widgets/buildLanguageOption.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     final screenHeight = MediaQuery.of(context).size.height;
@@ -28,7 +29,7 @@ class MoreScreen extends StatelessWidget {
           child: Column(
             children: [
               SizedBox(height: screenHeight * 0.05),
-              buildHeader(
+              buildHeaderMore(
                 context: context,
                 label: "Mahmoud Mokhtar",
                 edit: S.of(context).editProfile,
@@ -47,7 +48,7 @@ class MoreScreen extends StatelessWidget {
                 thickness: 1.5,
               ),
               SizedBox(height: screenHeight * 0.03),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.contactUs,
                 iconPath: 'Assets/icons8-ringer-volume-50.png',
@@ -60,7 +61,7 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: S.of(context).MySubscription,
                 iconPath: 'Assets/icons8-warranty-50.png',
@@ -73,7 +74,7 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.favorite,
                 iconPath: 'Assets/icons8-favorite-48.png',
@@ -86,7 +87,7 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.rateUs,
                 iconPath: 'Assets/icons8-edit-property-32.png',
@@ -99,7 +100,7 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.aboutUs,
                 iconPath: 'Assets/icons8-about-48.png',
@@ -112,12 +113,16 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.language,
                 iconPath: 'Assets/icons8-globe-48.png',
                 onPressed: () {
-                  showLanguageBottomSheet(context);
+                  // Toggle language between Arabic and English
+                  final newLocale = context.read<LocaleCubit>().state.languageCode == 'ar'
+                      ? const Locale('en')
+                      : const Locale('ar');
+                  context.read<LocaleCubit>().changeLanguage(newLocale);
                 },
                 trailing: Text(
                   context.read<LocaleCubit>().state.languageCode == 'ar'
@@ -129,9 +134,14 @@ class MoreScreen extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
+                trailingIcon: Icon(
+                  Icons.swap_horiz, // Double arrow icon
+                  size: screenWidth * 0.04,
+                  color: KprimaryColor.withOpacity(0.5),
+                ),
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.termsAndConditions,
                 iconPath: 'Assets/icons8-terms-and-conditions-48.png',
@@ -144,7 +154,7 @@ class MoreScreen extends StatelessWidget {
                 },
               ),
               SizedBox(height: screenHeight * 0.025),
-              buildCategories(
+              buildCategoriesMore(
                 context: context,
                 label: translations.privacyPolicy,
                 iconPath: 'Assets/icons8-security-lock-48.png',
@@ -164,6 +174,4 @@ class MoreScreen extends StatelessWidget {
     );
   }
 }
-
-
 

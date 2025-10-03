@@ -11,10 +11,6 @@ class PropertyType extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final double containerWidth = screenWidth * 0.42;
-    final double iconSize = containerWidth * 0.35;
-    double fontSize = screenWidth * 0.035;
-
     return Scaffold(
       backgroundColor: backgroundColor,
       appBar: CustomAppBar(
@@ -26,18 +22,17 @@ class PropertyType extends StatelessWidget {
         padding: EdgeInsets.all(screenWidth *0.04),
         child: Column(
           children: [
-            _buildTypeOption(context, S.of(context).Buy, iconSize, fontSize),
+            _buildTypeOption(context, S.of(context).Buy),
              SizedBox(height: screenWidth *0.04),
-            _buildTypeOption(context,  S.of(context).Rent, iconSize, fontSize),
+            _buildTypeOption(context,  S.of(context).Rent),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildTypeOption(BuildContext context, String type, double iconSize, double fontSize) {
+  Widget _buildTypeOption(BuildContext context, String type,) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final double innerPadding = screenWidth * 0.04;
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -49,7 +44,7 @@ class PropertyType extends StatelessWidget {
       },
       child: Container(
         width: double.infinity,
-        padding: EdgeInsets.all(innerPadding),
+        padding: EdgeInsets.symmetric(vertical:screenWidth *0.02,horizontal: screenWidth *0.04 ),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8),
@@ -65,8 +60,8 @@ class PropertyType extends StatelessWidget {
         child: Row(
           children: [
             Container(
-              width: iconSize,
-              height: iconSize,
+              width: screenWidth* 0.12,
+              height: screenWidth* 0.12,
               decoration: BoxDecoration(
                 color: KprimaryColor,
                 shape: BoxShape.circle,
@@ -74,8 +69,8 @@ class PropertyType extends StatelessWidget {
               child: Center(
                 child: Image.asset(
                   AssetsData.Logo,
-                  width: iconSize * 0.8,
-                  height: iconSize * 0.8,
+                  width: screenWidth * 0.1,
+                  height: screenWidth * 0.1,
                   color: Colors.white,
                 ),
               ),
@@ -85,7 +80,7 @@ class PropertyType extends StatelessWidget {
               child: Text(
                 type,
                 style: TextStyle(
-                  fontSize: fontSize,
+                  fontSize: screenWidth * 0.035,
                   fontWeight: FontWeight.bold,
                   color: KprimaryColor,
                 ),
@@ -93,7 +88,7 @@ class PropertyType extends StatelessWidget {
             ),
             Icon(
               Icons.arrow_forward_ios,
-              color: KprimaryColor.withOpacity(0.2),
+              color: SubText,
               size:  screenWidth * 0.05,
             ),
           ],

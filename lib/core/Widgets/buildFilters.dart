@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:bk/core/utiles/constans.dart';
-import 'package:intl/intl.dart';
 import '../../generated/l10n.dart';
 
 void FilterRealestate(BuildContext context) {
@@ -13,9 +12,13 @@ void FilterRealestate(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
     ),
+    constraints: BoxConstraints(
+      maxWidth: MediaQuery.of(context).size.width,
+      maxHeight: screenHeight * 0.9,
+    ),
     builder: (context) {
-      return Container(
-        height: screenHeight * 0.7,
+      return FractionallySizedBox(
+        heightFactor: 0.7, // نسبة الارتفاع
         child: Realestate(),
       );
     },
@@ -31,7 +34,6 @@ class _RealestateState extends State<Realestate> {
   int selectedIndex = -1;
   int selectedActionIndex = -1;
   int selectedTypeIndex = -1;
-  double _currentSliderValue = 2000000;
   int selectedBedroomsIndex = -1;
   int selectedBathroomsIndex = -1;
   final List<String> Bedrooms = ['1', '2', '3', '4', '5+'];
@@ -54,198 +56,172 @@ class _RealestateState extends State<Realestate> {
 
     return Scaffold(
       backgroundColor: backgroundColor,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
-        child: Column(
-          children: [
-            Column(
-              children: [
-                SizedBox(height: screenWidth * 0.04),
-                Row(
-                  children: [
-                    Image.asset(
-                      'Assets/icons8-filter-48.png',
-                      width: screenWidth * 0.05,
-                      height: screenWidth * 0.05,
-                      color: KprimaryColor,
-                    ),
-                    SizedBox(width: screenWidth * 0.02),
-                    Text(
-                      S.of(context).SearchFilters,
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.035,
-                        fontWeight: FontWeight.bold,
+      body: SafeArea(
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+          child: Column(
+            children: [
+              Column(
+                children: [
+                  SizedBox(height: screenWidth * 0.04),
+                  Row(
+                    children: [
+                      Image.asset(
+                        'Assets/icons8-filter-48.png',
+                        width: screenWidth * 0.05,
+                        height: screenWidth * 0.05,
+                        color: KprimaryColor,
                       ),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.close,
-                        color: Colors.black,
-                        size: screenWidth * 0.05,
+                      SizedBox(width: screenWidth * 0.02),
+                      Text(
+                        S.of(context).SearchFilters,
+                        style: TextStyle(
+                          fontSize: screenWidth * 0.035,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: screenHeight * 0.015),
-                Divider(color: Colors.grey.withOpacity(0.3), thickness: 1),
-              ],
-            ),
-            Expanded(
-              child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    buildFilterSection(
-                      title: S.of(context).PropertyType,
-                      items: categories,
-                      selectedIndex: selectedIndex,
-                      onTap: (index) {
-                        setState(() {
-                          selectedIndex = index;
-                        });
-                      },
-                    ),
-                    SizedBox(height: screenWidth * 0.035),
-                    Divider(color: Colors.grey.shade300, thickness: 1),
-                    SizedBox(height: screenWidth * 0.015),
-                    Text(S.of(context).PriceRange,
-                        style: _sectionTitleStyle(screenWidth)),
-                    Slider(
-                      value: _currentSliderValue,
-                      min: 0,
-                      max: 50000000,
-                      divisions: 100,
-                      activeColor: KprimaryColor,
-                      inactiveColor: KprimaryColor.withOpacity(0.1),
-                      label: _formatSliderValue(_currentSliderValue),
-                      onChanged: (value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                        });
-                      },
-                    ),
-                    Row(
-                      children: [
-                        Text(S.of(context).Minimum,
-                            style: _labelStyle(screenWidth)),
-                        Spacer(),
-                        Text(S.of(context).Maximum,
-                            style: _labelStyle(screenWidth)),
-                      ],
-                    ),
-                    SizedBox(height: screenWidth * 0.01),
-                    buildFilterSection(
-                      title: S.of(context).Bedrooms,
-                      items: Bedrooms,
-                      selectedIndex: selectedBedroomsIndex,
-                      onTap: (index) {
-                        setState(() {
-                          selectedBedroomsIndex = index;
-                        });
-                      },
-                    ),
-                    buildFilterSection(
-                      title: S.of(context).Bathrooms,
-                      items: Bathrooms,
-                      selectedIndex: selectedBathroomsIndex,
-                      onTap: (index) {
-                        setState(() {
-                          selectedBathroomsIndex = index;
-                        });
-                      },
-                    ),
-                    Divider(color: Colors.grey.shade300, thickness: 1),
-                    buildFilterSection(
-                      title: S.of(context).Finishing,
-                      items: types,
-                      selectedIndex: selectedTypeIndex,
-                      onTap: (index) {
-                        setState(() {
-                          selectedTypeIndex = index;
-                        });
-                      },
-                    ),
-                    SizedBox(height: screenWidth * 0.05),
-                  ],
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.close,
+                          color: Colors.black,
+                          size: screenWidth * 0.05,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: screenHeight * 0.015),
+                  Divider(color: Colors.grey.withOpacity(0.3), thickness: 1),
+                ],
+              ),
+              Expanded(
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      buildFilterSection(
+                        title: S.of(context).PropertyType,
+                        items: categories,
+                        selectedIndex: selectedIndex,
+                        onTap: (index) {
+                          setState(() {
+                            selectedIndex = index;
+                          });
+                        },
+                      ),
+                      SizedBox(height: screenWidth * 0.035),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      SizedBox(height: screenWidth * 0.01),
+                      buildFilterSection(
+                        title: S.of(context).Bedrooms,
+                        items: Bedrooms,
+                        selectedIndex: selectedBedroomsIndex,
+                        onTap: (index) {
+                          setState(() {
+                            selectedBedroomsIndex = index;
+                          });
+                        },
+                      ),
+                      buildFilterSection(
+                        title: S.of(context).Bathrooms,
+                        items: Bathrooms,
+                        selectedIndex: selectedBathroomsIndex,
+                        onTap: (index) {
+                          setState(() {
+                            selectedBathroomsIndex = index;
+                          });
+                        },
+                      ),
+                      Divider(color: Colors.grey.shade300, thickness: 1),
+                      buildFilterSection(
+                        title: S.of(context).Finishing,
+                        items: types,
+                        selectedIndex: selectedTypeIndex,
+                        onTap: (index) {
+                          setState(() {
+                            selectedTypeIndex = index;
+                          });
+                        },
+                      ),
+                      SizedBox(height: screenWidth * 0.05),
+                    ],
+                  ),
                 ),
               ),
-            ),
-            Padding(
-              padding: EdgeInsets.only(top: screenWidth * 0.02),
-              child: Row(
-                children: [
-                  Expanded(
-                    flex: 2,
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: Size(double.infinity, screenWidth * 0.12),
-                        backgroundColor: KprimaryColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.of(context)
-                            .pushNamedAndRemoveUntil('/home', (route) => false);
-                      },
-                      child: Text(
-                        '${S.of(context).Show} 52 ${S.of(context).Results}',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          fontSize: screenWidth * 0.03,
-                        ),
-                      ),
-                    ),
-                  ),
-                  SizedBox(width: screenWidth * 0.02),
-                  Expanded(
-                    child: ElevatedButton(
-                      style: ButtonStyle(
-                        minimumSize: MaterialStateProperty.all(
-                          Size(double.infinity, screenWidth * 0.12),
-                        ),
-                        backgroundColor:
-                            MaterialStateProperty.all(Colors.white),
-                        foregroundColor:
-                            MaterialStateProperty.all(KprimaryColor),
-                        side: MaterialStateProperty.all(
-                          BorderSide(color: KprimaryColor, width: 1),
-                        ),
-                        shape: MaterialStateProperty.all(
-                          RoundedRectangleBorder(
+              Padding(
+                padding: EdgeInsets.symmetric(vertical: screenWidth * 0.02),
+                child: Row(
+                  children: [
+                    Flexible(
+                      flex: 2,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          minimumSize: Size(double.infinity, screenWidth * 0.12),
+                          backgroundColor: KprimaryColor,
+                          shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(8),
                           ),
                         ),
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          selectedIndex = -1;
-                          selectedActionIndex = -1;
-                          selectedTypeIndex = -1;
-                          _currentSliderValue = 2000000;
-                          selectedBedroomsIndex = -1;
-                          selectedBathroomsIndex = -1;
-                        });
-                      },
-                      child: Text(
-                        S.of(context).Reset,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: screenWidth * 0.03,
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.of(context)
+                              .pushNamedAndRemoveUntil('/home', (route) => false);
+                        },
+                        child: Text(
+                          '${S.of(context).Show} 52 ${S.of(context).Results}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontSize: screenWidth * 0.03,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                    SizedBox(width: screenWidth * 0.02),
+                    Flexible(
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all(
+                            Size(double.infinity, screenWidth * 0.12),
+                          ),
+                          backgroundColor: MaterialStateProperty.all(Colors.white),
+                          foregroundColor:
+                          MaterialStateProperty.all(KprimaryColor),
+                          side: MaterialStateProperty.all(
+                            BorderSide(color: KprimaryColor, width: 1),
+                          ),
+                          shape: MaterialStateProperty.all(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            selectedIndex = -1;
+                            selectedActionIndex = -1;
+                            selectedTypeIndex = -1;
+                            selectedBedroomsIndex = -1;
+                            selectedBathroomsIndex = -1;
+                          });
+                        },
+                        child: Text(
+                          S.of(context).Reset,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: screenWidth * 0.03,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -291,11 +267,11 @@ class _RealestateState extends State<Realestate> {
                       child: Container(
                         margin: EdgeInsets.only(
                           left: Localizations.localeOf(context).languageCode ==
-                                  'ar'
+                              'ar'
                               ? screenWidth * 0.005
                               : 0,
                           right: Localizations.localeOf(context).languageCode ==
-                                  'ar'
+                              'ar'
                               ? 0
                               : screenWidth * 0.005,
                         ),
@@ -330,26 +306,6 @@ class _RealestateState extends State<Realestate> {
       ],
     );
   }
-
-  TextStyle _sectionTitleStyle(double screenWidth) {
-    return TextStyle(
-      color: Colors.black,
-      fontSize: screenWidth * 0.03,
-      fontWeight: FontWeight.bold,
-    );
-  }
-
-  TextStyle _labelStyle(double screenWidth) {
-    return TextStyle(
-      color: SubText,
-      fontSize: screenWidth * 0.03,
-    );
-  }
-
-  String _formatSliderValue(double value) {
-    final formatter = NumberFormat('#,###');
-    return formatter.format(value.round());
-  }
 }
 
 //-------------------------------------------------------------------------------------
@@ -364,8 +320,15 @@ void FilterDevelopers(BuildContext context) {
     shape: const RoundedRectangleBorder(
       borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
     ),
+    constraints: BoxConstraints(
+      maxWidth: MediaQuery.of(context).size.width,
+      maxHeight: screenHeight * 0.9,
+    ),
     builder: (context) {
-      return Container(height: screenHeight * 0.7, child: FilterHomeContent());
+      return FractionallySizedBox(
+        heightFactor: 0.7,
+        child: FilterHomeContent(),
+      );
     },
   );
 }
@@ -379,7 +342,6 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
   int selectedIndex = -1;
   int selectedActionIndex = -1;
   int selectedTypeIndex = -1;
-  double _currentSliderValue = 2000000;
   int selectedBedroomsIndex = -1;
   int selectedBathroomsIndex = -1;
   final List<String> Bedrooms = ['1', '2', '3', '4', '5+'];
@@ -403,10 +365,12 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
       S.of(context).SemiFinished,
       S.of(context).Unfinished,
     ];
+
     return Scaffold(
       backgroundColor: Colors.transparent,
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
+      body: SafeArea(
+        child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.04),
         child: Column(
           children: [
             Column(
@@ -473,31 +437,6 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                         });
                       },
                     ),
-                    Text(S.of(context).PriceRange,
-                        style: _sectionTitleStyle(screenWidth)),
-                    Slider(
-                      value: _currentSliderValue,
-                      min: 0,
-                      max: 50000000,
-                      divisions: 100,
-                      activeColor: KprimaryColor,
-                      inactiveColor: KprimaryColor.withOpacity(0.1),
-                      label: _formatSliderValue(_currentSliderValue),
-                      onChanged: (value) {
-                        setState(() {
-                          _currentSliderValue = value;
-                        });
-                      },
-                    ),
-                    Row(
-                      children: [
-                        Text(S.of(context).Minimum,
-                            style: _labelStyle(screenWidth)),
-                        Spacer(),
-                        Text(S.of(context).Maximum,
-                            style: _labelStyle(screenWidth)),
-                      ],
-                    ),
                     SizedBox(height: screenWidth * 0.01),
                     buildFilterSection(
                       title: S.of(context).Bedrooms,
@@ -536,10 +475,12 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
               ),
             ),
             Padding(
-              padding: EdgeInsets.only(top: screenWidth * 0.02),
+              padding: EdgeInsets.symmetric(
+                vertical: screenWidth * 0.02,
+              ),
               child: Row(
                 children: [
-                  Expanded(
+                  Flexible(
                     flex: 2,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -565,14 +506,13 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                     ),
                   ),
                   SizedBox(width: screenWidth * 0.02),
-                  Expanded(
+                  Flexible(
                     child: ElevatedButton(
                       style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all(
                           Size(double.infinity, screenWidth * 0.12),
                         ),
-                        backgroundColor:
-                        MaterialStateProperty.all(Colors.white),
+                        backgroundColor: MaterialStateProperty.all(Colors.white),
                         foregroundColor:
                         MaterialStateProperty.all(KprimaryColor),
                         side: MaterialStateProperty.all(
@@ -589,7 +529,6 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
                           selectedIndex = -1;
                           selectedActionIndex = -1;
                           selectedTypeIndex = -1;
-                          _currentSliderValue = 2000000;
                           selectedBedroomsIndex = -1;
                           selectedBathroomsIndex = -1;
                         });
@@ -609,6 +548,7 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
           ],
         ),
       ),
+    ),
     );
   }
 
@@ -690,25 +630,5 @@ class _FilterHomeContentState extends State<FilterHomeContent> {
         ),
       ],
     );
-  }
-
-  TextStyle _sectionTitleStyle(double screenWidth) {
-    return TextStyle(
-      color: Colors.black,
-      fontSize: screenWidth * 0.03,
-      fontWeight: FontWeight.bold,
-    );
-  }
-
-  TextStyle _labelStyle(double screenWidth) {
-    return TextStyle(
-      color: SubText,
-      fontSize: screenWidth * 0.03,
-    );
-  }
-
-  String _formatSliderValue(double value) {
-    final formatter = NumberFormat('#,###');
-    return formatter.format(value.round());
   }
 }

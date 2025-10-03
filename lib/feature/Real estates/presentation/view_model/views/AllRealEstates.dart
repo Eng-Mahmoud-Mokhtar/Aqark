@@ -448,27 +448,29 @@ Widget buildPriceRow(double screenWidth, String price, String ownerNumber, Build
         ),
       ),
       Spacer(),
-      GestureDetector(
-        onTap: () {
-          // Handle phone call logic here
-        },
-        child: Container(
-          width: screenWidth * 0.1,
-          height: screenWidth * 0.1,
-          decoration: BoxDecoration(
-            color: KprimaryColor.withOpacity(0.1),
-            shape: BoxShape.circle,
-          ),
-          child: Center(
-            child: Icon(
-              Icons.phone_outlined,
-              size: screenWidth * 0.05,
-              color: KprimaryColor,
+      Padding(
+        padding: EdgeInsets.symmetric(horizontal:screenWidth * 0.02 ),
+        child: GestureDetector(
+          onTap: () {
+            // Handle phone call logic here
+          },
+          child: Container(
+            width: screenWidth * 0.1,
+            height: screenWidth * 0.1,
+            decoration: BoxDecoration(
+              color: KprimaryColor.withOpacity(0.1),
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Icon(
+                Icons.phone_outlined,
+                size: screenWidth * 0.05,
+                color: KprimaryColor,
+              ),
             ),
           ),
         ),
       ),
-      SizedBox(width: 10.w),
       GestureDetector(
         onTap: () {
           // Handle WhatsApp logic here
@@ -659,8 +661,8 @@ Widget buildApartmentItem(BuildContext context, RealStateObjects apartment) {
                 right: 10,
                 top: 10,
                 child: Container(
-                  width: screenWidth * 0.1,
-                  height: screenWidth * 0.1,
+                  width: screenWidth * 0.08,
+                  height: screenWidth *  0.08,
                   decoration: BoxDecoration(
                     color: Colors.black.withOpacity(0.4),
                     shape: BoxShape.circle,
@@ -674,7 +676,7 @@ Widget buildApartmentItem(BuildContext context, RealStateObjects apartment) {
                           icon: Icon(
                             apartment.isFavorite ? Icons.favorite : Icons.favorite_border,
                             color: apartment.isFavorite ? Colors.red : SubText,
-                            size: screenWidth * 0.1,
+                            size: screenWidth * 0.08,
                           ),
                           onPressed: () {
                             // Handle favorite logic here

@@ -289,7 +289,7 @@ class _InteriorDesignState extends State<InteriorDesign> {
     required String label,
     String? hint,
     IconData? icon,
-    String? imagePath, // New parameter for image path
+    String? imagePath,
     TextInputType? keyboardType,
     List<TextInputFormatter>? inputFormatters,
     String? Function(String?)? validator,
@@ -353,16 +353,19 @@ class _InteriorDesignState extends State<InteriorDesign> {
                       ),
                       prefixIcon: imagePath != null
                           ? Padding(
-                        padding: EdgeInsets.all(screenWidth * 0.02),
+                        padding: EdgeInsets.symmetric(vertical:screenWidth * 0.04),
                         child: Image.asset(
                           imagePath,
-                          width: screenWidth * 0.05,
-                          height: screenWidth * 0.05,
+                          height: screenWidth * 0.03,
+                          fit: BoxFit.contain,
                           color: KprimaryColor,
                         ),
                       )
                           : icon != null
-                          ? Icon(icon, color: KprimaryColor, size: screenWidth * 0.05)
+                          ? Padding(
+                        padding: EdgeInsets.all(screenWidth * 0.03),
+                            child: Icon(icon, color: KprimaryColor, size: screenWidth * 0.05),
+                          )
                           : null,
                       border: InputBorder.none,
                       contentPadding: EdgeInsets.symmetric(

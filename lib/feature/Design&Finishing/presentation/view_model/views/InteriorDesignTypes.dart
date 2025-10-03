@@ -13,11 +13,6 @@ class InteriorDesignTypes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double screenWidth = MediaQuery.of(context).size.width;
-    final double containerWidth = screenWidth * 0.42;
-    final double iconSize = containerWidth * 0.35;
-    double fontSize = screenWidth * 0.035;
-    final double padding = screenWidth * 0.04;
-
     final List<Map<String, dynamic>> designTypes = [
       {
         'title': S.of(context).ResidentialInteriors,
@@ -57,67 +52,73 @@ class InteriorDesignTypes extends StatelessWidget {
         showSearch: false,
       ),
       body: Padding(
-        padding: EdgeInsets.all(padding),
+        padding: EdgeInsets.all(screenWidth * 0.04),
         child: Column(
-          children: designTypes.map((design) {
-            return Padding(
-              padding:  EdgeInsets.only(bottom:padding),
-              child: GestureDetector(
-                onTap: design['onTap'],
-                child: Container(
-                  padding: EdgeInsets.all(padding),
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(8),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black.withOpacity(0.15),
-                        blurRadius: 12,
-                        spreadRadius: 1,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Row(
-                    children: [
-                      Container(
-                        width: iconSize,
-                        height: iconSize,
-                        decoration: BoxDecoration(
-                          color: KprimaryColor,
-                          shape: BoxShape.circle,
+          children: List.generate(designTypes.length, (index) {
+            final design = designTypes[index];
+            return Column(
+              children: [
+                GestureDetector(
+                  onTap: design['onTap'],
+                  child: Container(
+                    padding: EdgeInsets.symmetric(
+                        vertical: screenWidth * 0.02,
+                        horizontal: screenWidth * 0.04),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(8),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.15),
+                          blurRadius: 12,
+                          spreadRadius: 1,
+                          offset: const Offset(0, 4),
                         ),
-                        child: Center(
-                          child: Image.asset(
-                            design['image'],
-                            width: iconSize * 0.8,
-                            height: iconSize * 0.8,
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: Text(
-                          design['title'],
-                          style: TextStyle(
-                            fontSize: fontSize,
-                            fontWeight: FontWeight.bold,
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        Container(
+                          width: screenWidth* 0.12,
+                          height: screenWidth* 0.12,
+                          decoration: BoxDecoration(
                             color: KprimaryColor,
+                            shape: BoxShape.circle,
+                          ),
+                          child: Center(
+                            child: Image.asset(
+                              AssetsData.Logo,
+                              width: screenWidth * 0.1,
+                              height: screenWidth * 0.1,
+                              color: Colors.white,
+                            ),
                           ),
                         ),
-                      ),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        color: KprimaryColor.withOpacity(0.2),
-                        size: screenWidth * 0.05,
-                      ),
-                    ],
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Text(
+                              design['title'],
+                            style: TextStyle(
+                              fontSize: screenWidth * 0.035,
+                              fontWeight: FontWeight.bold,
+                              color: KprimaryColor,
+                            ),
+                          ),
+                        ),
+                        Icon(
+                          Icons.arrow_forward_ios,
+                          color: SubText,
+                          size:  screenWidth * 0.05,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-              ),
+                if (index != designTypes.length - 1)
+                  SizedBox(height: screenWidth * 0.04),
+              ],
             );
-          }).toList(),
+          }),
         ),
       ),
     );

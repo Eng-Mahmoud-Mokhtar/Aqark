@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../../../../core/utiles/constans.dart';
 
-Widget buildHeader({
+Widget buildHeaderMore({
   required BuildContext context,
   required String label,
   required String edit,

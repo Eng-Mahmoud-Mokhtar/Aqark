@@ -10,11 +10,17 @@ Widget buildCategoryItem({
   required double iconSize,
   required double fontSize,
 }) {
+  double containerHeight = width * 0.8;
+
   return GestureDetector(
     onTap: onTap,
     child: Container(
       width: width,
-      padding: EdgeInsets.all(width * 0.08),
+      height: containerHeight,
+      padding: EdgeInsets.symmetric(
+        vertical: width * 0.04,
+        horizontal: width * 0.08,
+      ),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(8),
@@ -46,22 +52,17 @@ Widget buildCategoryItem({
               ),
             ),
           ),
-          const SizedBox(height: 12),
-          SizedBox(
-            height: fontSize * 2.8,
-            child: Center(
-              child: Text(
-                label,
-                style: TextStyle(
-                  fontSize: fontSize,
-                  fontWeight: FontWeight.bold,
-                  color: KprimaryColor,
-                ),
-                textAlign: TextAlign.center,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
+          SizedBox(height:12),
+          Text(
+            label,
+            style: TextStyle(
+              fontSize: fontSize,
+              fontWeight: FontWeight.bold,
+              color: KprimaryColor,
             ),
+            textAlign: TextAlign.center,
+            maxLines: 2,
+            overflow: TextOverflow.visible,
           ),
         ],
       ),

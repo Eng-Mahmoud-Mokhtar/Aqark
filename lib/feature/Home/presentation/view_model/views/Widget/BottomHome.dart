@@ -87,6 +87,7 @@ class Home extends StatelessWidget {
                     'Assets/icons8-bag-96.png',
                     width: screenWidth * 0.05,
                     height: screenWidth * 0.05,
+                    fit: BoxFit.contain,
                     color: selectedIndex == 2
                         ? KprimaryColor
                         : const Color(0xffb8b8b8),

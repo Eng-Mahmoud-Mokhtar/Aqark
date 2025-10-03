@@ -428,220 +428,225 @@ class _EngineersScreenState extends State<EngineersScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.white,
+      backgroundColor: backgroundColor,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
       ),
+      constraints: BoxConstraints(
+        maxWidth: screenWidth,
+        maxHeight: screenHeight * 0.9,
+      ),
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              height: screenHeight * 0.36,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 8,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Image.asset(
-                        'Assets/icons8-filter-48.png',
-                        width: screenWidth * 0.05,
-                        height: screenWidth * 0.05,
-                        color: KprimaryColor,
-                      ),
-                      SizedBox(width: screenWidth * 0.02),
-                      Text(
-                        S.of(context).SearchOptions,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
+        return FractionallySizedBox(
+          heightFactor: 0.45,
+          child: StatefulBuilder(
+            builder: (context, setModalState) {
+              return Container(
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Image.asset(
+                          'Assets/icons8-filter-48.png',
+                          width: screenWidth * 0.05,
+                          height: screenWidth * 0.05,
+                          color: KprimaryColor,
                         ),
-                      ),
-                      const Spacer(),
-                      GestureDetector(
-                        onTap: () => Navigator.pop(context),
-                        child: Icon(
-                          Icons.close,
-                          color: Colors.black,
-                          size: screenWidth * 0.05,
-                        ),
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.015),
-                  Divider(color: Colors.grey.withOpacity(0.3), thickness: 1),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        S.of(context).Location,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
-                        ),
-                      ),
-                      SizedBox(height: screenHeight * 0.008),
-                      GestureDetector(
-                        onTap: () => _showAddLocationSheet(
-                          context: context,
-                          governoratesWithCities: governoratesWithCities,
-                          onLocationSelected: (governorate, city) {
-                            setState(() {
-                              _selectedGovernorate = governorate;
-                              _selectedCity = city;
-                            });
-                          },
-                        ),
-                        child: Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
-                          padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
-                          decoration: BoxDecoration(
-                            color: (_selectedGovernorate != null && _selectedCity != null)
-                                ? KprimaryColor.withOpacity(0.1)
-                                : KprimaryColor.withOpacity(0.05),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: (_selectedGovernorate != null && _selectedCity != null)
-                                  ? KprimaryColor
-                                  : KprimaryColor.withOpacity(0.3),
-                              width: 1.0,
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.grey.withOpacity(0.2),
-                                spreadRadius: 1,
-                                blurRadius: 4,
-                                offset: const Offset(0, 2),
-                              ),
-                            ],
-                          ),
-                          child: (_selectedGovernorate != null && _selectedCity != null)
-                              ? Padding(
-                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                            child: Row(
-                              children: [
-                                Icon(Icons.location_on_outlined, color: KprimaryColor, size: screenWidth * 0.045),
-                                SizedBox(width: screenWidth * 0.02),
-                                Expanded(
-                                  child: Text(
-                                    '$_selectedCity, $_selectedGovernorate',
-                                    style: TextStyle(
-                                      color: Colors.black,
-                                      fontSize: screenWidth * 0.03,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                              : Center(
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
-                                SizedBox(width: screenWidth * 0.02),
-                                Text(
-                                  S.of(context).ChooseLocation,
-                                  style: TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: screenWidth * 0.03,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        SizedBox(width: screenWidth * 0.02),
+                        Text(
+                          S.of(context).SearchOptions,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.035,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  const Spacer(),
-                  Row(
-                    children: [
-                      Expanded(
-                        flex: 2,
-                        child: ElevatedButton(
-                          style: ElevatedButton.styleFrom(
-                            minimumSize: Size(double.infinity, screenWidth * 0.12),
-                            backgroundColor: KprimaryColor,
-                            shape: RoundedRectangleBorder(
-                              side: const BorderSide(color: KprimaryColor, width: 3),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            elevation: 2,
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                          child: Text(
-                            '${S.of(context).Show} (${filteredEngineers.length})',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              fontSize: screenWidth * 0.03,
-                            ),
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: screenWidth * 0.02),
-                      Expanded(
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            minimumSize: MaterialStateProperty.all(Size(double.infinity, screenWidth * 0.12)),
-                            backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (states) => states.contains(MaterialState.disabled) ? Colors.white : Colors.white),
-                            foregroundColor: MaterialStateProperty.resolveWith<Color>(
-                                    (states) => states.contains(MaterialState.disabled)
-                                    ? KprimaryColor.withOpacity(0.3)
-                                    : KprimaryColor),
-                            side: MaterialStateProperty.resolveWith<BorderSide>((states) => BorderSide(
-                              color: states.contains(MaterialState.disabled)
-                                  ? KprimaryColor.withOpacity(0.3)
-                                  : KprimaryColor,
-                              width: 1,
-                            )),
-                            shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
-                            elevation: MaterialStateProperty.resolveWith<double>(
-                                    (states) => states.contains(MaterialState.disabled) ? 0 : 2),
-                          ),
-                          onPressed: (_selectedGovernorate == null && _selectedCity == null)
-                              ? null
-                              : () {
-                            setState(() {
-                              _selectedCity = null;
-                              _selectedGovernorate = null;
-                            });
+                        const Spacer(),
+                        GestureDetector(
+                          onTap: () {
                             Navigator.pop(context);
                           },
-                          child: Text(
-                            S.of(context).Reset,
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: screenWidth * 0.03,
+                          child: Icon(
+                            Icons.close,
+                            color: Colors.black,
+                            size: screenWidth * 0.05,
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(height: screenHeight * 0.015),
+                    Divider(
+                      color: Colors.grey.withOpacity(0.3),
+                      thickness: 1,
+                    ),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          S.of(context).Location,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.035,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                        SizedBox(height: screenHeight * 0.008),
+                        GestureDetector(
+                          onTap: () {
+                            _showAddLocationSheet(
+                              context: context,
+                              governoratesWithCities: governoratesWithCities,
+                              onLocationSelected: (governorate, city) {
+                                setModalState(() {
+                                  _selectedGovernorate = governorate;
+                                  _selectedCity = city;
+                                });
+                              },
+                            );
+                          },
+                          child: Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.symmetric(vertical: screenWidth * 0.01),
+                            padding: EdgeInsets.symmetric(vertical: screenWidth * 0.04),
+                            decoration: BoxDecoration(
+                              color: (_selectedGovernorate != null && _selectedCity != null)
+                                  ? KprimaryColor.withOpacity(0.1)
+                                  : KprimaryColor.withOpacity(0.05),
+                              borderRadius: BorderRadius.circular(8),
+                              border: Border.all(
+                                color: (_selectedGovernorate != null && _selectedCity != null)
+                                    ? KprimaryColor
+                                    : KprimaryColor.withOpacity(0.3),
+                                width: 1.0,
+                              ),
+                            ),
+                            child: (_selectedGovernorate != null && _selectedCity != null)
+                                ? Padding(
+                              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
+                              child: Row(
+                                children: [
+                                  Icon(Icons.location_on_outlined,
+                                      color: KprimaryColor, size: screenWidth * 0.045),
+                                  SizedBox(width: screenWidth * 0.02),
+                                  Expanded(
+                                    child: Text(
+                                      '$_selectedCity, $_selectedGovernorate',
+                                      style: TextStyle(
+                                        color: Colors.black,
+                                        fontSize: screenWidth * 0.03,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                                : Center(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Icon(Icons.add, color: KprimaryColor, size: screenWidth * 0.05),
+                                  SizedBox(width: screenWidth * 0.02),
+                                  Text(
+                                    S.of(context).ChooseLocation,
+                                    style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                      fontSize: screenWidth * 0.03,
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          },
+                      ],
+                    ),
+                    const Spacer(),
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 2,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              minimumSize: Size(double.infinity, screenWidth * 0.12),
+                              backgroundColor: KprimaryColor,
+                              shape: RoundedRectangleBorder(
+                                side: const BorderSide(
+                                  color: KprimaryColor,
+                                  width: 3,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                            ),
+                            onPressed: () {
+                              Navigator.pop(context);
+                              setState(() {});
+                            },
+                            child: Text(
+                              "${S.of(context).Show} ${featuredEngineers.length}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white,
+                                fontSize: screenWidth * 0.03,
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(width: screenWidth * 0.02),
+                        Expanded(
+                          child: ElevatedButton(
+                            style: ButtonStyle(
+                              minimumSize: MaterialStateProperty.all(
+                                Size(double.infinity, screenWidth * 0.12),
+                              ),
+                              backgroundColor: MaterialStateProperty.all(Colors.white),
+                              foregroundColor: MaterialStateProperty.all(
+                                (_selectedGovernorate == null && _selectedCity == null)
+                                    ? KprimaryColor.withOpacity(0.3)
+                                    : KprimaryColor,
+                              ),
+                              side: MaterialStateProperty.all(
+                                BorderSide(
+                                  color: (_selectedGovernorate == null && _selectedCity == null)
+                                      ? KprimaryColor.withOpacity(0.3)
+                                      : KprimaryColor,
+                                  width: 1,
+                                ),
+                              ),
+                              shape: MaterialStateProperty.all(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                            ),
+                            onPressed: (_selectedGovernorate == null && _selectedCity == null)
+                                ? null
+                                : () {
+                              setState(() {
+                                _selectedCity = null;
+                                _selectedGovernorate = null;
+                              });
+                              Navigator.pop(context);
+                            },
+                            child: Text(
+                              S.of(context).Reset,
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: screenWidth * 0.03,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );
@@ -654,196 +659,219 @@ class _EngineersScreenState extends State<EngineersScreen> {
   }) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    String selectedGovernorate = '';
-    String selectedCity = '';
-    String searchText = '';
+
+    String selectedGovernorate = "";
+    String selectedCity = "";
+    String searchText = "";
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.vertical(top: Radius.circular(8))),
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+      ),
+      constraints: BoxConstraints(
+        maxWidth: screenWidth,
+        maxHeight: screenHeight * 0.9,
+      ),
       builder: (context) {
-        return StatefulBuilder(
-          builder: (context, setState) {
-            return Container(
-              height: screenHeight * 0.7,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(8)),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.3),
-                    spreadRadius: 2,
-                    blurRadius: 8,
-                    offset: const Offset(0, -2),
-                  ),
-                ],
-              ),
-              padding: EdgeInsets.all(screenWidth * 0.04),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: screenWidth * 0.15,
-                      height: 4,
-                      margin: EdgeInsets.only(bottom: screenHeight * 0.015),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(8),
+        return FractionallySizedBox(
+          heightFactor: 0.7,
+          child: StatefulBuilder(
+            builder: (context, setModalState) {
+              return Container(
+                decoration: const BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.vertical(top: Radius.circular(8)),
+                ),
+                padding: EdgeInsets.all(screenWidth * 0.04),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Center(
+                      child: Container(
+                        width: screenWidth * 0.15,
+                        height: 4,
+                        margin: EdgeInsets.only(bottom: screenHeight * 0.015),
+                        decoration: BoxDecoration(
+                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(8),
+                        ),
                       ),
                     ),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        S.of(context).SelectLocation,
-                        style: TextStyle(
-                          fontSize: screenWidth * 0.035,
-                          fontWeight: FontWeight.bold,
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          S.of(context).SelectLocation,
+                          style: TextStyle(
+                            fontSize: screenWidth * 0.035,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          textAlign: TextAlign.left,
                         ),
-                        textAlign: TextAlign.left,
-                      ),
-                      IconButton(
-                        icon: Icon(Icons.arrow_forward_ios, size: screenWidth * 0.045),
-                        padding: EdgeInsets.zero,
-                        constraints: const BoxConstraints(),
-                        onPressed: () {
-                          if (selectedGovernorate.isNotEmpty) {
-                            setState(() {
-                              selectedGovernorate = '';
-                              selectedCity = '';
-                              searchText = '';
-                            });
-                          } else {
-                            Navigator.pop(context);
-                          }
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: screenHeight * 0.015),
-                  Container(
-                    height: screenWidth * 0.12,
-                    width: double.infinity,
-                    decoration: BoxDecoration(
-                      color: const Color(0xffFAFAFA),
-                      borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: const Color(0xffE9E9E9)),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
-                          spreadRadius: 1,
-                          blurRadius: 4,
-                          offset: const Offset(0, 2),
+                        IconButton(
+                          icon: Icon(
+                            Icons.close,
+                            size: screenWidth * 0.045,
+                          ),
+                          padding: EdgeInsets.zero,
+                          constraints: const BoxConstraints(),
+                          onPressed: () {
+                            if (selectedGovernorate.isNotEmpty) {
+                              setModalState(() {
+                                selectedGovernorate = "";
+                                selectedCity = "";
+                                searchText = "";
+                              });
+                            } else {
+                              Navigator.pop(context);
+                            }
+                          },
                         ),
                       ],
                     ),
-                    child: TextField(
-                      style: TextStyle(
-                        fontSize: screenWidth * 0.03,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold,
+                    SizedBox(height: screenHeight * 0.015),
+                    Container(
+                      height: screenWidth * 0.12,
+                      width: double.infinity,
+                      decoration: BoxDecoration(
+                        color: const Color(0xffFAFAFA),
+                        borderRadius: BorderRadius.circular(8),
+                        border: Border.all(color: const Color(0xffE9E9E9)),
                       ),
-                      decoration: InputDecoration(
-                        hintStyle: TextStyle(
+                      child: TextField(
+                        style: TextStyle(
                           fontSize: screenWidth * 0.03,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          color: Colors.grey,
                         ),
-                        border: InputBorder.none,
-                        contentPadding: EdgeInsets.symmetric(
-                          vertical: screenWidth * 0.035,
-                          horizontal: screenWidth * 0.02,
-                        ),
-                        prefixIcon: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.02),
-                          child: Icon(
-                            Icons.search_outlined,
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(
+                            fontSize: screenWidth * 0.03,
+                            fontWeight: FontWeight.bold,
                             color: Colors.grey,
-                            size: screenWidth * 0.05,
                           ),
+                          border: InputBorder.none,
+                          contentPadding: EdgeInsets.symmetric(
+                            vertical: screenWidth * 0.035,
+                            horizontal: screenWidth * 0.02,
+                          ),
+                          prefixIcon: Padding(
+                            padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                            child: Icon(
+                              Icons.search_outlined,
+                              color: Colors.grey,
+                              size: screenWidth * 0.05,
+                            ),
+                          ),
+                          hintText: S.of(context).SearchForGovernorateOrCity,
                         ),
-                        hintText: S.of(context).SearchForGovernorateOrCity,
-                      ),
-                      onChanged: (value) => setState(() => searchText = value),
-                    ),
-                  ),
-                  SizedBox(height: screenHeight * 0.01),
-                  Expanded(
-                    child: SingleChildScrollView(
-                      child: Column(
-                        children: [
-                          if (selectedGovernorate.isEmpty)
-                            ...governoratesWithCities.keys
-                                .where((gov) =>
-                            searchText.isEmpty || gov.toLowerCase().contains(searchText.toLowerCase()))
-                                .map((governorate) => Column(
-                              children: [
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
-                                  title: Text(
-                                    governorate,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      fontSize: screenWidth * 0.03,
-                                    ),
-                                  ),
-                                  onTap: () => setState(() => selectedGovernorate = governorate),
-                                ),
-                                Divider(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  thickness: 1,
-                                  indent: screenWidth * 0.01,
-                                  endIndent: screenWidth * 0.01,
-                                ),
-                              ],
-                            ))
-                          else
-                            ...governoratesWithCities[selectedGovernorate]!
-                                .where((city) =>
-                            searchText.isEmpty || city.toLowerCase().contains(searchText.toLowerCase()))
-                                .map((city) => Column(
-                              children: [
-                                ListTile(
-                                  dense: true,
-                                  contentPadding: EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
-                                  title: Text(
-                                    city,
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                      fontSize: screenWidth * 0.03,
-                                    ),
-                                  ),
-                                  trailing: selectedCity == city
-                                      ? Icon(Icons.check, color: KprimaryColor, size: screenWidth * 0.05)
-                                      : null,
-                                  onTap: () {
-                                    onLocationSelected(selectedGovernorate, city);
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                Divider(
-                                  color: Colors.grey.withOpacity(0.3),
-                                  thickness: 1,
-                                  indent: screenWidth * 0.01,
-                                  endIndent: screenWidth * 0.01,
-                                ),
-                              ],
-                            )),
-                        ],
+                        onChanged: (value) {
+                          setModalState(() {
+                            searchText = value;
+                          });
+                        },
                       ),
                     ),
-                  ),
-                ],
-              ),
-            );
-          },
+                    SizedBox(height: screenHeight * 0.01),
+                    Expanded(
+                      child: SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            if (selectedGovernorate.isEmpty)
+                              ...governoratesWithCities.keys
+                                  .where((gov) =>
+                              searchText.isEmpty || gov.toLowerCase().contains(searchText.toLowerCase()))
+                                  .map((governorate) => Column(
+                                children: [
+                                  ListTile(
+                                    dense: true,
+                                    contentPadding:
+                                    EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                    title: Text(
+                                      governorate,
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: screenWidth * 0.03,
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      setModalState(() {
+                                        selectedGovernorate = governorate;
+                                        searchText = "";
+                                      });
+                                    },
+                                  ),
+                                  Divider(
+                                    color: Colors.grey.withOpacity(0.3),
+                                    thickness: 1,
+                                    indent: screenWidth * 0.01,
+                                    endIndent: screenWidth * 0.01,
+                                  ),
+                                ],
+                              ))
+                                  .toList()
+                            else
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: governoratesWithCities[selectedGovernorate]!
+                                    .where((city) => searchText.isEmpty ||
+                                    city.toLowerCase().contains(searchText.toLowerCase()))
+                                    .map((city) => Column(
+                                  children: [
+                                    ListTile(
+                                      dense: true,
+                                      contentPadding:
+                                      EdgeInsets.symmetric(horizontal: screenWidth * 0.01),
+                                      title: Text(
+                                        city,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.black,
+                                          fontSize: screenWidth * 0.03,
+                                        ),
+                                      ),
+                                      trailing: _selectedCity == city
+                                          ? Padding(
+                                        padding: EdgeInsets.symmetric(
+                                            horizontal: screenWidth * 0.02),
+                                        child: Icon(
+                                          Icons.check,
+                                          color: KprimaryColor,
+                                          size: screenWidth * 0.05,
+                                        ),
+                                      )
+                                          : null,
+                                      onTap: () {
+                                        setModalState(() {
+                                          selectedCity = city;
+                                        });
+                                        onLocationSelected(selectedGovernorate, city);
+                                        Navigator.pop(context);
+                                      },
+                                    ),
+                                    Divider(
+                                      color: Colors.grey.withOpacity(0.3),
+                                      thickness: 1,
+                                      indent: screenWidth * 0.01,
+                                      endIndent: screenWidth * 0.01,
+                                    ),
+                                  ],
+                                ))
+                                    .toList(),
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
         );
       },
     );

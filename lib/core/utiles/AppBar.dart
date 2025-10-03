@@ -1,5 +1,5 @@
-import 'package:bk/core/utiles/constans.dart';
 import 'package:flutter/material.dart';
+import 'package:bk/core/utiles/constans.dart';
 import '../../feature/Home/presentation/view_model/views/Search.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -18,8 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    double screenWidth = MediaQuery.of(context).size.width;
-    double screenHeight = MediaQuery.of(context).size.height;
+    final mq = MediaQuery.of(context).size;
 
     return AppBar(
       backgroundColor: backgroundColor,
@@ -28,85 +27,77 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       titleSpacing: 0,
       automaticallyImplyLeading: false,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back_ios,
-            color: Colors.black, size: screenHeight * 0.025),
+        icon: Icon(Icons.arrow_back_ios, color: Colors.black, size: mq.width * 0.05),
         onPressed: onBack,
       ),
       title: Text(
         title,
         style: TextStyle(
           color: Colors.black,
-          fontSize: screenWidth * 0.035,
+          fontSize: mq.width * 0.035,
           fontWeight: FontWeight.bold,
         ),
       ),
       actions: [
         if (showSearch)
           Padding(
-            padding: EdgeInsetsDirectional.only(
-              end: onPressed != null ? screenWidth * 0.015 : screenWidth * 0.04,
-              top: screenWidth * 0.02,
-              bottom: screenWidth * 0.02,
-            ),
-            child: Container(
-              height: screenWidth * 0.1,
-              width: screenWidth * 0.1,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade400),
-              ),
-              child: IconButton(
-                icon: Image.asset(
-                  'Assets/icons-search-.png',
-                  width: screenWidth * 0.06,
-                  height: screenWidth * 0.06,
-                  fit: BoxFit.contain,
-                  color: Colors.grey.shade600,
+            padding: EdgeInsetsDirectional.only(end: mq.width * 0.02),
+            child: SizedBox(
+              height: mq.width * 0.1,
+              width: mq.width * 0.1,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(mq.width * 0.02),
+                  border: Border.all(color: Colors.grey.shade400),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const Search()),
-                  );
-                },
+                child: IconButton(
+                  icon: Image.asset(
+                    'Assets/icons-search-.png',
+                    width: mq.width * 0.055,
+                    height: mq.width * 0.055,
+                    color: Colors.grey.shade600,
+                    fit: BoxFit.contain,
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const Search()),
+                    );
+                  },
+                ),
               ),
             ),
           ),
         if (onPressed != null)
           Padding(
-            padding: EdgeInsetsDirectional.only(
-              end: screenWidth * 0.04,
-              top: screenWidth * 0.02,
-              bottom: screenWidth * 0.02,
-            ),
-            child: Container(
-              height: screenWidth * 0.1,
-              width: screenWidth * 0.1,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey.shade400),
-              ),
-              child: IconButton(
-                icon: Image.asset(
-                  'Assets/icons8-filter-48.png',
-                  width: screenWidth * 0.06,
-                  height: screenWidth * 0.06,
-                  color: Colors.grey.shade600,
-                  fit: BoxFit.contain,
+            padding: EdgeInsetsDirectional.only(end: mq.width * 0.04),
+            child: SizedBox(
+              height: mq.width * 0.1,
+              width: mq.width * 0.1,
+              child: DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(mq.width * 0.02),
+                  border: Border.all(color: Colors.grey.shade400),
                 ),
-                onPressed: onPressed,
+                child: IconButton(
+                  icon: Image.asset(
+                    'Assets/icons8-filter-48.png',
+                    width: mq.width * 0.05,
+                    height: mq.width * 0.05,
+                    color: Colors.grey.shade600,
+                    fit: BoxFit.contain,
+                  ),
+                  onPressed: onPressed,
+                ),
               ),
             ),
           ),
       ],
       bottom: PreferredSize(
-        preferredSize: const Size.fromHeight(1.5),
-        child: Container(
-          color: const Color(0xffE9E9E9),
-          height: 1.5,
-        ),
+        preferredSize: Size.fromHeight(mq.height * 0.0025),
+        child: Divider(height: mq.height * 0.0025, color: const Color(0xffE9E9E9)),
       ),
     );
   }
